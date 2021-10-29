@@ -42,7 +42,7 @@
                 android:textColor="#FF3F3F" />
 
             <TextView
-                android:id="@+id/turnPartTextView"
+                android:id="@+id/turnPhaseTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -52,7 +52,7 @@
                 android:textColor="#00FFFF" />
 
             <TextView
-                android:id="@+id/troopTextView"
+                android:id="@+id/troopCountTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -74,7 +74,7 @@
 
         ####NOTE: MapView designed with tablet in mind, may look off in emulator.####
         ####code in MapView.java####
-        <com.example.riskgame.Risk.views.MapView
+        <com.example.riskgame.Risk.views.RiskMapView
             android:id="@+id/mapView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
