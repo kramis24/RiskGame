@@ -33,6 +33,12 @@ public class Territory {
     private int owner;
     public boolean checked;
 
+    // location variables
+    public int centerX;
+    public int centerY;
+    public int boxWidth;
+    public int boxHeight;
+
     /**
      * Default constructor for Territory.
      *

@@ -11,7 +11,7 @@ import android.view.SurfaceView;
 
 import com.example.riskgame.R;
 
-public class MapView extends SurfaceView {
+public class RiskMapView extends SurfaceView {
 
     // member variables
     private Paint mapPaint;
@@ -32,7 +32,7 @@ public class MapView extends SurfaceView {
      * @param context
      * @param attrs
      */
-    public MapView(Context context, AttributeSet attrs) {
+    public RiskMapView(Context context, AttributeSet attrs) {
 
         // call to SurfaceView constructor and indication that drawing will be done
         super(context, attrs);
@@ -87,5 +87,9 @@ public class MapView extends SurfaceView {
         // adds text in specified player color, this is a rough idea
         textPaint.setColor(player);
         canvas.drawText(Integer.toString(count), x + 5, y + 45, textPaint);
+    }
+
+    public void updatePosition(float changeX, float changeY) {
+
     }
 }
