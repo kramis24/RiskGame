@@ -25,6 +25,13 @@ public class RiskMapView extends SurfaceView {
     final private int PLAYER_1_COLOR = 0xFFFF3F3F; // light-ish red
     final private int PLAYER_2_COLOR = 0xFF3F3FFF; // light-ish blue
 
+    // display variables
+    private int left = 0;
+    private int top = 0;
+    private int right = getWidth();
+    private int bottom = getHeight();
+
+
     /**
      * MapView
      * Constructor for MapView object, based off of SurfaceView class
@@ -59,24 +66,10 @@ public class RiskMapView extends SurfaceView {
     protected void onDraw(Canvas canvas) {
 
         // draws map, this is only hardcoded for this gui prototype
-        canvas.drawBitmap(mapImage, -200, -500, mapPaint);
+        canvas.drawBitmap(mapImage, left, top, mapPaint);
 
-        // draws text boxes indicating troop counts and ownership, only hardcoded for prototype
-        drawTextBox(250, 180, 1, PLAYER_1_COLOR, canvas);
-        drawTextBox(500, 220, 4, PLAYER_1_COLOR, canvas);
-        drawTextBox(250, 350, 1, PLAYER_1_COLOR, canvas);
-        drawTextBox(500, 600, 2, PLAYER_1_COLOR, canvas);
-        drawTextBox(700, 750, 3, PLAYER_1_COLOR, canvas);
-        drawTextBox(1170, 700, 7, PLAYER_2_COLOR, canvas);
-        drawTextBox(1400, 620, 3, PLAYER_2_COLOR, canvas);
-        drawTextBox(1470, 750, 7, PLAYER_2_COLOR, canvas);
-        drawTextBox(1050, 440, 3, PLAYER_2_COLOR, canvas);
-        drawTextBox(1050, 150, 3, PLAYER_2_COLOR, canvas);
-        drawTextBox(1250, 150, 2, PLAYER_2_COLOR, canvas);
-        drawTextBox(1255, 320, 1, PLAYER_2_COLOR, canvas);
-        drawTextBox(1500, 150, 1, PLAYER_2_COLOR, canvas);
-        drawTextBox(1800, 200, 1, PLAYER_2_COLOR, canvas);
-        drawTextBox(1600, 550, 2, PLAYER_2_COLOR, canvas);
+        // draws text boxes indicating troop counts and ownership
+
     }
 
     protected void drawTextBox(int x, int y, int count, int player, Canvas canvas) {
@@ -91,5 +84,29 @@ public class RiskMapView extends SurfaceView {
 
     public void updatePosition(float changeX, float changeY) {
 
+        // updates position variables
+        left += changeX;
+        top += changeY;
+        right = left + getWidth();
+        bottom = top + getHeight();
+
+        // checks if out of bounds
+        if (left > 0) {
+            left = 0;
+            right = getWidth();
+        }
+        if (top > 0) {
+            top = 0;
+            bottom = getHeight();
+        }
+        /*if (right < mapImage.getWidth()) {
+            right = mapImage.getWidth();
+            left = right - getWidth();
+        }
+        if (bottom < mapImage.getHeight()) {
+            bottom = mapImage.getHeight);
+            top = bottom - getHeight();
+        }*/
+        invalidate();
     }
 }
