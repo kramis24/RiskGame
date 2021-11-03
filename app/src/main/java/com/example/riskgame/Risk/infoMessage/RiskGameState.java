@@ -10,7 +10,9 @@ package com.example.riskgame.Risk.infoMessage;
 import com.example.riskgame.GameFramework.infoMessage.GameState;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class RiskGameState extends GameState {
@@ -45,6 +47,7 @@ public class RiskGameState extends GameState {
     private Phase currentPhase = Phase.DEPLOY;
     private int totalTroops = 100;
     private ArrayList<Territory> territories;
+    private List<ArrayList<Card>> cards = new ArrayList<ArrayList<Card>>();
 
     /**
      * Default constructor for RiskGameState.
@@ -53,6 +56,7 @@ public class RiskGameState extends GameState {
 
         // initialize territories array list
         territories = new ArrayList<Territory>();
+        //will add cards to list whenever player conquers
 
         // initialize territories and add adjacents to each territory
         initTerritories();
@@ -79,6 +83,9 @@ public class RiskGameState extends GameState {
             Territory newTerritory = new Territory(t);
             this.territories.add(newTerritory);
         }
+
+
+
     }
 
     /**
@@ -234,6 +241,7 @@ public class RiskGameState extends GameState {
                 //if changes ownership of a territory if troops are 0
                 if (def.getTroops() == 0) {
                     def.setOwner(atk.getOwner());
+                    addCard();
                     occupy(def, 1); //1 is a placeholder
                 }
                 return true;
@@ -434,7 +442,6 @@ public class RiskGameState extends GameState {
     /**
      * getT
      * Gets the list of territories.
-     *
      * @return territories array list
      */
     public ArrayList<Territory> getT() {
@@ -795,5 +802,77 @@ public class RiskGameState extends GameState {
         brazil.addAdjacent(peru);
         brazil.addAdjacent(argentina);
         brazil.addAdjacent(northAfrica);
+    }
+
+
+    //adds a card to the current players hand
+
+    /**
+     * addCard
+     * adds a card to the current players hand
+     * this method is called in attack method
+     */
+    private void addCard() {
+        List<Card> ListOfCards =(Arrays.asList(Card.values()));//stores the enums into an array
+        int size = ListOfCards.size(); //size of the enums array
+        Random rnd = new Random();
+        cards.get(currentTurn).add(ListOfCards.get(rnd.nextInt(size)));//adds card for the current player
+
+    }
+
+    /**
+     * exchangeCard
+     * exchanges cards for bonus troops
+     * @return true if cards were able to be exchanged
+     */
+    public boolean exchangeCards() {
+        if(currentPhase != Phase.DEPLOY) {
+            return false;
+        }
+        int countArtillery = 0;
+        int countCavalry = 0;
+        int countInfantry = 0;
+
+        //checks how many of each card the player has
+        for(int i = 0; i < 5; i++) {
+            if(cards.get(currentTurn).get(i) == Card.ARTILLERY) {
+                countArtillery++;
+            }
+            if(cards.get(currentTurn).get(i) == Card.CAVALRY) {
+                countCavalry++;
+            }
+            if(cards.get(currentTurn).get(i) == Card.INFANTRY) {
+                countInfantry++;
+            }
+        }
+
+        //removes the cards from the players hand and gives bonus troops
+        if(countArtillery > 1 && countCavalry > 1 && countInfantry > 1) {
+            cards.get(currentTurn).remove(Card.ARTILLERY);
+            cards.get(currentTurn).remove(Card.CAVALRY);
+            cards.get(currentTurn).remove(Card.INFANTRY);
+            totalTroops += 10;
+        } else if(countArtillery >= 3) {
+            cards.get(currentTurn).remove(Card.ARTILLERY);
+            cards.get(currentTurn).remove(Card.ARTILLERY);
+            cards.get(currentTurn).remove(Card.ARTILLERY);
+            totalTroops += 8;
+        } else if(countCavalry >= 3) {
+            cards.get(currentTurn).remove(Card.CAVALRY);
+            cards.get(currentTurn).remove(Card.CAVALRY);
+            cards.get(currentTurn).remove(Card.CAVALRY);
+            totalTroops += 6;
+        } else if(countInfantry >= 3) {
+            cards.get(currentTurn).remove(Card.INFANTRY);
+            cards.get(currentTurn).remove(Card.INFANTRY);
+            cards.get(currentTurn).remove(Card.INFANTRY);
+            totalTroops += 4;
+        } else {
+            return false;
+        }
+        countArtillery = 0;
+        countCavalry = 0;
+        countInfantry = 0;
+        return true;
     }
 }
