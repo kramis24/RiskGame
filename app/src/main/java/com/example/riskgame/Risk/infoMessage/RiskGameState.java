@@ -37,11 +37,12 @@ public class RiskGameState extends GameState {
     }
 
     // instance variables
-    // TODO clean up instance variables, make player numbers start at 0
+    // TODO clean up instance variables, make player numbers start at 0, less hard coding
     private int playerCount = 2;
-    private int currentPlayer = 1;
+    private int currentPlayer = 0;
     // TODO Card arrays/arraylists for all four players
     private ArrayList<Card> playerCards[];
+    private String playerNames[];
     private Phase currentPhase = Phase.DEPLOY;
     private int totalTroops = 100;
     private ArrayList<Territory> territories;
@@ -135,14 +136,13 @@ public class RiskGameState extends GameState {
      * @param t territory selected
      * @param add troops being added
      */
-    public void addTroop(Territory t, int add) {
+    public void addTroops(Territory t, int add) {
         t.setTroops(t.getTroops() + add); //add a given number of troops to a territories
     }
 
     /**
      * setTerritoryPlayers
      * Sets up the map for risk gameplay by randomly assigning territories to each player
-     * Void method no paramenters
      */
     public void setTerritoryPlayers () {
             ArrayList<Integer> tempTerr = new ArrayList<>(); //create temp list for territory's indexes
@@ -159,7 +159,6 @@ public class RiskGameState extends GameState {
     /**
      * setStartTroops
      * Randomly deploys each player's starting troops to their territories
-     * No parameters
      * FIX: method causes program to freeze and crash, no error message printed
      */
     public void setStartTroops() {
@@ -174,7 +173,7 @@ public class RiskGameState extends GameState {
         for (int i = 0; i < troopsDeployed.length; i++) {
             while (troopsDeployed[i] < startTroops) { //while each player has not yet deployed given number of troops
                 if (territories.get(rNum).getOwner() == i) { //deploy a troop to a random territory owned by the selected player
-                    addTroop(territories.get(i), 1);
+                    addTroops(territories.get(i), 1);
                     troopsDeployed[i]++; //increase deployed troop count for this player
                 }
             }
@@ -261,7 +260,7 @@ public class RiskGameState extends GameState {
     //for occupy change total troops to terriories troop
     public boolean deploy(Territory t, int troops) {
         if(currentPlayer == t.getOwner() && totalTroops - troops > 0) { //checks that the current territory is owned by the player
-            addTroop(t,troops);
+            addTroops(t,troops);
             totalTroops = totalTroops - troops;
             if (totalTroops <= 0) {
                 nextTurn();
@@ -446,12 +445,15 @@ public class RiskGameState extends GameState {
     }
 
     /**
-     * getcurrentPlayer
+     * getCurrentPlayer
      * Gets the current turn.
      *
      * @return current turn
      */
-    public int getcurrentPlayer() { return currentPlayer; }
+
+    public int getCurrentPlayer() { return currentPlayer; }
+
+    public Phase getCurrentPhase() { return currentPhase; }
 
     /**
      * initTerritories

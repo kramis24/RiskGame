@@ -7,6 +7,8 @@ package com.example.riskgame.Risk.players;
  * @version 10/29/2021 WIP
  */
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +20,9 @@ import com.example.riskgame.GameFramework.players.GameHumanPlayer;
 import com.example.riskgame.R;
 import com.example.riskgame.Risk.infoMessage.RiskGameState;
 import com.example.riskgame.Risk.infoMessage.Territory;
+import com.example.riskgame.Risk.riskActionMessage.AttackAction;
+import com.example.riskgame.Risk.riskActionMessage.DeployAction;
+import com.example.riskgame.Risk.riskActionMessage.FortifyAction;
 import com.example.riskgame.Risk.views.RiskMapView;
 
 public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickListener,
@@ -134,7 +139,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
             for (Territory t : gameState.getTerritories()) {
                 if ((Math.abs(touchX - t.centerX) < (float) (t.boxWidth / 2))
                     && (Math.abs(touchY - t.centerY) < (float) (t.boxHeight / 2))) {
-                    generateAction();
+                    //generateAction(t);
                     break;
                 }
             }
@@ -144,8 +149,46 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         return false;
     }
 
-    private void generateAction() {
-        //TODO touch processing
+    private void generateAction(Territory t) {
+
+        // return if it's not the human player's turn
+        if (gameState.getCurrentPlayer() != playerNum) return;
+
+        //
+        if (gameState.getCurrentPhase() == RiskGameState.Phase.DEPLOY) {
+            int numTroops = askTroops();
+            game.sendAction(new DeployAction(this, t, numTroops));
+        }
+
+        else if (gameState.getCurrentPhase() == RiskGameState.Phase.ATTACK) {
+            if (selectedT1 == null) {
+                selectedT1 = t;
+            } else if (selectedT2 == null) {
+                selectedT2 = t;
+            } else {
+                game.sendAction(new AttackAction(this, selectedT1, selectedT2));
+            }
+        } else if (gameState.getCurrentPhase() == RiskGameState.Phase.FORTIFY) {
+            if (selectedT1 == null) {
+                selectedT1 = t;
+            } else if (selectedT2 == null) {
+                selectedT2 = t;
+            } else {
+                game.sendAction(new FortifyAction(this, selectedT1, selectedT2, 1));
+            }
+        }
+
+    }
+
+    private int askTroops() {
+
+        // initialize popup
+        LayoutInflater inflater = (LayoutInflater)
+                myActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popup = inflater.inflate(R.layout.ask_troops_popup, null);
+
+
+        return 1;
 
     }
 }
