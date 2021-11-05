@@ -14,4 +14,18 @@ public class ExampleUnitTest {
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
+
+    public boolean equals(Object object) {
+    //if object instn an intanceof Riskgamestate -->false
+    //RiskState riskState = (RiskState) object;
+    //go through all data and make sure it is a match
+    return true;
+    }
+
+    //test-equals()
+    //Gamestate state = new GS()
+    //assertTrue()State.equals(state);
+    //GS second = new GS();
+    //second.sexX(z);
+    //assertFalse(State.equals(second));
 }

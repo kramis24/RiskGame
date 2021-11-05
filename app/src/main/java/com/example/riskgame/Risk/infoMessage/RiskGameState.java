@@ -437,7 +437,7 @@ public class RiskGameState extends GameState {
      *
      * @return territories array list
      */
-    public ArrayList<Territory> getT() {
+    public ArrayList<Territory> getTerritories() {
         return this.territories;
     }
 
