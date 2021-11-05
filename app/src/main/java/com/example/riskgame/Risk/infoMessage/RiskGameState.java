@@ -465,59 +465,71 @@ public class RiskGameState extends GameState {
 
         // Tribelhorn Approved this message
         // initialize each territory then add it to the list
-        Territory alaska = new Territory(Territory.Continent.NORTH_AMERICA, "Alaska");
+        Territory alaska = new Territory(Territory.Continent.NORTH_AMERICA, "Alaska", 300, 430);
         territories.add(alaska);
 
         Territory northWestTerritory = new Territory(Territory.Continent.NORTH_AMERICA,
-                "North West Territory");
+                "North West Territory", 700, 440);
         territories.add(northWestTerritory);
 
-        Territory greenland = new Territory(Territory.Continent.NORTH_AMERICA, "Greenland");
+        Territory greenland = new Territory(Territory.Continent.NORTH_AMERICA, "Greenland",
+                1400, 300);
         territories.add(greenland);
 
-        Territory alberta = new Territory(Territory.Continent.NORTH_AMERICA, "Alberta");
+        Territory alberta = new Territory(Territory.Continent.NORTH_AMERICA, "Alberta",
+                640, 660);
         territories.add(alberta);
 
-        Territory ontario = new Territory(Territory.Continent.NORTH_AMERICA, "Ontario");
+        Territory ontario = new Territory(Territory.Continent.NORTH_AMERICA, "Ontario",
+                900, 750);
         territories.add(ontario);
 
-        Territory quebec = new Territory(Territory.Continent.NORTH_AMERICA, "Quebec");
+        Territory quebec = new Territory(Territory.Continent.NORTH_AMERICA, "Quebec",
+                1175, 700);
         territories.add(quebec);
 
         Territory westernUnitedStates = new Territory(Territory.Continent.NORTH_AMERICA,
-                "Western United States");
+                "Western United States", 650, 850);
         territories.add(westernUnitedStates);
 
         Territory easternUnitedStates = new Territory(Territory.Continent.NORTH_AMERICA,
-                "Eastern United States");
+                "Eastern United States", 950, 1050);
         territories.add(easternUnitedStates);
 
         Territory centralAmerica = new Territory(Territory.Continent.NORTH_AMERICA,
-                "Central America");
+                "Central America", 700, 1300);
         territories.add(centralAmerica);
 
-        Territory venezuela = new Territory(Territory.Continent.SOUTH_AMERICA, "Venezuela");
+        Territory venezuela = new Territory(Territory.Continent.SOUTH_AMERICA, "Venezuela",
+                1000, 1500);
         territories.add(venezuela);
 
-        Territory peru = new Territory(Territory.Continent.SOUTH_AMERICA, "Peru");
+        Territory peru = new Territory(Territory.Continent.SOUTH_AMERICA, "Peru",
+                1000, 1850);
         territories.add(peru);
 
-        Territory brazil = new Territory(Territory.Continent.SOUTH_AMERICA, "Brazil");
+        Territory brazil = new Territory(Territory.Continent.SOUTH_AMERICA, "Brazil",
+                1250, 1750);
         territories.add(brazil);
 
-        Territory argentina = new Territory(Territory.Continent.SOUTH_AMERICA, "Argentina");
+        Territory argentina = new Territory(Territory.Continent.SOUTH_AMERICA, "Argentina",
+                1050, 2250);
         territories.add(argentina);
 
-        Territory iceland = new Territory(Territory.Continent.EUROPE, "Iceland");
+        Territory iceland = new Territory(Territory.Continent.EUROPE, "Iceland",
+                1720, 600);
         territories.add(iceland);
 
-        Territory scandinavia = new Territory(Territory.Continent.EUROPE, "Scandinavia");
+        Territory scandinavia = new Territory(Territory.Continent.EUROPE, "Scandinavia",
+                1960, 640);
         territories.add(scandinavia);
 
-        Territory ukraine = new Territory(Territory.Continent.EUROPE, "Ukraine");
+        Territory ukraine = new Territory(Territory.Continent.EUROPE, "Ukraine",
+                2380, 800);
         territories.add(ukraine);
 
-        Territory greatBritain = new Territory(Territory.Continent.EUROPE, "Great Britain");
+        Territory greatBritain = new Territory(Territory.Continent.EUROPE, "Great Britain",
+                1700, 920);
         territories.add(greatBritain);
 
         Territory northernEurope = new Territory(Territory.Continent.EUROPE, "Northern Europe");
