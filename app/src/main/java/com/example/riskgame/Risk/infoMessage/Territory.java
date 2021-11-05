@@ -4,7 +4,7 @@ package com.example.riskgame.Risk.infoMessage;
  * Variables and methods for individual territories.
  *
  * @author Phi Nguyen, Dylan Kramis, Charlie Benning
- * @version 10/7/2021
+ * @version 11/4/2021
  */
 
 import java.util.ArrayList;
@@ -34,10 +34,10 @@ public class Territory {
     public boolean checked;
 
     // location variables
-    public int centerX;
-    public int centerY;
-    public int boxWidth;
-    public int boxHeight;
+    private int centerX = 0;
+    private int centerY = 0;
+    private int boxWidth = 100;
+    private int boxHeight = 100;
 
     /**
      * Default constructor for Territory.
@@ -52,8 +52,29 @@ public class Territory {
         continent = c;
         name = n;
         troops = 10;
-        owner = 0;
+        owner = -1;
         checked = false;
+    }
+
+    /**
+     * Constructor with location coordinates
+     *
+     * @param c continent territory belongs to
+     * @param n name of territory
+     * @param x center x coordinate
+     * @param y center y coordinate
+     */
+    public Territory(Continent c, String n, int x, int y) {
+
+        // initializes variables
+        adjacents = new ArrayList<Territory>();
+        continent = c;
+        name = n;
+        troops = 10;
+        owner = -1;
+        checked = false;
+        centerX = x;
+        centerY = y;
     }
 
     /**
@@ -68,6 +89,8 @@ public class Territory {
         this.name = t.name;
         this.owner = t.owner;
         this.troops = t.troops;
+        this.centerX = t.centerX;
+        this.centerY = t.centerY;
         this.adjacents = new ArrayList<Territory>();
 
         for(int i = 0; i < t.adjacents.size(); i++) {
@@ -151,6 +174,22 @@ public class Territory {
      */
     public ArrayList<Territory> getAdjacents() {
         return adjacents;
+    }
+
+    public int getX() {
+        return centerX;
+    }
+
+    public int getY() {
+        return centerY;
+    }
+
+    public int getWidth() {
+        return boxWidth;
+    }
+
+    public int getHeight() {
+        return boxHeight;
     }
 
     /**
