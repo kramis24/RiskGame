@@ -24,7 +24,7 @@ public class RiskBasicComputerPlayer extends GameComputerPlayer {
     private boolean fortify = false;
     private boolean attack = false;
     private boolean deploy = false;
-
+ //;
     @Override
     protected void receiveInfo(GameInfo info) {
 
