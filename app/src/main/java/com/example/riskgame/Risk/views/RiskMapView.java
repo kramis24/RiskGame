@@ -1,4 +1,11 @@
 package com.example.riskgame.Risk.views;
+/**
+ * RiskMapView
+ * Draws the Risk map.
+ *
+ * @author Dylan Kramis
+ * @version 11/4/2021 WIP
+ */
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -7,30 +14,39 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.view.SurfaceView;
 
+import com.example.riskgame.GameFramework.utilities.FlashSurfaceView;
 import com.example.riskgame.R;
+import com.example.riskgame.Risk.infoMessage.RiskGameState;
+import com.example.riskgame.Risk.infoMessage.Territory;
 
-public class RiskMapView extends SurfaceView {
+public class RiskMapView extends FlashSurfaceView {
 
     // member variables
     private Paint mapPaint;
     private Paint boxPaint;
     private Paint textPaint;
+    private Paint namePaint;
 
     // game map, don't want to be loading this constantly
     final private Bitmap mapImage = BitmapFactory.decodeResource(getResources(), R.drawable.risk_board);
 
+    // game state to render territory boxes
+    private RiskGameState gameState;
+
     // player colors, more to come
-    final private int PLAYER_1_COLOR = 0xFFFF3F3F; // light-ish red
-    final private int PLAYER_2_COLOR = 0xFF3F3FFF; // light-ish blue
+    final static private int[] PLAYER_COLORS = {0xFFFF0000, // red
+                                                0xFF0000FF, // blue
+                                                0xFFFFBF00, // yellow-orange
+                                                0xFF00DF00};// green
 
     // display variables
-    private int left = 0;
-    private int top = 0;
-    private int right = getWidth();
-    private int bottom = getHeight();
-
+    private int left = getLeft();
+    private int top = getTop();
+    private int right = getRight();
+    private int bottom = getBottom();
+    private float shiftX = 0;
+    private float shiftY = 0;
 
     /**
      * MapView
@@ -47,12 +63,19 @@ public class RiskMapView extends SurfaceView {
 
         //setting up paints and colors
         mapPaint = new Paint();
-        mapPaint.setColor(Color.BLACK);
+        mapPaint.setColor(Color.WHITE);
 
         boxPaint = new Paint(mapPaint);
 
         textPaint = new Paint();
         textPaint.setTextSize(40);
+        textPaint.setTextAlign(Paint.Align.CENTER);
+
+        namePaint = new Paint();
+        namePaint.setColor(Color.BLACK);
+        namePaint.setTextSize(30);
+        namePaint.setTextAlign(Paint.Align.CENTER);
+
     }
 
     /**
@@ -68,30 +91,81 @@ public class RiskMapView extends SurfaceView {
         // draws map, this is only hardcoded for this gui prototype
         canvas.drawBitmap(mapImage, left, top, mapPaint);
 
+        // grid, for development only
+        for (int i = 0; i < 4000; i += 100) {
+            if (i % 500 == 0) {
+                canvas.drawRect(i + left, getTop() - 120, i + left + 5, getBottom(), boxPaint);
+            } else {
+                canvas.drawRect(i + left, getTop() - 120, i + left + 2, getBottom(), boxPaint);
+            }
+        }
+        for (int i = 0; i < 3000; i+= 100) {
+            if (i % 500 == 0) {
+                canvas.drawRect(getLeft(), i + top, getRight(), i + top + 5, boxPaint);
+            } else {
+                canvas.drawRect(getLeft(), i + top, getRight(), i + top + 2, boxPaint);
+            }
+        }
+
+        // returns if no game state is given, this is required to avoid crashing
+        if (gameState == null) {
+            return;
+        }
+
         // draws text boxes indicating troop counts and ownership
+        for (Territory t : gameState.getTerritories()) {
+            drawTextBox(t.getX() + left, t.getY() + top, t.getTroops(), t.getOwner(),
+                    t.getName(), canvas);
+        }
 
     }
 
-    protected void drawTextBox(int x, int y, int count, int player, Canvas canvas) {
+    /**
+     * drawTextBox
+     * Draws a text box displaying the number of troops in a territory, along with the name
+     * of the territory above it.
+     *
+     * @param x x coordinate
+     * @param y y coordinate
+     * @param count troop count
+     * @param player owner of territory
+     * @param name name of territory
+     * @param canvas canvas used to draw
+     */
+    protected void drawTextBox(int x, int y, int count, int player, String name, Canvas canvas) {
 
-        // draws a black square
-        canvas.drawRect(x, y, x + 50, y + 50, boxPaint);
+        // draws a white square
+        canvas.drawRect(x - 25, y - 25, x + 25, y + 25, boxPaint);
 
         // adds text in specified player color, this is a rough idea
-        textPaint.setColor(player);
-        canvas.drawText(Integer.toString(count), x + 5, y + 45, textPaint);
+        if (player < 0) {
+            textPaint.setColor(Color.BLACK);
+        } else {
+            textPaint.setColor(PLAYER_COLORS[player]);
+        }
+        canvas.drawText(Integer.toString(count), x, y + 15, textPaint);
+        canvas.drawText(name, x, y - 30, namePaint);
     }
 
+    /**
+     * updatePosition
+     * Updates map position.
+     *
+     * @param changeX change in x coordinate
+     * @param changeY change in y coordinate
+     */
     public void updatePosition(float changeX, float changeY) {
 
         // updates position variables
+        shiftX += changeX;
+        shiftY += changeY;
         left += changeX;
         top += changeY;
         right = left + getWidth();
         bottom = top + getHeight();
 
         // checks if out of bounds
-        if (left > 0) {
+        /*if (left > 0) {
             left = 0;
             right = getWidth();
         }
@@ -99,7 +173,7 @@ public class RiskMapView extends SurfaceView {
             top = 0;
             bottom = getHeight();
         }
-        /*if (right < mapImage.getWidth()) {
+        if (right < mapImage.getWidth()) {
             right = mapImage.getWidth();
             left = right - getWidth();
         }
@@ -108,5 +182,36 @@ public class RiskMapView extends SurfaceView {
             top = bottom - getHeight();
         }*/
         invalidate();
+
+    }
+
+    /**
+     * setGameState
+     * Sets game state.
+     *
+     * @param gs game state
+     */
+    public void setGameState(RiskGameState gs) {
+        gameState = gs;
+    }
+
+    /**
+     * getShiftX
+     * Gets x coordinate shift.
+     *
+     * @return x coordinate shift
+     */
+    public float getShiftX() {
+        return shiftX;
+    }
+
+    /**
+     * getShiftY
+     * Gets y coordinate shift.
+     *
+     * @return y coordinate shift
+     */
+    public float getShiftY() {
+        return shiftY;
     }
 }
