@@ -20,11 +20,15 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.riskgame.GameFramework.GameMainActivity;
+import com.example.riskgame.GameFramework.actionMessage.EndTurnAction;
 import com.example.riskgame.GameFramework.infoMessage.GameInfo;
 import com.example.riskgame.GameFramework.players.GameHumanPlayer;
 import com.example.riskgame.R;
 import com.example.riskgame.Risk.infoMessage.RiskGameState;
 import com.example.riskgame.Risk.infoMessage.Territory;
+import com.example.riskgame.Risk.riskActionMessage.AttackAction;
+import com.example.riskgame.Risk.riskActionMessage.DeployAction;
+import com.example.riskgame.Risk.riskActionMessage.FortifyAction;
 import com.example.riskgame.Risk.views.RiskMapView;
 
 public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickListener,
@@ -140,7 +144,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
             case R.id.cardButton:
                 // TODO card popup display
             case R.id.nextButton:
-                // TODO NextPhaseAction
+                game.sendAction(new EndTurnAction(this));
         }
 
     }
@@ -201,37 +205,19 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         return false;
     }
 
-    private void generateAction(Territory t) {
+    private void generateAction(Territory t, int numTroops) {
 
-        /*
-        // return if it's not the human player's turn
-        if (gameState.getCurrentPlayer() != playerNum) return;
-
-        //
         if (gameState.getCurrentPhase() == RiskGameState.Phase.DEPLOY) {
-            int numTroops = askTroops();
             game.sendAction(new DeployAction(this, t, numTroops));
-        }
-
-        else if (gameState.getCurrentPhase() == RiskGameState.Phase.ATTACK) {
-            if (selectedT1 == null) {
-                selectedT1 = t;
-            } else if (selectedT2 == null) {
-                selectedT2 = t;
-            } else {
-                game.sendAction(new AttackAction(this, selectedT1, selectedT2));
+        } else if (gameState.getCurrentPhase() == RiskGameState.Phase.ATTACK) {
+            if (selectedT2 != null) {
+                game.sendAction(new AttackAction(this, selectedT2, selectedT1));// clear this up with phi
             }
-        } else if (gameState.getCurrentPhase() == RiskGameState.Phase.FORTIFY) {
-            if (selectedT1 == null) {
-                selectedT1 = t;
-            } else if (selectedT2 == null) {
-                selectedT2 = t;
-            } else {
-                game.sendAction(new FortifyAction(this, selectedT1, selectedT2, 1));
+        } else {
+            if (selectedT1 != null) {
+                game.sendAction(new FortifyAction(this, selectedT1, selectedT2, numTroops));
             }
         }
-
-         */
 
         selectedT1 = null;
         selectedT2 = null;
@@ -273,7 +259,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
     }
 
     private void generateNumber(int numTroops) {
-        troopCountTextView.setText("Troops: "+numTroops);
-        generateAction(selectedT1);
+        troopCountTextView.setText("Troops: "+numTroops);// might remove
+        generateAction(selectedT1, numTroops);
     }
 }
