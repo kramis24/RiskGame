@@ -465,55 +465,55 @@ public class RiskGameState extends GameState {
 
         // Tribelhorn Approved this message
         // initialize each territory then add it to the list
-        Territory alaska = new Territory(Territory.Continent.NORTH_AMERICA, "Alaska", 300, 430);
+        Territory alaska = new Territory(Territory.Continent.NORTH_AMERICA, "Alaska", 230, 350);
         territories.add(alaska);
 
         Territory northWestTerritory = new Territory(Territory.Continent.NORTH_AMERICA,
-                "North West Territory", 700, 440);
+                "North West Territory", 500, 350);
         territories.add(northWestTerritory);
 
         Territory greenland = new Territory(Territory.Continent.NORTH_AMERICA, "Greenland",
-                1400, 300);
+                1050, 250);
         territories.add(greenland);
 
         Territory alberta = new Territory(Territory.Continent.NORTH_AMERICA, "Alberta",
-                640, 660);
+                470, 500);
         territories.add(alberta);
 
         Territory ontario = new Territory(Territory.Continent.NORTH_AMERICA, "Ontario",
-                900, 750);
+                670, 550);
         territories.add(ontario);
 
         Territory quebec = new Territory(Territory.Continent.NORTH_AMERICA, "Quebec",
-                1175, 700);
+                870, 550);
         territories.add(quebec);
 
         Territory westernUnitedStates = new Territory(Territory.Continent.NORTH_AMERICA,
-                "Western United States", 650, 850);
+                "Western United States", 500, 700);
         territories.add(westernUnitedStates);
 
         Territory easternUnitedStates = new Territory(Territory.Continent.NORTH_AMERICA,
-                "Eastern United States", 950, 1050);
+                "Eastern United States", 700, 750);
         territories.add(easternUnitedStates);
 
         Territory centralAmerica = new Territory(Territory.Continent.NORTH_AMERICA,
-                "Central America", 700, 1300);
+                "Central America", 500, 950);
         territories.add(centralAmerica);
 
         Territory venezuela = new Territory(Territory.Continent.SOUTH_AMERICA, "Venezuela",
-                1000, 1500);
+                750, 1130);
         territories.add(venezuela);
 
         Territory peru = new Territory(Territory.Continent.SOUTH_AMERICA, "Peru",
-                1000, 1850);
+                750, 1400);
         territories.add(peru);
 
         Territory brazil = new Territory(Territory.Continent.SOUTH_AMERICA, "Brazil",
-                1250, 1750);
+                950, 1350);
         territories.add(brazil);
 
         Territory argentina = new Territory(Territory.Continent.SOUTH_AMERICA, "Argentina",
-                1050, 2250);
+                800, 1600);
         territories.add(argentina);
 
         Territory iceland = new Territory(Territory.Continent.EUROPE, "Iceland",

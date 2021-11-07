@@ -166,12 +166,15 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_MOVE) {
 
             // sets screenDragged to true, updates position, and refreshes touch location
-            screenDragged = true;
-            mapView.updatePosition(motionEvent.getX() - touchX,
-                                   motionEvent.getY() - touchY);
-            touchX = motionEvent.getX();
-            touchY = motionEvent.getY();
-            return true;
+            if ((Math.abs(motionEvent.getX() - touchX) > 3.00)
+                || (Math.abs(motionEvent.getY() - touchY) > 3.00)) {
+                screenDragged = true;
+                mapView.updatePosition(motionEvent.getX() - touchX,
+                        motionEvent.getY() - touchY);
+                touchX = motionEvent.getX();
+                touchY = motionEvent.getY();
+                return true;
+            }
 
         } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
 
@@ -180,7 +183,14 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                 for (Territory t : gameState.getTerritories()) {
                     if ((Math.abs(touchX - (t.getX() + mapView.getShiftX())) < (float) (t.getWidth() / 2))
                             && (Math.abs(touchY - (t.getY() + mapView.getShiftY())) < (float) (t.getHeight() / 2))) {
-                        generateAction(t);
+                        askTroops();
+                        if (selectedT1 != null
+                                && gameState.getCurrentPhase() != RiskGameState.Phase.DEPLOY) {
+                            selectedT2 = t;
+                        } else {
+                            selectedT1 = t;
+                        }
+                                                //generateAction(t);
                         break;
                     }
                 }
@@ -192,9 +202,6 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
     }
 
     private void generateAction(Territory t) {
-
-        // test only
-        askTroops();
 
         /*
         // return if it's not the human player's turn
@@ -226,12 +233,12 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
 
          */
 
+        selectedT1 = null;
+        selectedT2 = null;
+
     }
 
-    private int askTroops() {
-
-        // return variable
-        final int[] numTroops = new int[1];
+    private void askTroops() {
 
         // initialize popup
         LayoutInflater inflater = (LayoutInflater)
@@ -255,7 +262,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                 // collects string input and tries to parse to int, flashes if failed
                 String input = inputText.getText().toString();
                 try {
-                    numTroops[0] = Integer.parseInt(input);
+                    generateNumber(Integer.parseInt(input));
                     popupWindow.dismiss();
                 } catch (NumberFormatException nfe) {
                     mapView.flash(Color.RED, 50);
@@ -263,7 +270,10 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
             }
         });
 
-        return numTroops[0];
+    }
 
+    private void generateNumber(int numTroops) {
+        troopCountTextView.setText("Troops: "+numTroops);
+        generateAction(selectedT1);
     }
 }
