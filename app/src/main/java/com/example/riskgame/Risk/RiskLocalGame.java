@@ -38,6 +38,7 @@ public class RiskLocalGame extends LocalGame {
     public RiskLocalGame(RiskGameState gameState) {
         state = gameState;
         riskGS = (RiskGameState) state;
+
     }
 
     /**
@@ -137,6 +138,7 @@ public class RiskLocalGame extends LocalGame {
            /* if(riskGS.getTotalTroops() > 0) {
                 return false;
             }*/
+
             riskGS.nextTurn();
             return true;
         }

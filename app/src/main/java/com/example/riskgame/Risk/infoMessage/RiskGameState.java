@@ -90,6 +90,10 @@ public class RiskGameState extends GameState {
         }
     }
 
+    public void setPlayerCount(int playerCount) {
+        this.playerCount = playerCount;
+    }
+
     /**
      * calcTroops
      * Calculates the number of troops given to each player at the start of their deploy phase
