@@ -4,6 +4,7 @@ import com.example.riskgame.GameFramework.LocalGame;
 import com.example.riskgame.GameFramework.actionMessage.GameAction;
 import com.example.riskgame.GameFramework.players.GamePlayer;
 import com.example.riskgame.Risk.infoMessage.RiskGameState;
+import com.example.riskgame.Risk.infoMessage.Territory;
 import com.example.riskgame.Risk.riskActionMessage.AttackAction;
 import com.example.riskgame.Risk.riskActionMessage.DeployAction;
 import com.example.riskgame.Risk.riskActionMessage.FortifyAction;
@@ -15,6 +16,7 @@ public class RiskLocalGame extends LocalGame {
     public RiskLocalGame() {
         riskGs = new RiskGameState();
     }
+
     @Override
     protected void sendUpdatedStateTo(GamePlayer p) {
         RiskGameState copy = new RiskGameState(riskGs);
@@ -53,6 +55,12 @@ public class RiskLocalGame extends LocalGame {
 
     @Override
     protected String checkIfGameOver() {
-        return null;
+        int winner = riskGs.getTerritories().get(0).getOwner();
+        for(Territory t: riskGs.getTerritories()) {
+            if(t.getOwner() != winner) {
+                return null;
+            }
+        }
+        return playerNames[winner] + " has won";
     }
 }
