@@ -171,8 +171,8 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_MOVE) {
 
             // sets screenDragged to true, updates position, and refreshes touch location
-            if ((Math.abs(motionEvent.getX() - touchX) > 3.00)
-                || (Math.abs(motionEvent.getY() - touchY) > 3.00)) {
+            if ((Math.abs(motionEvent.getX() - touchX) > 5.00)
+                || (Math.abs(motionEvent.getY() - touchY) > 5.00)) {
                 screenDragged = true;
                 mapView.updatePosition(motionEvent.getX() - touchX,
                         motionEvent.getY() - touchY);
