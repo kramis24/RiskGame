@@ -176,18 +176,42 @@ public class Territory {
         return adjacents;
     }
 
+    /**
+     * getX
+     * Gets x coordinate.
+     *
+     * @return x
+     */
     public int getX() {
         return centerX;
     }
 
+    /**
+     * getY
+     * Gets y coordinate.
+     *
+     * @return y
+     */
     public int getY() {
         return centerY;
     }
 
+    /**
+     * getWidth
+     * Gets width.
+     *
+     * @return width
+     */
     public int getWidth() {
         return boxWidth;
     }
 
+    /**
+     * getHeight
+     * Gets height,
+     *
+     * @return height
+     */
     public int getHeight() {
         return boxHeight;
     }

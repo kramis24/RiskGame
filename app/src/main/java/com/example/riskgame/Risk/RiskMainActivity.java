@@ -1,4 +1,11 @@
 package com.example.riskgame.Risk;
+/**
+ * RiskMainActivity
+ * Main activity for Risk Game. Pretty much a copy of the Tic Tac Toe example.
+ *
+ * @author Dylan Kramis
+ * @version 11/7/2021
+ */
 
 import com.example.riskgame.GameFramework.GameMainActivity;
 import com.example.riskgame.GameFramework.LocalGame;
@@ -17,9 +24,16 @@ import java.util.ArrayList;
 
 public class RiskMainActivity extends GameMainActivity {
 
+    // instance variables
     private static final String TAG = "RiskMainActivity";
     public static final int PORT_NUMBER = 2830;
 
+    /**
+     * createDefaultConfig
+     * Creates the default configuration for the game.
+     *
+     * @return default config
+     */
     @Override
     public GameConfig createDefaultConfig() {
 
@@ -55,6 +69,14 @@ public class RiskMainActivity extends GameMainActivity {
         return defaultConfig;
     }
 
+    /**
+     * createLocalGame
+     * Creates a local game.
+     *
+     * @param gameState
+     *              The desired gameState to start at or null for new game
+     * @return new local game
+     */
     @Override
     public LocalGame createLocalGame(GameState gameState) {
         if (gameState == null)  {
@@ -63,27 +85,31 @@ public class RiskMainActivity extends GameMainActivity {
         return new RiskLocalGame((RiskGameState) gameState);
     }
 
+    /**
+     * saveGame
+     * Saves an ongoing game.
+     *
+     * @param gameName name of save state
+     * @return saved game state
+     */
     @Override
     public GameState saveGame(String gameName) {
         return super.saveGame(getGameString(gameName));
     }
 
+    /**
+     * loadGame
+     * Loads a saved game state.
+     *
+     * @param gameName name of save state
+     * @return loaded game state
+     */
     @Override
     public GameState loadGame(String gameName) {
         String appName = getGameString(gameName);
         super.loadGame(appName);
-        Logger.log(TAG, "Loading: "+gameName);
+        Logger.log(TAG, "Loading: " + gameName);
         return (GameState) new RiskGameState((RiskGameState)
                 Saving.readFromFile(appName, this.getApplicationContext()));
     }
-
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//
-//        // initializes mapView object
-//        com.example.riskgame.Risk.views.MapView mapView = (com.example.riskgame.Risk.views.MapView) findViewById(R.id.mapView);
-//    }
-
 }
