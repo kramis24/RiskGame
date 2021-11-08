@@ -10,7 +10,9 @@ package com.example.riskgame.Risk.infoMessage;
 import com.example.riskgame.GameFramework.infoMessage.GameState;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class RiskGameState extends GameState {
@@ -39,24 +41,18 @@ public class RiskGameState extends GameState {
     // instance variables
     // TODO clean up instance variables, make player numbers start at 0, less hard coding
     private int playerCount = 2;
-    private int currentPlayer = 0;
+    private int currentTurn = 0;
     // TODO Card arrays/arraylists for all four players
-    private ArrayList<Card> playerCards[];
     private String playerNames[];
     private Phase currentPhase = Phase.DEPLOY;
     private int totalTroops = 100;
     private ArrayList<Territory> territories;
+    private List<ArrayList<Card>> cards = new ArrayList<ArrayList<Card>>();
 
     /**
      * Default constructor for RiskGameState.
      */
     public RiskGameState() {
-
-        // initialize card ArrayLists
-        playerCards = new ArrayList[4];
-        for (ArrayList<Card> c : playerCards) {
-            c = new ArrayList<Card>();
-        }
 
         // initialize territories array list
         territories = new ArrayList<Territory>();
@@ -78,7 +74,7 @@ public class RiskGameState extends GameState {
         territories = new ArrayList<Territory>();
 
         // copying variables
-        this.currentPlayer = other.currentPlayer;
+        this.currentTurn = other.currentTurn;
         this.playerCount = other.playerCount;
         this.currentPhase = other.currentPhase;
         this.totalTroops = other.totalTroops;
@@ -136,7 +132,7 @@ public class RiskGameState extends GameState {
      * @param t territory selected
      * @param add troops being added
      */
-    public void addTroops(Territory t, int add) {
+    public void addTroop(Territory t, int add) {
         t.setTroops(t.getTroops() + add); //add a given number of troops to a territories
     }
 
@@ -165,15 +161,15 @@ public class RiskGameState extends GameState {
         int[] troopsDeployed = new int[playerCount]; //create array to store each player's troop deployment number
         int startTroops = (50 - (5 *(playerCount))); //set the number of troops that each player gets to start (dependant on number of players)
         Random rnd = new Random();
-        int rNum = rnd.nextInt(territories.size());
-        for(int i = 0; i < territories.size(); i++) { //for each territory owned by a player,
+        for (int i = 0; i < territories.size(); i++) { //for each territory owned by a player,
             //add 1 to their deployed troops count (as each initialized territory was given one troop automatically
             troopsDeployed[territories.get(i).getOwner()]++;
         }
         for (int i = 0; i < troopsDeployed.length; i++) {
             while (troopsDeployed[i] < startTroops) { //while each player has not yet deployed given number of troops
+                int rNum = rnd.nextInt(territories.size());
                 if (territories.get(rNum).getOwner() == i) { //deploy a troop to a random territory owned by the selected player
-                    addTroops(territories.get(i), 1);
+                    addTroop(territories.get(rNum), 1);
                     troopsDeployed[i]++; //increase deployed troop count for this player
                 }
             }
@@ -190,7 +186,7 @@ public class RiskGameState extends GameState {
      * @return true if legal move
      */
     public boolean attack(Territory atk, Territory def) {
-        if (currentPlayer == atk.getOwner() && currentPlayer != def.getOwner()) { //checks that the player is not trying to attack themselves
+        if (currentTurn == atk.getOwner() && currentTurn != def.getOwner()) { //checks that the player is not trying to attack themselves
             if (atk.getAdjacents().contains(def)) { //checks if two territories are adjacent
                 int numRollsAtk;
                 int numRollsDef;
@@ -259,22 +255,18 @@ public class RiskGameState extends GameState {
      **/
     //for occupy change total troops to terriories troop
     public boolean deploy(Territory t, int troops) {
-        if(currentPlayer == t.getOwner() && totalTroops - troops > 0) { //checks that the current territory is owned by the player
-            addTroops(t,troops);
+        if(currentTurn == t.getOwner() && totalTroops - troops > 0) { //checks that the current territory is owned by the player
+            addTroop(t,troops);
             totalTroops = totalTroops - troops;
-            if (totalTroops <= 0) {
-                nextTurn();
-            }
             return true;
         }
         return false;
     }
 
     public boolean occupy(Territory t, int troops) {
-        if (currentPlayer == t.getOwner()) { //checks that the current territory is owned by the player
+        if (currentTurn == t.getOwner()) { //checks that the current territory is owned by the player
             t.setTroops(troops);
             t.setTroops(t.getTroops() - troops);
-            nextTurn();
             return true;
         }
         return false;
@@ -292,15 +284,13 @@ public class RiskGameState extends GameState {
      * @return true if move was done successfully
      **/
     public boolean fortify(Territory t1, Territory t2, int troops) {
-        if (currentPlayer == t1.getOwner() && currentPlayer == t2.getOwner()) { //checks if both territories are owned by player
+        if (currentTurn == t1.getOwner() && currentTurn == t2.getOwner()) { //checks if both territories are owned by player
             if(checkChain(t1,t2)) {
                 if (t1.getTroops() - troops > 1) { //makes sure that you cannot send more troops than you have
                     t1.setTroops(t1.getTroops() - troops);
                     t2.setTroops(t2.getTroops() + troops);
                     nextTurn();
-                    return true;
-                } else {
-                    return true;
+                    return true;//
                 }
             }
         }
@@ -377,11 +367,13 @@ public class RiskGameState extends GameState {
         }
         else {
             currentPhase = Phase.DEPLOY;
-            currentPlayer++;// end of turn
-            if (currentPlayer % playerCount == 0) {
-                currentPlayer = 0;
-            }
-            totalTroops = calcTroops(currentPlayer); //gives the player a determined amount of troops.
+            currentTurn++;// end of turn
+            totalTroops = calcTroops(currentTurn); //gives the player a determined amount of troops.
+        }
+
+        // iteration through players
+        if(currentTurn % playerCount == 0) {
+            currentTurn = 0;
         }
 
         return true;
@@ -421,7 +413,7 @@ public class RiskGameState extends GameState {
 
         String info = "-----CURRENT GAME STATE----- \n";
         info = info + "____________________________ \n";
-        info = info + "Current Phase: " + currentPhase + "\n" + "Current Turn: " + currentPlayer + "\n";
+        info = info + "Current Phase: " + currentPhase + "\n" + "Current Turn: " + currentTurn + "\n";
         info = info + "____________________________ \n";
         for (Territory t : territories) {
             info = info + "Territory: " + t.getName() + "\n";
@@ -445,21 +437,24 @@ public class RiskGameState extends GameState {
     }
 
     /**
-     * getCurrentPlayer
+     * getCurrentTurn
      * Gets the current turn.
      *
      * @return current turn
      */
+    public int getCurrentTurn() { return currentTurn; }
 
-    public int getCurrentPlayer() { return currentPlayer; }
-
-    public Phase getCurrentPhase() { return currentPhase; }
+    /**
+     * getTotalTroops
+     * Gets the total troops.
+     *
+     * @return total troops
+     */
+    public int getTotalTroops() { return totalTroops; }
 
     /**
      * initTerritories
      * LONG helper method for constructor, initializes each territory.
-     *
-     *
      */
     private void initTerritories() {
 
@@ -831,4 +826,73 @@ public class RiskGameState extends GameState {
         brazil.addAdjacent(argentina);
         brazil.addAdjacent(northAfrica);
     }
+    /**
+     * addCard
+     * adds a card to the current players hand
+     * this method is called in attack method
+     */
+    private void addCard() {
+        List<Card> ListOfCards =(Arrays.asList(Card.values()));//stores the enums into an array
+        int size = ListOfCards.size(); //size of the enums array
+        Random rnd = new Random();
+        cards.get(currentTurn).add(ListOfCards.get(rnd.nextInt(size)));//adds card for the current player
+
+    }
+
+    /**
+     * exchangeCard
+     * exchanges cards for bonus troops
+     * @return true if cards were able to be exchanged
+     */
+    public boolean exchangeCards() {
+        if(currentPhase != Phase.DEPLOY) {
+            return false;
+        }
+        int countArtillery = 0;
+        int countCavalry = 0;
+        int countInfantry = 0;
+
+        //checks how many of each card the player has
+        for(int i = 0; i < 5; i++) {
+            if(cards.get(currentTurn).get(i) == Card.ARTILLERY) {
+                countArtillery++;
+            }
+            if(cards.get(currentTurn).get(i) == Card.CAVALRY) {
+                countCavalry++;
+            }
+            if(cards.get(currentTurn).get(i) == Card.INFANTRY) {
+                countInfantry++;
+            }
+        }
+
+        //removes the cards from the players hand and gives bonus troops
+        if(countArtillery > 1 && countCavalry > 1 && countInfantry > 1) {
+            cards.get(currentTurn).remove(Card.ARTILLERY);
+            cards.get(currentTurn).remove(Card.CAVALRY);
+            cards.get(currentTurn).remove(Card.INFANTRY);
+            totalTroops += 10;
+        } else if(countArtillery >= 3) {
+            cards.get(currentTurn).remove(Card.ARTILLERY);
+            cards.get(currentTurn).remove(Card.ARTILLERY);
+            cards.get(currentTurn).remove(Card.ARTILLERY);
+            totalTroops += 8;
+        } else if(countCavalry >= 3) {
+            cards.get(currentTurn).remove(Card.CAVALRY);
+            cards.get(currentTurn).remove(Card.CAVALRY);
+            cards.get(currentTurn).remove(Card.CAVALRY);
+            totalTroops += 6;
+        } else if(countInfantry >= 3) {
+            cards.get(currentTurn).remove(Card.INFANTRY);
+            cards.get(currentTurn).remove(Card.INFANTRY);
+            cards.get(currentTurn).remove(Card.INFANTRY);
+            totalTroops += 4;
+        } else {
+            return false;
+        }
+        countArtillery = 0;
+        countCavalry = 0;
+        countInfantry = 0;
+        return true;
+    }
+
 }
