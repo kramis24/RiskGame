@@ -1,4 +1,11 @@
 package com.example.riskgame.Risk;
+/**
+ * RiskLocalGame
+ * Local game for Risk.
+ *
+ * @author Phi Nguyen, Dylan Kramis
+ * @version 11/7/2021 Alpha
+ */
 
 import com.example.riskgame.GameFramework.LocalGame;
 import com.example.riskgame.GameFramework.actionMessage.GameAction;
@@ -11,6 +18,8 @@ import com.example.riskgame.Risk.riskActionMessage.FortifyAction;
 import com.example.riskgame.Risk.riskActionMessage.NextTurnAction;
 
 public class RiskLocalGame extends LocalGame {
+
+    // game state type casted for easy use
     private RiskGameState riskGS;
 
     /**
@@ -22,20 +31,35 @@ public class RiskLocalGame extends LocalGame {
     }
 
     /**
-     * Copy Constructor for the gamestate
-     * @param gameState
+     * Constructor for local game with existing game state.
+     *
+     * @param gameState game state being loaded
      */
     public RiskLocalGame(RiskGameState gameState) {
         state = gameState;
         riskGS = (RiskGameState) state;
     }
 
+    /**
+     * sendUpdatedStateTo
+     * Sends an updated copy of the game state to a selected player.
+     *
+     * @param p receiving player
+     */
     @Override
     protected void sendUpdatedStateTo(GamePlayer p) {
         RiskGameState copy = new RiskGameState(riskGS);
         p.sendInfo(copy);
     }
 
+    /**
+     * canMove
+     * Checks if a player can move.
+     *
+     * @param playerIdx
+     * 		the player's player-number (ID)
+     * @return true if player's turn, false otherwise
+     */
     @Override
     protected boolean canMove(int playerIdx) {
         boolean canMove = false;
@@ -45,6 +69,14 @@ public class RiskLocalGame extends LocalGame {
         return canMove;
     }
 
+    /**
+     * makeMove
+     * Makes a move based on actions sent by the player
+     *
+     * @param action
+     * 			The move that the player has sent to the game
+     * @return true if valid action
+     */
     @Override
     protected boolean makeMove(GameAction action) {
         if(action instanceof DeployAction){
@@ -113,7 +145,10 @@ public class RiskLocalGame extends LocalGame {
 
     @Override
     /**
+     * checkIfGameOVer
      * Checks if the someone has won the game
+     *
+     * @return message declaring winner
      */
     protected String checkIfGameOver() {
         int winner = riskGS.getTerritories().get(0).getOwner();

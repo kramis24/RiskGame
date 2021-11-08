@@ -3,8 +3,8 @@ package com.example.riskgame.Risk.players;
  * RiskHumanPlayer
  * Display, info, and input handling for human players.
  *
- * @author Dylan Kramis
- * @version 11/4/2021 WIP
+ * @author Dylan Kramis, Phi Nguyen (Exit Button)
+ * @version 11/7/2021 Alpha
  */
 
 import android.content.Context;
@@ -147,6 +147,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
     @Override
     public void onClick(View view) {
 
+        // switch case checking buttons
         switch (view.getId()) {
             case R.id.helpButton:
                 // TODO user manual popup display
@@ -216,6 +217,13 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         return false;
     }
 
+    /**
+     * generateAction
+     * Sends actions to the local game.
+     *
+     * @param t territory for deploy
+     * @param numTroops number of troops for deploy and fortify
+     */
     private void generateAction(Territory t, int numTroops) {
 
         if (gameState.getCurrentPhase() == RiskGameState.Phase.DEPLOY) {
@@ -240,6 +248,10 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
 
     }
 
+    /**
+     * askTroops
+     * Creates a popup asking how many troops to use.
+     */
     private void askTroops() {
 
         // initialize popup
@@ -274,6 +286,12 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
 
     }
 
+    /**
+     * generateNumber
+     * Calls generateAction when popup clicked.
+     *
+     * @param numTroops
+     */
     private void generateNumber(int numTroops) {
         generateAction(selectedT1, numTroops);
     }

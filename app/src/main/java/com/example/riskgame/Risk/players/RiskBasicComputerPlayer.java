@@ -1,4 +1,11 @@
 package com.example.riskgame.Risk.players;
+/**
+ * RiskBasicComputerPlayer
+ * Dumber (random) computer player for Risk.
+ *
+ * @author Charlie Benning
+ * @version 11/7/2021 Alpha
+ */
 
 import com.example.riskgame.GameFramework.infoMessage.GameInfo;
 import com.example.riskgame.GameFramework.infoMessage.NotYourTurnInfo;
@@ -31,8 +38,7 @@ public class RiskBasicComputerPlayer extends GameComputerPlayer {
     @Override
     protected void receiveInfo(GameInfo info) {
 
-
-
+        //returns if wrong turn
         if (info instanceof NotYourTurnInfo) return;
 
         if (info instanceof RiskGameState) {
