@@ -73,7 +73,6 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         if (!(info instanceof RiskGameState)) {
             return;
         }
-
         // typecasts game state
         gameState = (RiskGameState) info;
 
@@ -91,7 +90,6 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
             turnPhaseTextView.setText("Fortify");
         }
         troopCountTextView.setText("Troops: -");
-
     }
 
     /**
