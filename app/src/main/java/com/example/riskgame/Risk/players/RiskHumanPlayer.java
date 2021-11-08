@@ -66,6 +66,12 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         return null;
     }
 
+    /**
+     * receiveInfo
+     * receives game state and other info
+     *
+     * @param info
+     */
     @Override
     public void receiveInfo(GameInfo info) {
 
@@ -89,7 +95,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         } else {
             turnPhaseTextView.setText("Fortify");
         }
-        troopCountTextView.setText("Troops: -");
+        troopCountTextView.setText("Troops: "+gameState.getTotalTroops());
     }
 
     /**

@@ -455,9 +455,6 @@ public class RiskGameState extends GameState {
      *
      * @return current phase
      */
-    public Phase getCurrentPhase() {
-        return currentPhase;
-    }
 
     /**
      * getTotalTroops
