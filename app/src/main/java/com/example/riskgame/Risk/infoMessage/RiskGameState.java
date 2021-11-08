@@ -39,10 +39,8 @@ public class RiskGameState extends GameState {
     }
 
     // instance variables
-    // TODO clean up instance variables, make player numbers start at 0, less hard coding
     private int playerCount = 2;
     private int currentTurn = 0;
-    // TODO Card arrays/arraylists for all four players
     private String playerNames[];
     private Phase currentPhase = Phase.DEPLOY;
     private int totalTroops = 100;
