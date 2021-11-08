@@ -22,7 +22,8 @@
             android:editable="true"
             android:ems="10"
             android:gravity="start|top"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine"
+            android:text="0" />
 
         <Button
             android:id="@+id/confirmButton"

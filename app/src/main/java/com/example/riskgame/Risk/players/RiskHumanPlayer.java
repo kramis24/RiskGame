@@ -66,6 +66,12 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         return null;
     }
 
+    /**
+     * receiveInfo
+     * receives game state and other info
+     *
+     * @param info
+     */
     @Override
     public void receiveInfo(GameInfo info) {
 
@@ -190,8 +196,8 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
             // processes touch to create action
             if (!screenDragged) {
                 for (Territory t : gameState.getTerritories()) {
-                    if ((Math.abs(touchX - (t.getX() + mapView.getShiftX() + 50)) < (float) (t.getWidth() / 2))
-                            && (Math.abs(touchY - (t.getY() + mapView.getShiftY() + 50)) < (float) (t.getHeight() / 2))) {
+                    if ((Math.abs(touchX - (t.getX() + mapView.getShiftX() + 25)) < (float) (t.getWidth() / 2))
+                            && (Math.abs(touchY - (t.getY() + mapView.getShiftY() + 25)) < (float) (t.getHeight() / 2))) {
                         askTroops();
                         if (selectedT1 != null
                                 && gameState.getCurrentPhase() != RiskGameState.Phase.DEPLOY) {
@@ -218,7 +224,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
             selectedT2 = null;
         } else if (gameState.getCurrentPhase() == RiskGameState.Phase.ATTACK) {
             if (selectedT2 != null) {
-                game.sendAction(new AttackAction(this, selectedT2, selectedT1));// clear this up with phi
+                game.sendAction(new AttackAction(this, selectedT2, selectedT1));
                 selectedT1 = null;
                 selectedT2 = null;
             }
