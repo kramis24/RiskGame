@@ -81,7 +81,13 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         mapView.invalidate();
 
         // updates textViews
-        playerTextView.setText(name);
+         int[] PLAYER_COLORS = {0xFFFF0000, // red
+                0xFF0000FF, // blue
+                0xFFFFBF00, // yellow-orange
+                0xFF00DF00};// green
+        playerTextView.setTextColor(PLAYER_COLORS[gameState.getCurrentTurn()]);
+        playerTextView.setText(allPlayerNames[gameState.getCurrentTurn()]);
+
         if (gameState.getCurrentPhase() == RiskGameState.Phase.DEPLOY) {
             turnPhaseTextView.setText("Deploy");
         } else if (gameState.getCurrentPhase() == RiskGameState.Phase.ATTACK) {
@@ -89,7 +95,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         } else {
             turnPhaseTextView.setText("Fortify");
         }
-        troopCountTextView.setText("Troops: -");
+        troopCountTextView.setText("Troops: " + ((RiskGameState) info).getTotalTroops());
     }
 
     /**
@@ -208,18 +214,23 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
 
         if (gameState.getCurrentPhase() == RiskGameState.Phase.DEPLOY) {
             game.sendAction(new DeployAction(this, t, numTroops));
+            selectedT1 = null;
+            selectedT2 = null;
         } else if (gameState.getCurrentPhase() == RiskGameState.Phase.ATTACK) {
             if (selectedT2 != null) {
                 game.sendAction(new AttackAction(this, selectedT2, selectedT1));// clear this up with phi
+                selectedT1 = null;
+                selectedT2 = null;
             }
         } else {
-            if (selectedT1 != null) {
+            if (selectedT1 != null && selectedT2 != null) {
                 game.sendAction(new FortifyAction(this, selectedT1, selectedT2, numTroops));
+                selectedT1 = null;
+                selectedT2 = null;
             }
         }
 
-        selectedT1 = null;
-        selectedT2 = null;
+
 
     }
 

@@ -57,6 +57,11 @@ public class RiskLocalGame extends LocalGame {
                     riskGS.getTerritories().set(index, ((DeployAction) action).getDeployTo());
                 }
             }
+            riskGS.setTotalTroops(riskGS.getTotalTroops() - ((DeployAction) action).getNumDeploy());
+            if(riskGS.getTotalTroops() <= 0) {
+                riskGS.nextTurn();
+            }
+
             return true;
         }
         if(action instanceof AttackAction) {
@@ -97,6 +102,9 @@ public class RiskLocalGame extends LocalGame {
             return true;
         }
         if(action instanceof NextTurnAction) {
+           /* if(riskGS.getTotalTroops() > 0) {
+                return false;
+            }*/
             riskGS.nextTurn();
             return true;
         }

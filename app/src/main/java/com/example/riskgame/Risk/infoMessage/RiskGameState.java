@@ -62,7 +62,7 @@ public class RiskGameState extends GameState {
 
         setTerritoryPlayers();
         setStartTroops();
-        calcTroops(0);
+        totalTroops = calcTroops(0);
     }
 
     public Phase getCurrentPhase() {
@@ -385,6 +385,9 @@ public class RiskGameState extends GameState {
         return true;
     }
 
+    public void setTotalTroops(int set) {
+        this.totalTroops = set;
+    }
 
     /**
      * rollDie

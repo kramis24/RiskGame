@@ -32,11 +32,13 @@ public class RiskBasicComputerPlayer extends GameComputerPlayer {
     protected void receiveInfo(GameInfo info) {
 
 
+
         if (info instanceof NotYourTurnInfo) return;
 
         if (info instanceof RiskGameState) {
-
-
+            if(this.playerNum !=  ((RiskGameState) info).getCurrentTurn() ) {
+                return;
+            }
             RiskGameState Risk = (RiskGameState) info;
             //Catch case (in case player cannot move, all of this player owned territories have a troop set to 1)
             boolean canAttack = false;

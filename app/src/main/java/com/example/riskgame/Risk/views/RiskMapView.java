@@ -67,6 +67,7 @@ public class RiskMapView extends FlashSurfaceView {
 
         boxPaint = new Paint(mapPaint);
 
+
         textPaint = new Paint();
         textPaint.setTextSize(40);
         textPaint.setTextAlign(Paint.Align.CENTER);
