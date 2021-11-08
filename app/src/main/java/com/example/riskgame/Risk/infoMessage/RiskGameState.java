@@ -517,28 +517,31 @@ public class RiskGameState extends GameState {
         territories.add(argentina);
 
         Territory iceland = new Territory(Territory.Continent.EUROPE, "Iceland",
-                1720, 600);
+                1270, 440);
         territories.add(iceland);
 
         Territory scandinavia = new Territory(Territory.Continent.EUROPE, "Scandinavia",
-                1960, 640);
+                1480, 470);
         territories.add(scandinavia);
 
         Territory ukraine = new Territory(Territory.Continent.EUROPE, "Ukraine",
-                2380, 800);
+                1750, 600);
         territories.add(ukraine);
 
         Territory greatBritain = new Territory(Territory.Continent.EUROPE, "Great Britain",
-                1700, 920);
+                1260, 700);
         territories.add(greatBritain);
 
-        Territory northernEurope = new Territory(Territory.Continent.EUROPE, "Northern Europe");
+        Territory northernEurope = new Territory(Territory.Continent.EUROPE, "Northern Europe",
+                1500, 700);
         territories.add(northernEurope);
 
-        Territory westernEurope = new Territory(Territory.Continent.EUROPE, "Western Europe");
+        Territory westernEurope = new Territory(Territory.Continent.EUROPE, "Western Europe",
+                1300, 900);
         territories.add(westernEurope);
 
-        Territory southernEurope = new Territory(Territory.Continent.EUROPE, "Southern Europe");
+        Territory southernEurope = new Territory(Territory.Continent.EUROPE, "Southern Europe",
+                1520, 870);
         territories.add(southernEurope);
 
         Territory northAfrica = new Territory(Territory.Continent.AFRICA, "North Africa");
