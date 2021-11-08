@@ -16,7 +16,6 @@ public class DeployAction extends GameAction {
     private static final String TAG = "DeployAction";
     // serializable support
     // TODO Serializable support
-
     // member variables
     private Territory deployTo;
     private int numDeploy;

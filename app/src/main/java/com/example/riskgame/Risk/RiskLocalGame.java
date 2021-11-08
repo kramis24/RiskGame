@@ -107,7 +107,7 @@ public class RiskLocalGame extends LocalGame {
             return true;
         }
         if(action instanceof AttackAction) {
-            /*
+
             //checks that the two territories have different owners
             if(((AttackAction) action).getAtk().getOwner() == ((AttackAction) action).getDef().getOwner()) {
                 return false;
@@ -116,7 +116,7 @@ public class RiskLocalGame extends LocalGame {
             if(((AttackAction) action).getAtk().getTroops() < 2) {
                 return false;
             }
-            */
+
 
             riskGS.attack(((AttackAction) action).getAtk(), ((AttackAction) action).getDef());
             //updates the gamestate
@@ -137,7 +137,7 @@ public class RiskLocalGame extends LocalGame {
             return true;
         }
         if(action instanceof FortifyAction) {
-            /*
+
             //checks whether the two territories have the same owner
             if(((FortifyAction) action).getDeployTo() != ((FortifyAction) action).getDeployFrom()) {
                 return false;
@@ -151,7 +151,7 @@ public class RiskLocalGame extends LocalGame {
                     ((FortifyAction) action).getNumDeployed() < 0) {
                 return false;
             }
-            */
+
 
             riskGS.fortify(((FortifyAction) action).getDeployFrom(), ((FortifyAction) action).getDeployTo(), ((FortifyAction) action).getNumDeployed());
             //updates the gamestate

@@ -36,6 +36,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         View.OnTouchListener {
 
     // instance variables
+    private final int TOUCH_WINDOW = 35;
     private Button helpButton;
     private Button exitButton;
     private Button cardButton;
@@ -197,8 +198,8 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
             // processes touch to create action
             if (!screenDragged) {
                 for (Territory t : gameState.getTerritories()) {
-                    if ((Math.abs(touchX - (t.getX() + mapView.getShiftX() + 25)) < (float) (t.getWidth() / 2))
-                            && (Math.abs(touchY - (t.getY() + mapView.getShiftY() + 25)) < (float) (t.getHeight() / 2))) {
+                    if ((Math.abs(touchX - (t.getX() + mapView.getShiftX() + TOUCH_WINDOW)) < (float) (t.getWidth() / 2))
+                            && (Math.abs(touchY - (t.getY() + mapView.getShiftY() + TOUCH_WINDOW)) < (float) (t.getHeight() / 2))) {
                         askTroops();
                         if (selectedT1 != null
                                 && gameState.getCurrentPhase() != RiskGameState.Phase.DEPLOY) {
@@ -225,7 +226,6 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
      * @param numTroops number of troops for deploy and fortify
      */
     private void generateAction(Territory t, int numTroops) {
-
         if (gameState.getCurrentPhase() == RiskGameState.Phase.DEPLOY) {
             game.sendAction(new DeployAction(this, t, numTroops));
             selectedT1 = null;
