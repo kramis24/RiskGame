@@ -193,7 +193,13 @@ public class RiskGameState extends GameState {
      */
     public boolean attack(Territory atk, Territory def) {
         if (currentTurn == atk.getOwner() && currentTurn != def.getOwner()) { //checks that the player is not trying to attack themselves
-            if (atk.getAdjacents().contains(def)) { //checks if two territories are adjacent
+            boolean adjacent = false;
+            for(Territory t: atk.getAdjacents()) {
+                if(def.equals(t)) {
+                    adjacent = true;
+                }
+            }
+            if (adjacent) { //checks if two territories are adjacent
                 int numRollsAtk;
                 int numRollsDef;
 
@@ -222,12 +228,10 @@ public class RiskGameState extends GameState {
                 Collections.sort(rollsDef);
                 Collections.reverse(rollsAtk);
                 Collections.reverse(rollsDef);
-
                 //compares the die rolls of the two players to determine how many comparisons to do
                 if (numRollsAtk == 1) {
                     numRollsDef = numRollsAtk;
                 }
-
 
                 //compares the highest rolls of the players to determine how many troops they lose
                 for (int i = 0; i < numRollsDef; i++) {
@@ -239,9 +243,11 @@ public class RiskGameState extends GameState {
                 }
 
                 //if changes ownership of a territory if troops are 0
-                if (def.getTroops() == 0) {
+                if (def.getTroops() <= 0) {
                     def.setOwner(atk.getOwner());
-                    occupy(def, 1); //1 is a placeholder
+                    def.setTroops(1);
+                    atk.setTroops(atk.getTroops() - 1);
+
                 }
                 return true;
             }

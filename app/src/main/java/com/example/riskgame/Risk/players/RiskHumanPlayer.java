@@ -151,7 +151,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
             case R.id.helpButton:
                 // TODO user manual popup display
             case R.id.exitButton:
-                // TODO ExitAction
+                System.exit(0);
             case R.id.cardButton:
                 // TODO card popup display
             case R.id.nextButton:
@@ -224,7 +224,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
             selectedT2 = null;
         } else if (gameState.getCurrentPhase() == RiskGameState.Phase.ATTACK) {
             if (selectedT2 != null) {
-                game.sendAction(new AttackAction(this, selectedT2, selectedT1));
+                game.sendAction(new AttackAction(this, selectedT1, selectedT2));
                 selectedT1 = null;
                 selectedT2 = null;
             }
