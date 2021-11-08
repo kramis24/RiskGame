@@ -450,6 +450,16 @@ public class RiskGameState extends GameState {
     public int getCurrentTurn() { return currentTurn; }
 
     /**
+     * getCurrentPhase
+     * Gets the current phase.
+     *
+     * @return current phase
+     */
+    public Phase getCurrentPhase() {
+        return currentPhase;
+    }
+
+    /**
      * getTotalTroops
      * Gets the total troops.
      *
