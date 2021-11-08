@@ -144,7 +144,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
             case R.id.cardButton:
                 // TODO card popup display
             case R.id.nextButton:
-                game.sendAction(new EndTurnAction(this));
+                // next turn action
         }
 
     }
@@ -185,8 +185,8 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
             // processes touch to create action
             if (!screenDragged) {
                 for (Territory t : gameState.getTerritories()) {
-                    if ((Math.abs(touchX - (t.getX() + mapView.getShiftX())) < (float) (t.getWidth() / 2))
-                            && (Math.abs(touchY - (t.getY() + mapView.getShiftY())) < (float) (t.getHeight() / 2))) {
+                    if ((Math.abs(touchX - (t.getX() + mapView.getShiftX() + 50)) < (float) (t.getWidth() / 2))
+                            && (Math.abs(touchY - (t.getY() + mapView.getShiftY() + 50)) < (float) (t.getHeight() / 2))) {
                         askTroops();
                         if (selectedT1 != null
                                 && gameState.getCurrentPhase() != RiskGameState.Phase.DEPLOY) {
@@ -259,7 +259,6 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
     }
 
     private void generateNumber(int numTroops) {
-        troopCountTextView.setText("Troops: "+numTroops);// might remove
         generateAction(selectedT1, numTroops);
     }
 }

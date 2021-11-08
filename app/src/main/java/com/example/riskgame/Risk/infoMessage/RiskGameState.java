@@ -544,70 +544,82 @@ public class RiskGameState extends GameState {
                 1520, 870);
         territories.add(southernEurope);
 
-        Territory northAfrica = new Territory(Territory.Continent.AFRICA, "North Africa");
+        Territory northAfrica = new Territory(Territory.Continent.AFRICA, "North Africa",
+                1400, 1250);
         territories.add(northAfrica);
 
-        Territory congo = new Territory(Territory.Continent.AFRICA, "Congo");
+        Territory congo = new Territory(Territory.Continent.AFRICA, "Congo", 1620, 1500);
         territories.add(congo);
 
-        Territory southAfrica = new Territory(Territory.Continent.AFRICA, "South Africa");
+        Territory southAfrica = new Territory(Territory.Continent.AFRICA, "South Africa",
+                1650, 1770);
         territories.add(southAfrica);
 
-        Territory madagascar = new Territory(Territory.Continent.AFRICA, "Madagascar");
+        Territory madagascar = new Territory(Territory.Continent.AFRICA, "Madagascar",
+                1900, 1770);
         territories.add(madagascar);
 
-        Territory eastAfrica = new Territory(Territory.Continent.AFRICA, "East Africa");
+        Territory eastAfrica = new Territory(Territory.Continent.AFRICA, "East Africa",
+                1720, 1370);
         territories.add(eastAfrica);
 
-        Territory egypt = new Territory(Territory.Continent.AFRICA, "Egypt");
+        Territory egypt = new Territory(Territory.Continent.AFRICA, "Egypt",
+                1620, 1170);
         territories.add(egypt);
 
-        Territory middleEast = new Territory(Territory.Continent.ASIA, "Middle East");
+        Territory middleEast = new Territory(Territory.Continent.ASIA, "Middle East",
+                1850, 1020);
         territories.add(middleEast);
 
-        Territory afghanistan = new Territory(Territory.Continent.ASIA, "Afghanistan");
+        Territory afghanistan = new Territory(Territory.Continent.ASIA, "Afghanistan",
+                2020, 770);
         territories.add(afghanistan);
 
-        Territory ural = new Territory(Territory.Continent.ASIA, "Ural");
+        Territory ural = new Territory(Territory.Continent.ASIA, "Ural", 2060, 500);
         territories.add(ural);
 
-        Territory siberia = new Territory(Territory.Continent.ASIA, "Siberia");
+        Territory siberia = new Territory(Territory.Continent.ASIA, "Siberia", 2220, 400);
         territories.add(siberia);
 
-        Territory yakutsk = new Territory(Territory.Continent.ASIA, "Yakutsk");
+        Territory yakutsk = new Territory(Territory.Continent.ASIA, "Yakutsk", 2450, 300);
         territories.add(yakutsk);
 
-        Territory kamchatka = new Territory(Territory.Continent.ASIA, "Kamchatka");
+        Territory kamchatka = new Territory(Territory.Continent.ASIA, "Kamchatka",
+                2680, 320);
         territories.add(kamchatka);
 
-        Territory irkutsk = new Territory(Territory.Continent.ASIA, "Irkutsk");
+        Territory irkutsk = new Territory(Territory.Continent.ASIA, "Irkutsk", 2400, 520);
         territories.add(irkutsk);
 
-        Territory japan = new Territory(Territory.Continent.ASIA, "Japan");
+        Territory japan = new Territory(Territory.Continent.ASIA, "Japan", 2720, 770);
         territories.add(japan);
 
-        Territory mongolia = new Territory(Territory.Continent.ASIA, "Mongolia");
+        Territory mongolia = new Territory(Territory.Continent.ASIA, "Mongolia", 2440, 720);
         territories.add(mongolia);
 
-        Territory china = new Territory(Territory.Continent.ASIA, "China");
+        Territory china = new Territory(Territory.Continent.ASIA, "China", 2350, 920);
         territories.add(china);
 
-        Territory india = new Territory(Territory.Continent.ASIA, "India");
+        Territory india = new Territory(Territory.Continent.ASIA, "India", 2180, 1050);
         territories.add(india);
 
-        Territory siam = new Territory(Territory.Continent.ASIA, "Siam");
+        Territory siam = new Territory(Territory.Continent.ASIA, "Siam", 2400, 1150);
         territories.add(siam);
 
-        Territory indonesia = new Territory(Territory.Continent.OCEANIA, "Indonesia");
+        Territory indonesia = new Territory(Territory.Continent.OCEANIA, "Indonesia",
+                2460, 1470);
         territories.add(indonesia);
 
-        Territory newGuinea = new Territory(Territory.Continent.OCEANIA, "New Guinea");
+        Territory newGuinea = new Territory(Territory.Continent.OCEANIA, "New Guinea",
+                2720, 1400);
         territories.add(newGuinea);
 
-        Territory easternAustralia = new Territory(Territory.Continent.OCEANIA, "Eastern Australia");
+        Territory easternAustralia = new Territory(Territory.Continent.OCEANIA,
+                "Eastern Australia", 2600, 1750);
         territories.add(easternAustralia);
 
-        Territory westernAustralia = new Territory(Territory.Continent.OCEANIA, "Western Australia");
+        Territory westernAustralia = new Territory(Territory.Continent.OCEANIA,
+                "Western Australia", 2800, 1700);
         territories.add(westernAustralia);
 
         // adding adjacents for each territory
