@@ -380,13 +380,15 @@ public class RiskGameState extends GameState {
         else {
             currentPhase = Phase.DEPLOY;
             currentTurn++;// end of turn
+            // iteration through players
+            if(currentTurn % playerCount == 0) {
+                currentTurn = 0;
+            }
             totalTroops = calcTroops(currentTurn); //gives the player a determined amount of troops.
         }
 
-        // iteration through players
-        if(currentTurn % playerCount == 0) {
-            currentTurn = 0;
-        }
+
+
 
         return true;
     }
