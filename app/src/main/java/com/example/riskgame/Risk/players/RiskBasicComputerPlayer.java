@@ -24,6 +24,7 @@ public class RiskBasicComputerPlayer extends GameComputerPlayer {
     }
 
     //Basic varibles to keep track of what stages player has been through
+    //
     private boolean fortify = false;
     private boolean attack = false;
     private boolean deploy = false;
