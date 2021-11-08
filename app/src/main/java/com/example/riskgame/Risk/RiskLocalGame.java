@@ -81,8 +81,17 @@ public class RiskLocalGame extends LocalGame {
     @Override
     protected boolean makeMove(GameAction action) {
         if(action instanceof DeployAction){
-            riskGS.deploy(((DeployAction) action).getDeployTo(), ((DeployAction) action).getNumDeploy());
 
+            //checks that the user entered a valid number of troops
+            if(((DeployAction) action).getNumDeploy() < 0 || ((DeployAction) action).getNumDeploy() > riskGS.getTotalTroops()) {
+                return false;
+            }
+            //checks that the territory belongs to the current player
+            if(((DeployAction) action).getDeployTo().getOwner() != riskGS.getCurrentTurn()) {
+                return false;
+            }
+
+            riskGS.deploy(((DeployAction) action).getDeployTo(), ((DeployAction) action).getNumDeploy());
             //updates the updates the gamestate
             for(Territory t:riskGS.getTerritories()) {
                 if(((DeployAction) action).getDeployTo().equals(t)) {
@@ -98,6 +107,17 @@ public class RiskLocalGame extends LocalGame {
             return true;
         }
         if(action instanceof AttackAction) {
+            /*
+            //checks that the two territories have different owners
+            if(((AttackAction) action).getAtk().getOwner() == ((AttackAction) action).getDef().getOwner()) {
+                return false;
+            }
+            //checks that the attacker has enough troops
+            if(((AttackAction) action).getAtk().getTroops() < 2) {
+                return false;
+            }
+            */
+
             riskGS.attack(((AttackAction) action).getAtk(), ((AttackAction) action).getDef());
             //updates the gamestate
             for(Territory t:riskGS.getTerritories()) {
@@ -117,6 +137,22 @@ public class RiskLocalGame extends LocalGame {
             return true;
         }
         if(action instanceof FortifyAction) {
+            /*
+            //checks whether the two territories have the same owner
+            if(((FortifyAction) action).getDeployTo() != ((FortifyAction) action).getDeployFrom()) {
+                return false;
+            }
+            //checks that the territory has enough troops to fortify
+            if(((FortifyAction) action).getDeployFrom().getTroops() <= 1) {
+                return false;
+            }
+            //checks that a valid number of troops are being sent
+            if(((FortifyAction) action).getDeployFrom().getTroops() < ((FortifyAction) action).getNumDeployed() ||
+                    ((FortifyAction) action).getNumDeployed() < 0) {
+                return false;
+            }
+            */
+
             riskGS.fortify(((FortifyAction) action).getDeployFrom(), ((FortifyAction) action).getDeployTo(), ((FortifyAction) action).getNumDeployed());
             //updates the gamestate
             for(Territory t:riskGS.getTerritories()) {
@@ -135,9 +171,9 @@ public class RiskLocalGame extends LocalGame {
             return true;
         }
         if(action instanceof NextTurnAction) {
-           /* if(riskGS.getTotalTroops() > 0) {
+            if(riskGS.getTotalTroops() > 0) {
                 return false;
-            }*/
+            }
 
             riskGS.nextTurn();
             return true;

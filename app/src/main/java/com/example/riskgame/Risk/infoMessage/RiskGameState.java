@@ -194,7 +194,8 @@ public class RiskGameState extends GameState {
      * @return true if legal move
      */
     public boolean attack(Territory atk, Territory def) {
-        if (currentTurn == atk.getOwner() && currentTurn != def.getOwner()) { //checks that the player is not trying to attack themselves
+        if (currentTurn == atk.getOwner() && currentTurn != def.getOwner()) {
+            //checks that the player is not trying to attack themselves
             boolean adjacent = false;
             for(Territory t: atk.getAdjacents()) {
                 if(def.equals(t)) {
@@ -270,9 +271,11 @@ public class RiskGameState extends GameState {
     //for occupy change total troops to terriories troop
     public boolean deploy(Territory t, int troops) {
         if(currentTurn == t.getOwner()) { //checks that the current territory is owned by the player
-            addTroop(t,troops);
+            //if owner matches
 
-            return true;
+                addTroop(t, troops);
+                return true;
+
         }
         return false;
     }
@@ -429,7 +432,6 @@ public class RiskGameState extends GameState {
      * @return game state info
      */
     public String toString() {
-
         String info = "-----CURRENT GAME STATE----- \n";
         info = info + "____________________________ \n";
         info = info + "Current Phase: " + currentPhase + "\n" + "Current Turn: " + currentTurn + "\n";
