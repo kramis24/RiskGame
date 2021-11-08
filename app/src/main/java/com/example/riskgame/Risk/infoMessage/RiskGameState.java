@@ -58,6 +58,7 @@ public class RiskGameState extends GameState {
         initTerritories();
 
         setTerritoryPlayers();
+
     }
 
     /**
@@ -160,15 +161,15 @@ public class RiskGameState extends GameState {
         int[] troopsDeployed = new int[playerCount]; //create array to store each player's troop deployment number
         int startTroops = (50 - (5 *(playerCount))); //set the number of troops that each player gets to start (dependant on number of players)
         Random rnd = new Random();
-        int rNum = rnd.nextInt(territories.size());
-        for(int i = 0; i < territories.size(); i++) { //for each territory owned by a player,
+        for (int i = 0; i < territories.size(); i++) { //for each territory owned by a player,
             //add 1 to their deployed troops count (as each initialized territory was given one troop automatically
             troopsDeployed[territories.get(i).getOwner()]++;
         }
         for (int i = 0; i < troopsDeployed.length; i++) {
             while (troopsDeployed[i] < startTroops) { //while each player has not yet deployed given number of troops
+                int rNum = rnd.nextInt(territories.size());
                 if (territories.get(rNum).getOwner() == i) { //deploy a troop to a random territory owned by the selected player
-                    addTroop(territories.get(i), 1);
+                    addTroop(territories.get(rNum), 1);
                     troopsDeployed[i]++; //increase deployed troop count for this player
                 }
             }
@@ -257,9 +258,6 @@ public class RiskGameState extends GameState {
         if(currentTurn == t.getOwner() && totalTroops - troops > 0) { //checks that the current territory is owned by the player
             addTroop(t,troops);
             totalTroops = totalTroops - troops;
-            if (totalTroops <= 0) {
-                nextTurn();
-            }
             return true;
         }
         return false;
@@ -269,7 +267,6 @@ public class RiskGameState extends GameState {
         if (currentTurn == t.getOwner()) { //checks that the current territory is owned by the player
             t.setTroops(troops);
             t.setTroops(t.getTroops() - troops);
-            nextTurn();
             return true;
         }
         return false;
@@ -293,9 +290,7 @@ public class RiskGameState extends GameState {
                     t1.setTroops(t1.getTroops() - troops);
                     t2.setTroops(t2.getTroops() + troops);
                     nextTurn();
-                    return true;
-                } else {
-                    return true;
+                    return true;//
                 }
             }
         }
@@ -448,6 +443,14 @@ public class RiskGameState extends GameState {
      * @return current turn
      */
     public int getCurrentTurn() { return currentTurn; }
+
+    /**
+     * getTotalTroops
+     * Gets the total troops.
+     *
+     * @return total troops
+     */
+    public int getTotalTroops() { return totalTroops; }
 
     /**
      * initTerritories
