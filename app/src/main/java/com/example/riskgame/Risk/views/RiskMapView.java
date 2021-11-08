@@ -91,22 +91,6 @@ public class RiskMapView extends FlashSurfaceView {
         // draws map, this is only hardcoded for this gui prototype
         canvas.drawBitmap(mapImage, left, top, mapPaint);
 
-        // grid, for development only
-        for (int i = 0; i < 4000; i += 100) {
-            if (i % 500 == 0) {
-                canvas.drawRect(i + left, getTop() - 120, i + left + 5, getBottom(), boxPaint);
-            } else {
-                canvas.drawRect(i + left, getTop() - 120, i + left + 2, getBottom(), boxPaint);
-            }
-        }
-        for (int i = 0; i < 3000; i+= 100) {
-            if (i % 500 == 0) {
-                canvas.drawRect(getLeft(), i + top, getRight(), i + top + 5, boxPaint);
-            } else {
-                canvas.drawRect(getLeft(), i + top, getRight(), i + top + 2, boxPaint);
-            }
-        }
-
         // returns if no game state is given, this is required to avoid crashing
         if (gameState == null) {
             return;

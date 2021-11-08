@@ -29,6 +29,7 @@ import com.example.riskgame.Risk.infoMessage.Territory;
 import com.example.riskgame.Risk.riskActionMessage.AttackAction;
 import com.example.riskgame.Risk.riskActionMessage.DeployAction;
 import com.example.riskgame.Risk.riskActionMessage.FortifyAction;
+import com.example.riskgame.Risk.riskActionMessage.NextTurnAction;
 import com.example.riskgame.Risk.views.RiskMapView;
 
 public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickListener,
@@ -144,7 +145,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
             case R.id.cardButton:
                 // TODO card popup display
             case R.id.nextButton:
-                // next turn action
+                game.sendAction(new NextTurnAction(this));
         }
 
     }
