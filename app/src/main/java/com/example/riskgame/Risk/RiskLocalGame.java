@@ -42,6 +42,12 @@ public class RiskLocalGame extends LocalGame {
     protected boolean makeMove(GameAction action) {
         if(action instanceof DeployAction){
             riskGS.deploy(((DeployAction) action).getDeployTo(), ((DeployAction) action).getNumDeploy());
+            for(Territory t:riskGS.getTerritories()) {
+                if(((DeployAction) action).getDeployTo().equals(t)) {
+                    int index = riskGS.getTerritories().indexOf(t);
+                    riskGS.getTerritories().set(index, ((DeployAction) action).getDeployTo());
+                }
+            }
             return true;
         }
         if(action instanceof AttackAction) {

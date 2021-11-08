@@ -61,6 +61,11 @@ public class RiskGameState extends GameState {
         initTerritories();
 
         setTerritoryPlayers();
+        setStartTroops();
+    }
+
+    public Phase getCurrentPhase() {
+        return this.currentPhase;
     }
 
     /**
@@ -255,9 +260,9 @@ public class RiskGameState extends GameState {
      **/
     //for occupy change total troops to terriories troop
     public boolean deploy(Territory t, int troops) {
-        if(currentTurn == t.getOwner() && totalTroops - troops > 0) { //checks that the current territory is owned by the player
+        if(currentTurn == t.getOwner()) { //checks that the current territory is owned by the player
             addTroop(t,troops);
-            totalTroops = totalTroops - troops;
+
             return true;
         }
         return false;
