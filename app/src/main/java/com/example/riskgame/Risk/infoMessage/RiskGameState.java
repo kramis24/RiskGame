@@ -62,6 +62,7 @@ public class RiskGameState extends GameState {
 
         setTerritoryPlayers();
         setStartTroops();
+        calcTroops(0);
     }
 
     public Phase getCurrentPhase() {
@@ -455,9 +456,6 @@ public class RiskGameState extends GameState {
      *
      * @return current phase
      */
-    public Phase getCurrentPhase() {
-        return currentPhase;
-    }
 
     /**
      * getTotalTroops
