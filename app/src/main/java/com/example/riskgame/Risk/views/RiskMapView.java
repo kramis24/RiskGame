@@ -45,8 +45,8 @@ public class RiskMapView extends FlashSurfaceView {
     private int top = getTop();
     private int right = getRight();
     private int bottom = getBottom();
-    private float shiftX = 0;
-    private float shiftY = 0;
+    private int shiftX = 0;
+    private int shiftY = 0;
 
     /**
      * MapView

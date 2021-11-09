@@ -24,8 +24,7 @@ public class RiskBasicComputerPlayer extends GameComputerPlayer {
     }
 
     //Basic varibles to keep track of what stages player has been through
-    //
-    private boolean fortify = false;
+    //private boolean fortify = false;
     private boolean attack = false;
     private boolean deploy = false;
     @Override
@@ -108,22 +107,22 @@ public class RiskBasicComputerPlayer extends GameComputerPlayer {
                 return;
             } //end attack phase
             if (skip == 0 && canFortify) { //If player has chosen not to skip and can fortify -->attempt to fortify
-                int fortRnd = rnd.nextInt(ownedTerr.get(ownTerr).getTroops() - 2); //generate random num of troops to move (more than 0 and less than the total number of troops)
-                while (!Risk.fortify(ownedTerr.get(ownTerr), ownedTerr.get(terr2), fortRnd + 1)) { //this moves all troops from one territory to antoher
+                //int fortRnd = rnd.nextInt(ownedTerr.get(ownTerr).getTroops() - 2); //generate random num of troops to move (more than 0 and less than the total number of troops)
+                while (!Risk.fortify(ownedTerr.get(ownTerr), ownedTerr.get(terr2), 1)) { //this moves all troops from one territory to antoher
                     if (loopCntr > 100) {
-                        fortify = true; //change boolean fortify to true to indicate player is done with the fortify phase
+                        //fortify = true; //change boolean fortify to true to indicate player is done with the fortify phase
                         return;
                     }
                     ownTerr = rnd.nextInt(ownedTerr.size());
                     terr2 = rnd.nextInt(ownedTerr.size());
-                    fortRnd = rnd.nextInt(ownedTerr.get(ownTerr).getTroops() - 2); //generate randome num of troops to move (more than 0 and less than the total number of troops)
+                    //fortRnd = rnd.nextInt(ownedTerr.get(ownTerr).getTroops() - 2); //generate randome num of troops to move (more than 0 and less than the total number of troops)
                     loopCntr++;
                 }
                 sleep(1);
                 //return all marker booleans to original state
                 deploy = false;
                 attack = false;
-                game.sendAction(new FortifyAction(this,ownedTerr.get(ownTerr),ownedTerr.get(terr2),fortRnd + 1)); // end fortify phase and turn
+                game.sendAction(new FortifyAction(this,ownedTerr.get(ownTerr),ownedTerr.get(terr2), 1)); // end fortify phase and turn
                 return;
             }
             //return all marker booleans to original state

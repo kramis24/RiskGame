@@ -106,7 +106,7 @@ public class RiskGameState extends GameState {
             }
         }
 
-        int troopCount = ((territoryCount - 11)/3) + 3; //calculation for troops
+        int troopCount = ((territoryCount - 3)/3) + 3; //calculation for troops
 
         //check for continent bonuses (if a player has all territories in a continent)
         if (territoryCounts[Territory.Continent.ASIA.ordinal()] == 12) {
@@ -267,10 +267,13 @@ public class RiskGameState extends GameState {
      **/
     //for occupy change total troops to terriories troop
     public boolean deploy(Territory t, int troops) {
-        if(currentTurn == t.getOwner()) { //checks that the current territory is owned by the player
-            addTroop(t,troops);
-
-            return true;
+        if (troops > 0) {
+            if (troops < totalTroops) {
+                if(currentTurn == t.getOwner()) { //checks that the current territory is owned by the player
+                    addTroop(t, troops);
+                    return true;
+                }
+            }
         }
         return false;
     }
@@ -330,7 +333,7 @@ public class RiskGameState extends GameState {
      * Helper method to check if two territories create a chain of adjacent territories that connect
      * @return
      */
-    private boolean checkHelper(Territory t1, Territory t2) {
+    private boolean checkHelper(Territory t1, Territory t2) { //errror somewhwere in here
         boolean ans = false; ///assume both territories aren't connected
         for (int i = 0; i < t1.getAdjacents().size(); i++) {
             if (t1.getAdjacents().get(i).getOwner() == t1.getOwner()) {
