@@ -96,7 +96,6 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         mapView.setGameState(gameState);
         mapView.invalidate();
 
-
         // updates textViews
          int[] PLAYER_COLORS = {0xFFFF0000, // red
                 0xFF0000FF, // blue
@@ -186,7 +185,6 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                         if(gameState.getCurrentPhase() == RiskGameState.Phase.DEPLOY) {
                             game.sendAction(exchange);
                             troopCountTextView.invalidate();
-
                         }
                     }
                 });
@@ -243,6 +241,9 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                             selectedT2 = t;
                         } else {
                             selectedT1 = t;
+                            if(selectedT1.getOwner() != this.playerNum) {
+                                selectedT1 = null;
+                            }
                         }
                                                 //generateAction(t);
                         break;
