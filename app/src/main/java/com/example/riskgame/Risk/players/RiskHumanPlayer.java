@@ -3,9 +3,13 @@ package com.example.riskgame.Risk.players;
  * RiskHumanPlayer
  * Display, info, and input handling for human players.
  *
- * @author Dylan Kramis
- * @version 11/4/2021 WIP
+ * @author Dylan Kramis, Phi Nguyen (Exit Button)
+ * @version 11/7/2021 Alpha
  */
+
+import static android.text.InputType.TYPE_CLASS_NUMBER;
+import static android.text.InputType.TYPE_NUMBER_VARIATION_NORMAL;
+import static android.text.InputType.TYPE_NUMBER_VARIATION_PASSWORD;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -28,18 +32,22 @@ import com.example.riskgame.Risk.infoMessage.RiskGameState;
 import com.example.riskgame.Risk.infoMessage.Territory;
 import com.example.riskgame.Risk.riskActionMessage.AttackAction;
 import com.example.riskgame.Risk.riskActionMessage.DeployAction;
+import com.example.riskgame.Risk.riskActionMessage.ExchangeCardAction;
 import com.example.riskgame.Risk.riskActionMessage.FortifyAction;
 import com.example.riskgame.Risk.riskActionMessage.NextTurnAction;
+import com.example.riskgame.Risk.views.CardView;
 import com.example.riskgame.Risk.views.RiskMapView;
 
 public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickListener,
         View.OnTouchListener {
 
     // instance variables
+    private final int TOUCH_WINDOW = 35;
     private Button helpButton;
     private Button exitButton;
     private Button cardButton;
     private Button nextButton;
+    private CardView cardView;
     private TextView playerTextView;
     private TextView turnPhaseTextView;
     private TextView troopCountTextView;
@@ -79,12 +87,15 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         if (!(info instanceof RiskGameState)) {
             return;
         }
+
+
         // typecasts game state
         gameState = (RiskGameState) info;
 
         // updates mapView with new game state
         mapView.setGameState(gameState);
         mapView.invalidate();
+
 
         // updates textViews
          int[] PLAYER_COLORS = {0xFFFF0000, // red
@@ -128,6 +139,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         turnPhaseTextView  = (TextView)activity.findViewById(R.id.turnPhaseTextView);
         troopCountTextView = (TextView)activity.findViewById(R.id.troopCountTextView);
         mapView = (RiskMapView)activity.findViewById(R.id.mapView);
+        cardView = activity.findViewById((R.id.cardDisplay));
 
         // set listeners
         helpButton.setOnClickListener(this);
@@ -147,6 +159,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
     @Override
     public void onClick(View view) {
 
+        // switch case checking buttons
         switch (view.getId()) {
             case R.id.helpButton:
                 // TODO user manual popup display
@@ -154,8 +167,34 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                 System.exit(0);
             case R.id.cardButton:
                 // TODO card popup display
+                ExchangeCardAction exchange = new ExchangeCardAction(this);
+                LayoutInflater inflater = (LayoutInflater)
+                        myActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View popup = inflater.inflate(R.layout.card_popup, null);
+                Button exchangeButton = (Button) popup.findViewById(R.id.exchange_cards);
+
+                // creates popup
+                PopupWindow popupWindow = new PopupWindow(popup, LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT, true);
+
+                // displays popup window
+                popupWindow.showAtLocation(mapView, Gravity.CENTER, 0, 0);
+                exchangeButton.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        if(gameState.getCurrentPhase() == RiskGameState.Phase.DEPLOY) {
+                            game.sendAction(exchange);
+                            troopCountTextView.invalidate();
+
+                        }
+                    }
+                });
             case R.id.nextButton:
+                selectedT2 = null;
+                selectedT1 = null;
                 game.sendAction(new NextTurnAction(this));
+
         }
 
     }
@@ -196,8 +235,8 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
             // processes touch to create action
             if (!screenDragged) {
                 for (Territory t : gameState.getTerritories()) {
-                    if ((Math.abs(touchX - (t.getX() + mapView.getShiftX() + 25)) < (float) (t.getWidth() / 2))
-                            && (Math.abs(touchY - (t.getY() + mapView.getShiftY() + 25)) < (float) (t.getHeight() / 2))) {
+                    if ((Math.abs(touchX - (t.getX() + mapView.getShiftX() + TOUCH_WINDOW)) < (float) (t.getWidth() / 2))
+                            && (Math.abs(touchY - (t.getY() + mapView.getShiftY() + TOUCH_WINDOW)) < (float) (t.getHeight() / 2))) {
                         askTroops();
                         if (selectedT1 != null
                                 && gameState.getCurrentPhase() != RiskGameState.Phase.DEPLOY) {
@@ -216,8 +255,14 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         return false;
     }
 
+    /**
+     * generateAction
+     * Sends actions to the local game.
+     *
+     * @param t territory for deploy
+     * @param numTroops number of troops for deploy and fortify
+     */
     private void generateAction(Territory t, int numTroops) {
-
         if (gameState.getCurrentPhase() == RiskGameState.Phase.DEPLOY) {
             game.sendAction(new DeployAction(this, t, numTroops));
             selectedT1 = null;
@@ -240,40 +285,50 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
 
     }
 
+    /**
+     * askTroops
+     * Creates a popup asking how many troops to use.
+     */
     private void askTroops() {
-
         // initialize popup
-        LayoutInflater inflater = (LayoutInflater)
-                myActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View popup = inflater.inflate(R.layout.ask_troops_popup, null);
-        Button confirmButton = (Button)   popup.findViewById(R.id.confirmButton);
-        EditText inputText   = (EditText) popup.findViewById(R.id.inputText);
+            LayoutInflater inflater = (LayoutInflater)
+                    myActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View popup = inflater.inflate(R.layout.ask_troops_popup, null);
+            Button confirmButton = (Button) popup.findViewById(R.id.confirmButton);
+            EditText inputText = (EditText) popup.findViewById(R.id.inputText);
+            inputText.setInputType(TYPE_CLASS_NUMBER | TYPE_NUMBER_VARIATION_NORMAL);
 
-        // create popup
-        PopupWindow popupWindow = new PopupWindow(popup, LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT, true);
+            // create popup
+            PopupWindow popupWindow = new PopupWindow(popup, LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, true);
 
-        // displays popup window
-        popupWindow.showAtLocation(mapView, Gravity.NO_GRAVITY, (int) touchX,
-                (int) touchY);
+            // displays popup window
+            popupWindow.showAtLocation(mapView, Gravity.NO_GRAVITY, (int) touchX,
+                    (int) touchY);
 
-        // listener for confirmButton
-        confirmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // collects string input and tries to parse to int, flashes if failed
-                String input = inputText.getText().toString();
-                try {
-                    generateNumber(Integer.parseInt(input));
-                    popupWindow.dismiss();
-                } catch (NumberFormatException nfe) {
-                    mapView.flash(Color.RED, 50);
+            // listener for confirmButton
+            confirmButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // collects string input and tries to parse to int, flashes if failed
+                    String input = inputText.getText().toString();
+                    try {
+                        generateNumber(Integer.parseInt(input));
+                        popupWindow.dismiss();
+                    } catch (NumberFormatException nfe) {
+                        mapView.flash(Color.RED, 50);
+                    }
                 }
-            }
-        });
+            });
 
     }
 
+    /**
+     * generateNumber
+     * Calls generateAction when popup clicked.
+     *
+     * @param numTroops
+     */
     private void generateNumber(int numTroops) {
         generateAction(selectedT1, numTroops);
     }
