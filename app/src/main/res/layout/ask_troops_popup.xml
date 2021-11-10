@@ -16,6 +16,7 @@
             android:text="How many troops?" />
 
         <EditText
+
             android:id="@+id/inputText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,7 +24,8 @@
             android:ems="10"
             android:gravity="start|top"
             android:inputType="textMultiLine"
-            android:text="0" />
+            android:text="0"
+            />
 
         <Button
             android:id="@+id/confirmButton"

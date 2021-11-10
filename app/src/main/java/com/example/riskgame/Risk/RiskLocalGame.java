@@ -14,8 +14,10 @@ import com.example.riskgame.Risk.infoMessage.RiskGameState;
 import com.example.riskgame.Risk.infoMessage.Territory;
 import com.example.riskgame.Risk.riskActionMessage.AttackAction;
 import com.example.riskgame.Risk.riskActionMessage.DeployAction;
+import com.example.riskgame.Risk.riskActionMessage.ExchangeCardAction;
 import com.example.riskgame.Risk.riskActionMessage.FortifyAction;
 import com.example.riskgame.Risk.riskActionMessage.NextTurnAction;
+import com.google.android.material.expandable.ExpandableWidgetHelper;
 
 public class RiskLocalGame extends LocalGame {
 
@@ -139,7 +141,7 @@ public class RiskLocalGame extends LocalGame {
         if(action instanceof FortifyAction) {
 
             //checks whether the two territories have the same owner
-            if(((FortifyAction) action).getDeployTo() != ((FortifyAction) action).getDeployFrom()) {
+            if(((FortifyAction) action).getDeployTo().getOwner() != ((FortifyAction) action).getDeployFrom().getOwner()) {
                 return false;
             }
             //checks that the territory has enough troops to fortify
@@ -177,6 +179,10 @@ public class RiskLocalGame extends LocalGame {
 
             riskGS.nextTurn();
             return true;
+        }
+        if(action instanceof ExchangeCardAction) {
+            riskGS.exchangeCards();
+
         }
         return false;
     }

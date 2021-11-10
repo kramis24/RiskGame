@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="409dp"
+        android:layout_height="729dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
+
+        <TextView
+            android:id="@+id/card_popup_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your Cards"
+            android:textAlignment="center" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="200sp" />
+
+        <Button
+            android:id="@+id/exchange_cards"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Exchange Cards" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

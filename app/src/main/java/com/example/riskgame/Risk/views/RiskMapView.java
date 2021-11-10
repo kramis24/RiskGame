@@ -143,13 +143,12 @@ public class RiskMapView extends FlashSurfaceView {
 
         //add if checks to prevent scrolling too far
         // updates position variables
-        shiftX += changeX;
-        shiftY += changeY;
-        left += changeX;
-        top += changeY;
-        right = left + getWidth();
-        bottom = top + getHeight();
-
+            shiftX += changeX;
+            shiftY += changeY;
+            left += changeX;
+            top += changeY;
+            right = left + getWidth();
+            bottom = top + getHeight();
         // checks if out of bounds
         /*if (left > 0) {
             left = 0;
@@ -164,7 +163,7 @@ public class RiskMapView extends FlashSurfaceView {
             left = right - getWidth();
         }
         if (bottom < mapImage.getHeight()) {
-            bottom = mapImage.getHeight);
+            bottom = mapImage.getHeight();
             top = bottom - getHeight();
         }*/
         invalidate();

@@ -61,6 +61,9 @@ public class RiskGameState extends GameState {
         setTerritoryPlayers();
         setStartTroops();
         totalTroops = calcTroops(0);
+        for(int i = 0; i < playerCount; i++) {
+            cards.add(new ArrayList<Card>());
+        }
     }
 
     public Phase getCurrentPhase() {
@@ -248,6 +251,7 @@ public class RiskGameState extends GameState {
                 //if changes ownership of a territory if troops are 0
                 if (def.getTroops() <= 0) {
                     def.setOwner(atk.getOwner());
+                    addCard();
                     def.setTroops(1);
                     atk.setTroops(atk.getTroops() - 1);
 
@@ -860,11 +864,13 @@ public class RiskGameState extends GameState {
      * this method is called in attack method
      */
     private void addCard() {
+        if(cards.get(currentTurn).size() >= 5) {
+            return;
+        }
         List<Card> ListOfCards =(Arrays.asList(Card.values()));//stores the enums into an array
         int size = ListOfCards.size(); //size of the enums array
         Random rnd = new Random();
         cards.get(currentTurn).add(ListOfCards.get(rnd.nextInt(size)));//adds card for the current player
-
     }
 
     /**
@@ -881,7 +887,10 @@ public class RiskGameState extends GameState {
         int countInfantry = 0;
 
         //checks how many of each card the player has
-        for(int i = 0; i < 5; i++) {
+        for(int i = 0; i < cards.get(currentTurn).size(); i++) {
+            if(cards.size() <= 0 ) {
+                return false;
+            }
             if(cards.get(currentTurn).get(i) == Card.ARTILLERY) {
                 countArtillery++;
             }
@@ -894,7 +903,7 @@ public class RiskGameState extends GameState {
         }
 
         //removes the cards from the players hand and gives bonus troops
-        if(countArtillery > 1 && countCavalry > 1 && countInfantry > 1) {
+        if(countArtillery >= 1 && countCavalry >= 1 && countInfantry >= 1) {
             cards.get(currentTurn).remove(Card.ARTILLERY);
             cards.get(currentTurn).remove(Card.CAVALRY);
             cards.get(currentTurn).remove(Card.INFANTRY);
@@ -923,4 +932,7 @@ public class RiskGameState extends GameState {
         return true;
     }
 
+    public List<ArrayList<Card>> getCards() {
+        return cards;
+    }
 }
