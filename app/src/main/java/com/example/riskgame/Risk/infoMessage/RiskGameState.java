@@ -111,7 +111,7 @@ public class RiskGameState extends GameState {
             }
         }
 
-        int troopCount = ((territoryCount - 11)/3) + 3; //calculation for troops
+        int troopCount = ((territoryCount - 3)/3) + 3; //calculation for troops
 
         //check for continent bonuses (if a player has all territories in a continent)
         if (territoryCounts[Territory.Continent.ASIA.ordinal()] == 12) {
@@ -276,10 +276,10 @@ public class RiskGameState extends GameState {
     public boolean deploy(Territory t, int troops) {
         if(currentTurn == t.getOwner()) { //checks that the current territory is owned by the player
             //if owner matches
-
+            if (troops >= 0 && troops <= totalTroops) {
                 addTroop(t, troops);
                 return true;
-
+            }
         }
         return false;
     }
