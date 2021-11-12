@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.riskgame.GameFramework.GameMainActivity;
@@ -51,6 +52,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
     private TextView playerTextView;
     private TextView turnPhaseTextView;
     private TextView troopCountTextView;
+    private TextView cardTextView;
     private RiskMapView mapView;
     private float touchX;
     private float touchY;
@@ -91,7 +93,6 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
 
         // typecasts game state
         gameState = (RiskGameState) info;
-
         // updates mapView with new game state
         mapView.setGameState(gameState);
         mapView.invalidate();
@@ -138,7 +139,8 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         turnPhaseTextView  = (TextView)activity.findViewById(R.id.turnPhaseTextView);
         troopCountTextView = (TextView)activity.findViewById(R.id.troopCountTextView);
         mapView = (RiskMapView)activity.findViewById(R.id.mapView);
-        cardView = activity.findViewById((R.id.cardDisplay));
+        cardView = (CardView) activity.findViewById(R.id.cardDisplay);
+        cardTextView = activity.findViewById(R.id.gainCardText);
 
         // set listeners
         helpButton.setOnClickListener(this);
@@ -165,7 +167,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
             case R.id.exitButton:
                 System.exit(0);
             case R.id.cardButton:
-                // TODO card popup display
+                // TODO show players what cards they have
                 ExchangeCardAction exchange = new ExchangeCardAction(this);
                 LayoutInflater inflater = (LayoutInflater)
                         myActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -175,16 +177,17 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                 // creates popup
                 PopupWindow popupWindow = new PopupWindow(popup, LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT, true);
-
                 // displays popup window
                 popupWindow.showAtLocation(mapView, Gravity.CENTER, 0, 0);
                 exchangeButton.setOnClickListener(new View.OnClickListener() {
+
 
                     @Override
                     public void onClick(View view) {
                         if(gameState.getCurrentPhase() == RiskGameState.Phase.DEPLOY) {
                             game.sendAction(exchange);
                             troopCountTextView.invalidate();
+
                         }
                     }
                 });
@@ -243,6 +246,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                             selectedT1 = t;
                             if(selectedT1.getOwner() != this.playerNum) {
                                 selectedT1 = null;
+                                flash(Color.RED,1);
                             }
                         }
                                                 //generateAction(t);
@@ -332,5 +336,14 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
      */
     private void generateNumber(int numTroops) {
         generateAction(selectedT1, numTroops);
+    }
+
+    @Override
+    protected void initAfterReady() {
+        super.initAfterReady();
+        if(gameState == null) {
+            return;
+        }
+        cardView.setRiskGameState(gameState);
     }
 }

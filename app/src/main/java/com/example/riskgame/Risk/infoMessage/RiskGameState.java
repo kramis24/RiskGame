@@ -89,6 +89,14 @@ public class RiskGameState extends GameState {
             Territory newTerritory = new Territory(t);
             this.territories.add(newTerritory);
         }
+        for(int i = 0; i < this.playerCount; i++) {
+            cards.add(new ArrayList<Card>());
+        }
+        for(int i = 0; i < other.getCards().size(); i++) {
+            for(int j = 0; j < other.getCards().get(i).size(); j++) {
+                cards.get(i).add(other.getCards().get(i).get(j));
+            }
+        }
     }
 
     public void setPlayerCount(int playerCount) {
@@ -305,6 +313,7 @@ public class RiskGameState extends GameState {
      * @return true if move was done successfully
      **/
     public boolean fortify(Territory t1, Territory t2, int troops) {
+        //TODO: Figure out what is wrong with fortify
         if (currentTurn == t1.getOwner() && currentTurn == t2.getOwner()) { //checks if both territories are owned by player
             if(checkChain(t1,t2)) {
                 if (t1.getTroops() - troops > 1) { //makes sure that you cannot send more troops than you have

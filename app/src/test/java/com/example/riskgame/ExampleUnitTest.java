@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import com.example.riskgame.Risk.infoMessage.RiskGameState;
+
 /**
  * Example local unit test, which will execute on the development machine (host).
  *
@@ -16,11 +18,13 @@ public class ExampleUnitTest {
     }
 
     public boolean equals(Object object) {
-    //if object instn an intanceof Riskgamestate -->false
-    //RiskState riskState = (RiskState) object;
-    //go through all data and make sure it is a match
-    return true;
+        //if object instn an intanceof Riskgamestate -->false
+        //RiskState riskState = (RiskState) object;
+        //go through all data and make sure it is a match
+
+        return true;
     }
+
 
     //test-equals()
     //Gamestate state = new GS()

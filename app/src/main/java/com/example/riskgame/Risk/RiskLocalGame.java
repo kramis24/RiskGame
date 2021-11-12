@@ -17,6 +17,7 @@ import com.example.riskgame.Risk.riskActionMessage.DeployAction;
 import com.example.riskgame.Risk.riskActionMessage.ExchangeCardAction;
 import com.example.riskgame.Risk.riskActionMessage.FortifyAction;
 import com.example.riskgame.Risk.riskActionMessage.NextTurnAction;
+import com.example.riskgame.Risk.views.CardView;
 import com.google.android.material.expandable.ExpandableWidgetHelper;
 
 public class RiskLocalGame extends LocalGame {
