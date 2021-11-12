@@ -278,6 +278,7 @@ public class RiskGameState extends GameState {
             //if owner matches
             if (troops >= 0 && troops <= totalTroops) {
                 addTroop(t, troops);
+                totalTroops -= troops;
                 return true;
             }
         }

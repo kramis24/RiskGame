@@ -101,10 +101,10 @@ public class RiskLocalGame extends LocalGame {
                     riskGS.getTerritories().set(index, ((DeployAction) action).getDeployTo());
                 }
             }
-            riskGS.setTotalTroops(riskGS.getTotalTroops() - ((DeployAction) action).getNumDeploy());
-            if(riskGS.getTotalTroops() <= 0) {
-                riskGS.nextTurn();
-            }
+//            riskGS.setTotalTroops(riskGS.getTotalTroops() - ((DeployAction) action).getNumDeploy());
+//            if(riskGS.getTotalTroops() <= 0) {
+//                riskGS.nextTurn();
+//            }
 
             return true;
         }
