@@ -235,9 +235,19 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
             // processes touch to create action
             if (!screenDragged) {
                 for (Territory t : gameState.getTerritories()) {
-                    if ((Math.abs(touchX - (t.getX() + mapView.getShiftX() + TOUCH_WINDOW)) < (float) (t.getWidth() / 2))
-                            && (Math.abs(touchY - (t.getY() + mapView.getShiftY() + TOUCH_WINDOW)) < (float) (t.getHeight() / 2))) {
-                        askTroops();
+                    if ((Math.abs(touchX - (t.getX() + mapView.getShiftX() + TOUCH_WINDOW))
+                            < (float) (t.getWidth() / 2))
+                            && (Math.abs(touchY - (t.getY() + mapView.getShiftY() + TOUCH_WINDOW))
+                            < (float) (t.getHeight() / 2))) {
+
+                        if ((gameState.getCurrentPhase() == RiskGameState.Phase.DEPLOY)
+                            || (gameState.getCurrentPhase() == RiskGameState.Phase.FORTIFY
+                            && selectedT1 != null)) {
+                            askTroops();
+                        } else {
+                            confirm();
+                        }
+
                         if (selectedT1 != null
                                 && gameState.getCurrentPhase() != RiskGameState.Phase.DEPLOY) {
                             selectedT2 = t;
@@ -291,35 +301,66 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
      */
     private void askTroops() {
         // initialize popup
-            LayoutInflater inflater = (LayoutInflater)
-                    myActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View popup = inflater.inflate(R.layout.ask_troops_popup, null);
-            Button confirmButton = (Button) popup.findViewById(R.id.confirmButton);
-            EditText inputText = (EditText) popup.findViewById(R.id.inputText);
-            inputText.setInputType(TYPE_CLASS_NUMBER | TYPE_NUMBER_VARIATION_NORMAL);
+        LayoutInflater inflater = (LayoutInflater)
+                myActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popup = inflater.inflate(R.layout.ask_troops_popup, null);
+        Button confirmButton = (Button) popup.findViewById(R.id.confirmButton);
+        EditText inputText = (EditText) popup.findViewById(R.id.inputText);
+        inputText.setInputType(TYPE_CLASS_NUMBER | TYPE_NUMBER_VARIATION_NORMAL);
 
-            // create popup
-            PopupWindow popupWindow = new PopupWindow(popup, LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        // create popup
+        PopupWindow popupWindow = new PopupWindow(popup, LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, true);
 
-            // displays popup window
-            popupWindow.showAtLocation(mapView, Gravity.NO_GRAVITY, (int) touchX,
-                    (int) touchY);
+        // displays popup window
+        popupWindow.showAtLocation(mapView, Gravity.NO_GRAVITY, (int) touchX,
+                (int) touchY);
 
-            // listener for confirmButton
-            confirmButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    // collects string input and tries to parse to int, flashes if failed
-                    String input = inputText.getText().toString();
-                    try {
-                        generateNumber(Integer.parseInt(input));
-                        popupWindow.dismiss();
-                    } catch (NumberFormatException nfe) {
-                        mapView.flash(Color.RED, 50);
-                    }
+        // listener for confirmButton
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // collects string input and tries to parse to int, flashes if failed
+                String input = inputText.getText().toString();
+                try {
+                    generateNumber(Integer.parseInt(input));
+                    popupWindow.dismiss();
+                } catch (NumberFormatException nfe) {
+                    mapView.flash(Color.RED, 50);
                 }
-            });
+            }
+        });
+    }
+
+    /**
+     * confirm
+     * Popup asking for confirmation upo selecting a territory
+     */
+    private void confirm() {
+
+        //initialize popup
+        LayoutInflater inflater = (LayoutInflater)
+                myActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popup = inflater.inflate(R.layout.confirm_popup, null);
+        Button confirmButton = (Button) popup.findViewById(R.id.confirmButton);
+
+        // create popup
+        PopupWindow popupWindow = new PopupWindow(popup, LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, true);
+
+        // displays popup window
+        popupWindow.showAtLocation(mapView, Gravity.NO_GRAVITY, (int) touchX,
+                (int) touchY);
+
+        // listener for confirmButton
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                generateNumber(0);
+                popupWindow.dismiss();
+            }
+        });
 
     }
 
