@@ -870,6 +870,9 @@ public class RiskGameState extends GameState {
         }
         List<Card> listOfCards =(Arrays.asList(Card.values()));//stores the enums into an array
         int size = listOfCards.size(); //size of the enums array
+        if (size == 0) {
+            return;
+        }
         Random rnd = new Random();
         cards.get(currentTurn).add(listOfCards.get(rnd.nextInt(size) - 1));//adds card for the current player
     }
