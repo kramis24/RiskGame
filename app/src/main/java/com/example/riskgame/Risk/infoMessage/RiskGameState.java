@@ -287,6 +287,7 @@ public class RiskGameState extends GameState {
             //if owner matches
             if (troops >= 0 && troops <= totalTroops) {
                 addTroop(t, troops);
+                totalTroops -= troops;
                 return true;
             }
         }
@@ -432,7 +433,7 @@ public class RiskGameState extends GameState {
         // loops to roll each die
         for (int i = 0; i < numRolls; i++) {
             Random die = new Random();
-            int number = die.nextInt(6);
+            int number = die.nextInt(5) + 1;
             rolls.add(number);
         }
 
@@ -494,7 +495,6 @@ public class RiskGameState extends GameState {
      * @return total troops
      */
     public int getTotalTroops() { return totalTroops; }
-
 
     /**
      * initTerritories
@@ -879,11 +879,14 @@ public class RiskGameState extends GameState {
         if(cards.get(currentTurn).size() >= 5) {
             return;
         }
-        List<Card> ListOfCards =(Arrays.asList(Card.values()));//stores the enums into an array
-        int size = ListOfCards.size(); //size of the enums array
+        List<Card> listOfCards =(Arrays.asList(Card.values()));//stores the enums into an array
+        int size = listOfCards.size(); //size of the enums array
+        if (size == 0) {
+            return;
+        }
         Random rnd = new Random();
         if(!hasGottenCard) {
-            cards.get(currentTurn).add(ListOfCards.get(rnd.nextInt(size)));//adds card for the current player
+            cards.get(currentTurn).add(listOfCards.get(rnd.nextInt(size)));//adds card for the current player
             hasGottenCard = true;
         }
     }

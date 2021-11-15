@@ -141,7 +141,6 @@ public class RiskMapView extends FlashSurfaceView {
      */
     public void updatePosition(float changeX, float changeY) {
 
-        //add if checks to prevent scrolling too far
         // updates position variables
             shiftX += changeX;
             shiftY += changeY;
@@ -149,23 +148,28 @@ public class RiskMapView extends FlashSurfaceView {
             top += changeY;
             right = left + getWidth();
             bottom = top + getHeight();
-        // checks if out of bounds
-        /*if (left > 0) {
+
+        // checks if out of bounds, logic is rather counterintuitive
+        if (left > 0) {
             left = 0;
             right = getWidth();
+            shiftX = 0;
         }
         if (top > 0) {
             top = 0;
             bottom = getHeight();
+            shiftY = 0;
         }
-        if (right < mapImage.getWidth()) {
-            right = mapImage.getWidth();
+        if (right < 1050) { // getters didn't work here, so trial and error was used to determine
+            right = 1050;   // boundaries. use an actual tablet when testing
             left = right - getWidth();
+            shiftX = left;
         }
-        if (bottom < mapImage.getHeight()) {
-            bottom = mapImage.getHeight();
+        if (bottom < -150) {
+            bottom = -150;
             top = bottom - getHeight();
-        }*/
+            shiftY = top;
+        }
         invalidate();
 
     }
