@@ -284,11 +284,13 @@ public class RiskGameState extends GameState {
         return false;
     }
 
-    public boolean occupy(Territory t, int troops) {
+    public boolean occupy(Territory t, Territory t2, int troops) {
         if (currentTurn == t.getOwner()) { //checks that the current territory is owned by the player
-            t.setTroops(troops);
-            t.setTroops(t.getTroops() - troops);
-            return true;
+            if (troops > 0 && troops < t.getTroops()) {
+                t2.setTroops(troops);
+                t.setTroops(t.getTroops() - troops);
+                return true;
+            }
         }
         return false;
     }
@@ -307,11 +309,13 @@ public class RiskGameState extends GameState {
     public boolean fortify(Territory t1, Territory t2, int troops) {
         if (currentTurn == t1.getOwner() && currentTurn == t2.getOwner()) { //checks if both territories are owned by player
             if(checkChain(t1,t2)) {
-                if (t1.getTroops() - troops > 1) { //makes sure that you cannot send more troops than you have
-                    t1.setTroops(t1.getTroops() - troops);
-                    t2.setTroops(t2.getTroops() + troops);
-                    nextTurn();
-                    return true;//
+                if (troops > 0) {
+                    if (t1.getTroops() - troops > 1) { //makes sure that you cannot send more troops than you have
+                        t1.setTroops(t1.getTroops() - troops);
+                        t2.setTroops(t2.getTroops() + troops);
+                        nextTurn();
+                        return true;
+                    }
                 }
             }
         }
@@ -395,10 +399,6 @@ public class RiskGameState extends GameState {
             }
             totalTroops = calcTroops(currentTurn); //gives the player a determined amount of troops.
         }
-
-
-
-
         return true;
     }
 
