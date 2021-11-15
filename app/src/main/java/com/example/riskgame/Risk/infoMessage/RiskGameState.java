@@ -4,7 +4,7 @@ package com.example.riskgame.Risk.infoMessage;
  * Game state variables and methods for Risk game.
  *
  * @author Phi Nguyen, Dylan Kramis, Charlie Benning
- * @version 10/7/2021
+ * @version 11/14/2021
  */
 
 import com.example.riskgame.GameFramework.infoMessage.GameState;
@@ -111,7 +111,7 @@ public class RiskGameState extends GameState {
             }
         }
 
-        int troopCount = ((territoryCount - 3)/3) + 3; //calculation for troops
+        int troopCount = ((territoryCount)/3); //calculation for troops
 
         //check for continent bonuses (if a player has all territories in a continent)
         if (territoryCounts[Territory.Continent.ASIA.ordinal()] == 12) {
@@ -133,6 +133,9 @@ public class RiskGameState extends GameState {
             troopCount = troopCount + 2;
         }
 
+        if (troopCount < 3) {
+            troopCount = 3;
+        }
         return troopCount; //return number of troops given at the start of the round
     }
 
@@ -254,8 +257,9 @@ public class RiskGameState extends GameState {
                     addCard();
                     def.setTroops(1);
                     atk.setTroops(atk.getTroops() - 1);
-
+                    def.highlightMoved = true;
                 }
+                atk.highlightMoved = true;
                 return true;
             }
             return false;
@@ -278,6 +282,7 @@ public class RiskGameState extends GameState {
             //if owner matches
             if (troops >= 0 && troops <= totalTroops) {
                 addTroop(t, troops);
+                t.highlightMoved = true;
                 return true;
             }
         }
@@ -314,6 +319,8 @@ public class RiskGameState extends GameState {
                         t1.setTroops(t1.getTroops() - troops);
                         t2.setTroops(t2.getTroops() + troops);
                         nextTurn();
+                        t1.highlightMoved = true;
+                        t2.highlightMoved = false;
                         return true;
                     }
                 }

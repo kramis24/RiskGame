@@ -45,6 +45,11 @@ public class RiskGameStateTest {
     public void occupy() {
     }
 
+    /**
+     * Test for fortify method making sure it fits withing th parameters/rules of the game
+     *
+     * @author: Charlie Benning
+     **/
     @Test
     public void fortify() {
         RiskGameState RiskTest = new RiskGameState();
@@ -68,10 +73,15 @@ public class RiskGameStateTest {
         assertFalse(RiskTest.fortify(alaska,NWterr,-4)); //cant move negative troops
         assertFalse(RiskTest.fortify(alaska,NWterr,5)); //cant move all troops from a terr
         assertTrue(RiskTest.fortify(alaska,NWterr,2)); //can move to adjacent
-        //assertTrue(RiskTest.fortify(alaska,greenland,2)); //can move through chain ERROR
-
+        //assertTrue(RiskTest.fortify(alaska,greenland,2)); //can move through chain ERROR --> can't fortify twice ????
+        //NOT due to checked
     }
 
+    /**
+     * Test for checkchain method making sure it fits withing th parameters/rules of the game
+     *
+     * @author: Charlie Benning
+     **/
     @Test
     public void checkChain() {
         RiskGameState RiskTest = new RiskGameState();
@@ -85,6 +95,11 @@ public class RiskGameStateTest {
         assertFalse(RiskTest.checkChain(territoriesTest.get(37),territoriesTest.get(41))); //territories aren't owned by the same player
     }
 
+    /**
+     * Test for nextTurn method making sure it fits withing th parameters/rules of the game
+     *
+     * @author: Charlie Benning
+     **/
     @Test
     public void nextTurn() {
         RiskGameState RiskTest = new RiskGameState();
