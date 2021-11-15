@@ -941,9 +941,6 @@ public class RiskGameState extends GameState {
         } else {
             return false;
         }
-        countArtillery = 0;
-        countCavalry = 0;
-        countInfantry = 0;
         return true;
     }
 
