@@ -162,11 +162,16 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         // switch case checking buttons
         switch (view.getId()) {
             case R.id.helpButton:
-                // TODO user manual popup display
+                // calls help popup then breaks out of switch case
+                helpPopup();
+                break;
+
             case R.id.exitButton:
+                // exits game, no break needed
                 System.exit(0);
+
             case R.id.cardButton:
-                // TODO card popup display
+                // sets up ard popup
                 ExchangeCardAction exchange = new ExchangeCardAction(this);
                 LayoutInflater inflater = (LayoutInflater)
                         myActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -190,10 +195,14 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                         }
                     }
                 });
+                break;
+
             case R.id.nextButton:
+                // clears selections, sends action to advance turn, then breaks
                 selectedT2 = null;
                 selectedT1 = null;
                 game.sendAction(new NextTurnAction(this));
+                break;
 
         }
 
@@ -372,5 +381,33 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
      */
     private void generateNumber(int numTroops) {
         generateAction(selectedT1, numTroops);
+    }
+
+    /**
+     * helpPopup
+     * Displays the user manual.
+     */
+    private void helpPopup() {
+
+        // initialize popup
+        LayoutInflater inflater = (LayoutInflater)
+                myActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popup = inflater.inflate(R.layout.help_popup, null);
+        Button dismissButton = (Button) popup.findViewById(R.id.dismissButton);
+
+        // creates and displays popup
+        PopupWindow popupWindow = new PopupWindow(popup, LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, false);
+        popupWindow.showAtLocation(mapView, Gravity.CENTER, 0,
+                0);
+
+        // dismissButton listener
+        dismissButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+            }
+        });
+
     }
 }
