@@ -113,6 +113,10 @@ public class RiskGameState extends GameState {
 
         int troopCount = ((territoryCount - 3)/3) + 3; //calculation for troops
 
+        if (troopCount < 3) {
+            troopCount = 3;
+        }
+
         //check for continent bonuses (if a player has all territories in a continent)
         if (territoryCounts[Territory.Continent.ASIA.ordinal()] == 12) {
             troopCount = troopCount + 7;
