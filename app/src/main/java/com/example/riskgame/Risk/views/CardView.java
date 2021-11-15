@@ -18,8 +18,9 @@ public class CardView extends FlashSurfaceView {
     private RiskGameState riskGameState;
     private Paint testPaint;
 
-    public CardView(Context context) {
+    public CardView(Context context,RiskGameState gameState) {
         super(context);
+        riskGameState = gameState;
         setWillNotDraw(false);
         testPaint.setColor(Color.RED);
     }
