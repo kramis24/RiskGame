@@ -53,6 +53,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
     private TextView turnPhaseTextView;
     private TextView troopCountTextView;
     private TextView cardTextView;
+    private TextView currentCards;
     private RiskMapView mapView;
     private float touchX;
     private float touchY;
@@ -84,7 +85,6 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
      */
     @Override
     public void receiveInfo(GameInfo info) {
-
         // returns if invalid game state
         if (!(info instanceof RiskGameState)) {
             return;
@@ -115,7 +115,10 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
             turnPhaseTextView.setText("Fortify");
         }
         troopCountTextView.setText("Troops: " + ((RiskGameState) info).getTotalTroops());
-    }
+
+
+        }
+
 
     /**
      * setAsGui
@@ -141,8 +144,9 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         turnPhaseTextView  = (TextView)activity.findViewById(R.id.turnPhaseTextView);
         troopCountTextView = (TextView)activity.findViewById(R.id.troopCountTextView);
         mapView = (RiskMapView)activity.findViewById(R.id.mapView);
-        cardView = (CardView) activity.findViewById(R.id.cardDisplay);
+
         cardTextView = activity.findViewById(R.id.gainCardText);
+
 
         // set listeners
         helpButton.setOnClickListener(this);
@@ -175,7 +179,33 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                         myActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View popup = inflater.inflate(R.layout.card_popup, null);
                 Button exchangeButton = (Button) popup.findViewById(R.id.exchange_cards);
+                currentCards = popup.findViewById(R.id.currentCards);
+                int countArtillery = 0;
+                int countCavalry = 0;
+                int countInfantry = 0;
+                if(gameState != null && currentCards != null) {
+                    for(int i = 0; i < gameState.getCards().get(gameState.getCurrentTurn()).size(); i++) {
+                        if(gameState.getCards().size() <= 0 ) {
+                            return;
+                        }
+                        if(gameState.getCards().get(this.playerNum).get(i) == RiskGameState.Card.ARTILLERY) {
+                            countArtillery++;
+                        }
+                        if(gameState.getCards().get(playerNum).get(i) == RiskGameState.Card.CAVALRY) {
+                            countCavalry++;
+                        }
+                        if(gameState.getCards().get(playerNum).get(i) == RiskGameState.Card.INFANTRY) {
+                            countInfantry++;
+                        }
+                    }
 
+                    currentCards.setBackgroundColor(Color.WHITE);
+                    currentCards.setTextColor(Color.BLACK);
+                    currentCards.setText("Artillery: " + countArtillery + "\n");
+                    currentCards.append("Cavalry: " + countCavalry + "\n");
+                    currentCards.append("Infantry: " + countInfantry + "\n");
+                    currentCards.invalidate();
+                }
                 // creates popup
                 PopupWindow popupWindow = new PopupWindow(popup, LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT, true);

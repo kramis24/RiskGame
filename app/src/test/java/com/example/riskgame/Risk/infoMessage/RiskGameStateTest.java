@@ -136,4 +136,25 @@ public class RiskGameStateTest {
     @Test
     public void nextTurn() throws Exception {
     }
+
+    @Test
+    public void win() throws Exception {
+        boolean win = false;
+        RiskGameState gameState = new RiskGameState();
+        for(int i = 0; i < 41; i++) {
+            gameState.getTerritories().get(i).setOwner(0);
+        }
+        gameState.getTerritories().get(41).setOwner(0);
+        int winner = gameState.getTerritories().get(0).getOwner();
+        //checks if all territories have the same owner
+        for(Territory t: gameState.getTerritories()) {
+            if(t.getOwner() != winner) {
+                assertTrue(win);
+            }
+        }
+        win = true;
+        assertTrue(win);
+
+
+    }
 }

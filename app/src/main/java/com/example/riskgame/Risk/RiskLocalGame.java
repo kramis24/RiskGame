@@ -146,16 +146,17 @@ public class RiskLocalGame extends LocalGame {
             if(((FortifyAction) action).getDeployTo().getOwner() != ((FortifyAction) action).getDeployFrom().getOwner()) {
                 return false;
             }
+
             //checks that the territory has enough troops to fortify
             if(((FortifyAction) action).getDeployFrom().getTroops() <= 1) {
                 return false;
             }
+
             //checks that a valid number of troops are being sent
             if(((FortifyAction) action).getDeployFrom().getTroops() < ((FortifyAction) action).getNumDeployed() ||
                     ((FortifyAction) action).getNumDeployed() < 0) {
                 return false;
             }
-
 
             riskGS.fortify(((FortifyAction) action).getDeployFrom(), ((FortifyAction) action).getDeployTo(), ((FortifyAction) action).getNumDeployed());
             //updates the gamestate

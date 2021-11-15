@@ -42,7 +42,6 @@ public class RiskGameState extends GameState {
     private boolean hasGottenCard = false;
     private int playerCount = 2;
     private int currentTurn = 0;
-    private String playerNames[];
     private Phase currentPhase = Phase.DEPLOY;
     private int totalTroops = 100;
     private ArrayList<Territory> territories;
@@ -53,18 +52,18 @@ public class RiskGameState extends GameState {
      */
     public RiskGameState() {
 
+        playerCount = 2;
         // initialize territories array list
         territories = new ArrayList<Territory>();
-
         // initialize territories and add adjacents to each territory
         initTerritories();
-
         setTerritoryPlayers();
         setStartTroops();
         totalTroops = calcTroops(0);
         for(int i = 0; i < playerCount; i++) {
             cards.add(new ArrayList<Card>());
         }
+
     }
 
     public Phase getCurrentPhase() {
@@ -261,9 +260,8 @@ public class RiskGameState extends GameState {
                 if (def.getTroops() <= 0) {
                     def.setOwner(atk.getOwner());
                     addCard();
-                    def.setTroops(1);
-                    atk.setTroops(atk.getTroops() - 1);
-
+                    def.setTroops(atk.getTroops() - 1);
+                    atk.setTroops(atk.getTroops() - (atk.getTroops() - 1));
                 }
                 return true;
             }
@@ -433,10 +431,9 @@ public class RiskGameState extends GameState {
         // loops to roll each die
         for (int i = 0; i < numRolls; i++) {
             Random die = new Random();
-            int number = die.nextInt(5) + 1;
+            int number = die.nextInt(6) + 1;
             rolls.add(number);
         }
-
         return rolls;
     }
 
@@ -533,6 +530,7 @@ public class RiskGameState extends GameState {
 
         Territory easternUnitedStates = new Territory(Territory.Continent.NORTH_AMERICA,
                 "Eastern United States", 700, 750);
+        territories.add(easternUnitedStates);
         territories.add(easternUnitedStates);
 
         Territory centralAmerica = new Territory(Territory.Continent.NORTH_AMERICA,
