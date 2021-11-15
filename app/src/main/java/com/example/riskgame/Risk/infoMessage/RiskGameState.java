@@ -422,7 +422,7 @@ public class RiskGameState extends GameState {
         // loops to roll each die
         for (int i = 0; i < numRolls; i++) {
             Random die = new Random();
-            int number = die.nextInt(6);
+            int number = die.nextInt(5) + 1;
             rolls.add(number);
         }
 
