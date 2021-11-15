@@ -5,6 +5,14 @@ package com.example.riskgame.Risk.players;
  *
  * @author Dylan Kramis, Phi Nguyen (Exit Button)
  * @version 11/7/2021 Alpha
+ * TODO: Cards display
+ * TODO: Add bounds to map
+ * TODO: Fix Fortify
+ * TODO: Bug? computer doesn't deploy
+ * TODO: Improve Interface, no prompts when attacking, only 1 prompt when fortifying
+ * TODO: Help Button
+ * TODO: Show which territories have been recently interacted with
+ *
  */
 
 import static android.text.InputType.TYPE_CLASS_NUMBER;
@@ -238,7 +246,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                 for (Territory t : gameState.getTerritories()) {
                     if ((Math.abs(touchX - (t.getX() + mapView.getShiftX() + TOUCH_WINDOW)) < (float) (t.getWidth() / 2))
                             && (Math.abs(touchY - (t.getY() + mapView.getShiftY() + TOUCH_WINDOW)) < (float) (t.getHeight() / 2))) {
-                        askTroops();
+                            askTroops();
                         if (selectedT1 != null
                                 && gameState.getCurrentPhase() != RiskGameState.Phase.DEPLOY) {
                             selectedT2 = t;
@@ -308,8 +316,9 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                     LinearLayout.LayoutParams.WRAP_CONTENT, true);
 
             // displays popup window
-            popupWindow.showAtLocation(mapView, Gravity.NO_GRAVITY, (int) touchX,
-                    (int) touchY);
+                popupWindow.showAtLocation(mapView, Gravity.NO_GRAVITY, (int) touchX,
+                        (int) touchY);
+
 
             // listener for confirmButton
             confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -340,10 +349,10 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
 
     @Override
     protected void initAfterReady() {
-        super.initAfterReady();
         if(gameState == null) {
             return;
         }
+        gameState.setPlayerCount(playerNum);
         cardView.setRiskGameState(gameState);
     }
 }

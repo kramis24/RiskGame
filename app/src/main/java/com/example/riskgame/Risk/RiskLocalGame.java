@@ -31,6 +31,7 @@ public class RiskLocalGame extends LocalGame {
     public RiskLocalGame() {
         state = new RiskGameState();
         riskGS = (RiskGameState) state;
+
     }
 
     /**

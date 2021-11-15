@@ -39,6 +39,7 @@ public class RiskGameState extends GameState {
     }
 
     // instance variables
+    private boolean hasGottenCard = false;
     private int playerCount = 2;
     private int currentTurn = 0;
     private String playerNames[];
@@ -393,6 +394,7 @@ public class RiskGameState extends GameState {
             currentPhase = Phase.ATTACK;
         }
         else if (currentPhase == Phase.ATTACK) {
+            hasGottenCard = false;
             currentPhase = Phase.FORTIFY;
         }
         else {
@@ -492,6 +494,7 @@ public class RiskGameState extends GameState {
      * @return total troops
      */
     public int getTotalTroops() { return totalTroops; }
+
 
     /**
      * initTerritories
@@ -872,14 +875,17 @@ public class RiskGameState extends GameState {
      * adds a card to the current players hand
      * this method is called in attack method
      */
-    private void addCard() {
+    public void addCard() {
         if(cards.get(currentTurn).size() >= 5) {
             return;
         }
         List<Card> ListOfCards =(Arrays.asList(Card.values()));//stores the enums into an array
         int size = ListOfCards.size(); //size of the enums array
         Random rnd = new Random();
-        cards.get(currentTurn).add(ListOfCards.get(rnd.nextInt(size)));//adds card for the current player
+        if(!hasGottenCard) {
+            cards.get(currentTurn).add(ListOfCards.get(rnd.nextInt(size)));//adds card for the current player
+            hasGottenCard = true;
+        }
     }
 
     /**

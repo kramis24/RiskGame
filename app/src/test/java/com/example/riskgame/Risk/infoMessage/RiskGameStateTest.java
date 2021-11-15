@@ -9,6 +9,10 @@ import org.junit.Test;
 public class RiskGameStateTest {
 
     @Test
+    /**
+     * Phi Nguyen
+     * Test the attack method
+     */
     public void attack() {
         RiskGameState gameState = new RiskGameState();
         //checks that the attack method returns false when both territories have the same owner
@@ -27,6 +31,10 @@ public class RiskGameStateTest {
     }
 
     @Test
+    /**
+     * Phi Nguyen
+     * Test the exchange card method
+     */
     public void exchangeCards() {
         RiskGameState gameState = new RiskGameState();
         gameState.getCards().get(0).add(RiskGameState.Card.INFANTRY);
@@ -57,8 +65,20 @@ public class RiskGameStateTest {
     }
 
     @Test
-    public void copy(){
+    /**
+     * Phi Nguyen
+     * Test the copy Constructor
+     */
+    public void copyConstructor(){
         RiskGameState gameState = new RiskGameState();
+        gameState.nextTurn();
+        gameState.setTotalTroops(100);
+        gameState.addCard();
+
+        gameState.addCard();
+        gameState.addCard();
+        gameState.getTerritories().get(25).setOwner(1);
+        gameState.getTerritories().get(23).setTroops(62);
         RiskGameState copy = new RiskGameState(gameState);
         assertTrue(gameState.getCurrentPhase() == copy.getCurrentPhase());
         assertTrue(gameState.getCurrentTurn() == copy.getCurrentTurn());
@@ -70,6 +90,7 @@ public class RiskGameStateTest {
             assertTrue(gameState.getTerritories().get(i).getOwner() == copy.getTerritories().get(i).getOwner());
             assertTrue(gameState.getTerritories().get(i).getContinent() == copy.getTerritories().get(i).getContinent());
         }
+
 
         for(int i = 0; i < gameState.getCards().size(); i++) {
             for(int j = 0; j < gameState.getCards().get(i).size(); j++) {
