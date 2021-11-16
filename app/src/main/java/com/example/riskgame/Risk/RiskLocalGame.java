@@ -17,6 +17,7 @@ import com.example.riskgame.Risk.riskActionMessage.DeployAction;
 import com.example.riskgame.Risk.riskActionMessage.ExchangeCardAction;
 import com.example.riskgame.Risk.riskActionMessage.FortifyAction;
 import com.example.riskgame.Risk.riskActionMessage.NextTurnAction;
+import com.example.riskgame.Risk.views.CardView;
 import com.google.android.material.expandable.ExpandableWidgetHelper;
 
 public class RiskLocalGame extends LocalGame {
@@ -30,6 +31,7 @@ public class RiskLocalGame extends LocalGame {
     public RiskLocalGame() {
         state = new RiskGameState();
         riskGS = (RiskGameState) state;
+
     }
 
     /**
@@ -83,8 +85,10 @@ public class RiskLocalGame extends LocalGame {
     @Override
     protected boolean makeMove(GameAction action) {
         if(action instanceof DeployAction){
-
             //checks that the user entered a valid number of troops
+            if(((DeployAction) action).getDeployTo() == null) {
+                return false;
+            }
             if(((DeployAction) action).getNumDeploy() < 0 || ((DeployAction) action).getNumDeploy() > riskGS.getTotalTroops()) {
                 return false;
             }
@@ -101,9 +105,10 @@ public class RiskLocalGame extends LocalGame {
                     riskGS.getTerritories().set(index, ((DeployAction) action).getDeployTo());
                 }
             }
-            if(riskGS.getTotalTroops() <= 0) {
-                riskGS.nextTurn();
-            }
+//            riskGS.setTotalTroops(riskGS.getTotalTroops() - ((DeployAction) action).getNumDeploy());
+//            if(riskGS.getTotalTroops() <= 0) {
+//                riskGS.nextTurn();
+//            }
 
             return true;
         }
@@ -143,16 +148,17 @@ public class RiskLocalGame extends LocalGame {
             if(((FortifyAction) action).getDeployTo().getOwner() != ((FortifyAction) action).getDeployFrom().getOwner()) {
                 return false;
             }
+
             //checks that the territory has enough troops to fortify
             if(((FortifyAction) action).getDeployFrom().getTroops() <= 1) {
                 return false;
             }
+
             //checks that a valid number of troops are being sent
             if(((FortifyAction) action).getDeployFrom().getTroops() < ((FortifyAction) action).getNumDeployed() ||
                     ((FortifyAction) action).getNumDeployed() < 0) {
                 return false;
             }
-
 
             riskGS.fortify(((FortifyAction) action).getDeployFrom(), ((FortifyAction) action).getDeployTo(), ((FortifyAction) action).getNumDeployed());
             //updates the gamestate
