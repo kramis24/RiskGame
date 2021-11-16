@@ -54,6 +54,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
     private TextView troopCountTextView;
     private TextView cardTextView;
     private TextView currentCards;
+    private CardView cards;
     private RiskMapView mapView;
     private float touchX;
     private float touchY;
@@ -61,6 +62,9 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
     private Territory selectedT1;
     private Territory selectedT2;
     private RiskGameState gameState;
+    int countArtillery = 0;
+    int countCavalry = 0;
+    int countInfantry = 0;
 
 
     /**
@@ -180,9 +184,10 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                 View popup = inflater.inflate(R.layout.card_popup, null);
                 Button exchangeButton = (Button) popup.findViewById(R.id.exchange_cards);
                 currentCards = popup.findViewById(R.id.currentCards);
-                int countArtillery = 0;
-                int countCavalry = 0;
-                int countInfantry = 0;
+                cardTextView = popup.findViewById(R.id.gainCardText);
+                countArtillery = 0;
+                countCavalry = 0;
+                countInfantry = 0;
                 if(gameState != null && currentCards != null) {
                     for(int i = 0; i < gameState.getCards().get(gameState.getCurrentTurn()).size(); i++) {
                         if(gameState.getCards().size() <= 0 ) {
@@ -199,11 +204,15 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                         }
                     }
 
+
                     currentCards.setBackgroundColor(Color.WHITE);
                     currentCards.setTextColor(Color.BLACK);
                     currentCards.setText("Artillery: " + countArtillery + "\n");
                     currentCards.append("Cavalry: " + countCavalry + "\n");
                     currentCards.append("Infantry: " + countInfantry + "\n");
+                    currentCards.append("\n Exchange Bonuses: \n");
+                    currentCards.append("3 Infantry = 4 troops\n 3 Cavalry = 6 troops\n 3 Artillery = 8 troops\n 1 of each = 10 troops\n");
+                    currentCards.append("pressing exchange cards automatically gives you the highest number of troops");
                     currentCards.invalidate();
                 }
                 // creates popup
@@ -218,7 +227,28 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                         if(gameState.getCurrentPhase() == RiskGameState.Phase.DEPLOY) {
                             game.sendAction(exchange);
                             troopCountTextView.invalidate();
+                            if(countArtillery >= 1 && countCavalry >= 1 && countInfantry >= 1) {
+                                cardTextView.setText("Gained 10 troops");
+                                countArtillery--;
+                                countCavalry--;
+                                countInfantry--;
 
+                            } else if(countArtillery >= 3) {
+                                cardTextView.setText("Gained 8 troops");
+                                countArtillery=-3;
+                            } else if(countCavalry >= 3) {
+                                cardTextView.setText("Gained 6 troops");
+                                countCavalry =-3;
+                            } else if(countInfantry >= 3) {
+                                cardTextView.setText("Gained 4 troops");
+                                countInfantry =-3;
+                            }
+                            currentCards.setText("Artillery: " + countArtillery + "\n");
+                            currentCards.append("Cavalry: " + countCavalry + "\n");
+                            currentCards.append("Infantry: " + countInfantry + "\n");
+                            currentCards.append("\n Exchange Bonuses: \n");
+                            currentCards.append(" 3 Infantry = 4 troops\n 3 Cavalry = 6 troops\n 3 Artillery = 8 troops\n 1 of each = 10 troops\n");
+                            currentCards.append("pressing exchange cards automatically gives you the highest number of troops");
                         }
                     }
                 });

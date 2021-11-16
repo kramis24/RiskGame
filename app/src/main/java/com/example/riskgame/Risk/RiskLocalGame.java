@@ -85,8 +85,10 @@ public class RiskLocalGame extends LocalGame {
     @Override
     protected boolean makeMove(GameAction action) {
         if(action instanceof DeployAction){
-
             //checks that the user entered a valid number of troops
+            if(((DeployAction) action).getDeployTo() == null) {
+                return false;
+            }
             if(((DeployAction) action).getNumDeploy() < 0 || ((DeployAction) action).getNumDeploy() > riskGS.getTotalTroops()) {
                 return false;
             }

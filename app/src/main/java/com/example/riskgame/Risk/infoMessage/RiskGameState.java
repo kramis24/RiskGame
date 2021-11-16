@@ -883,10 +883,10 @@ public class RiskGameState extends GameState {
             return;
         }
         Random rnd = new Random();
-        if(!hasGottenCard) {
+        //if(!hasGottenCard) {
             cards.get(currentTurn).add(listOfCards.get(rnd.nextInt(size)));//adds card for the current player
             hasGottenCard = true;
-        }
+        //}
     }
 
     /**
