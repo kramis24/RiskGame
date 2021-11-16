@@ -39,9 +39,9 @@ public class RiskGameState extends GameState {
     }
 
     // instance variables
+    private boolean hasGottenCard = false;
     private int playerCount = 2;
     private int currentTurn = 0;
-    private String playerNames[];
     private Phase currentPhase = Phase.DEPLOY;
     private int totalTroops = 100;
     private ArrayList<Territory> territories;
@@ -52,18 +52,18 @@ public class RiskGameState extends GameState {
      */
     public RiskGameState() {
 
+        playerCount = 2;
         // initialize territories array list
         territories = new ArrayList<Territory>();
-
         // initialize territories and add adjacents to each territory
         initTerritories();
-
         setTerritoryPlayers();
         setStartTroops();
         totalTroops = calcTroops(0);
         for(int i = 0; i < playerCount; i++) {
             cards.add(new ArrayList<Card>());
         }
+
     }
 
     public Phase getCurrentPhase() {
@@ -88,6 +88,14 @@ public class RiskGameState extends GameState {
         for (Territory t : other.territories) {
             Territory newTerritory = new Territory(t);
             this.territories.add(newTerritory);
+        }
+        for(int i = 0; i < this.playerCount; i++) {
+            cards.add(new ArrayList<Card>());
+        }
+        for(int i = 0; i < other.getCards().size(); i++) {
+            for(int j = 0; j < other.getCards().get(i).size(); j++) {
+                cards.get(i).add(other.getCards().get(i).get(j));
+            }
         }
     }
 
@@ -256,9 +264,8 @@ public class RiskGameState extends GameState {
                 if (def.getTroops() <= 0) {
                     def.setOwner(atk.getOwner());
                     addCard();
-                    def.setTroops(1);
-                    atk.setTroops(atk.getTroops() - 1);
-
+                    def.setTroops(atk.getTroops() - 1);
+                    atk.setTroops(atk.getTroops() - (atk.getTroops() - 1));
                 }
                 return true;
             }
@@ -310,6 +317,7 @@ public class RiskGameState extends GameState {
      * @return true if move was done successfully
      **/
     public boolean fortify(Territory t1, Territory t2, int troops) {
+        //TODO: Figure out what is wrong with fortify
         if (currentTurn == t1.getOwner() && currentTurn == t2.getOwner()) { //checks if both territories are owned by player
             if(checkChain(t1,t2)) {
                 if (t1.getTroops() - troops > 1) { //makes sure that you cannot send more troops than you have
@@ -389,6 +397,7 @@ public class RiskGameState extends GameState {
             currentPhase = Phase.ATTACK;
         }
         else if (currentPhase == Phase.ATTACK) {
+            hasGottenCard = false;
             currentPhase = Phase.FORTIFY;
         }
         else {
@@ -426,10 +435,9 @@ public class RiskGameState extends GameState {
         // loops to roll each die
         for (int i = 0; i < numRolls; i++) {
             Random die = new Random();
-            int number = die.nextInt(5) + 1;
+            int number = die.nextInt(6) + 1;
             rolls.add(number);
         }
-
         return rolls;
     }
 
@@ -526,6 +534,7 @@ public class RiskGameState extends GameState {
 
         Territory easternUnitedStates = new Territory(Territory.Continent.NORTH_AMERICA,
                 "Eastern United States", 700, 750);
+        territories.add(easternUnitedStates);
         territories.add(easternUnitedStates);
 
         Territory centralAmerica = new Territory(Territory.Continent.NORTH_AMERICA,
@@ -868,7 +877,7 @@ public class RiskGameState extends GameState {
      * adds a card to the current players hand
      * this method is called in attack method
      */
-    private void addCard() {
+    public void addCard() {
         if(cards.get(currentTurn).size() >= 5) {
             return;
         }
@@ -878,7 +887,10 @@ public class RiskGameState extends GameState {
             return;
         }
         Random rnd = new Random();
-        cards.get(currentTurn).add(listOfCards.get(rnd.nextInt(size) - 1));//adds card for the current player
+        //if(!hasGottenCard) {
+            cards.get(currentTurn).add(listOfCards.get(rnd.nextInt(size)));//adds card for the current player
+            hasGottenCard = true;
+        //}
     }
 
     /**
@@ -934,9 +946,6 @@ public class RiskGameState extends GameState {
         } else {
             return false;
         }
-        countArtillery = 0;
-        countCavalry = 0;
-        countInfantry = 0;
         return true;
     }
 
