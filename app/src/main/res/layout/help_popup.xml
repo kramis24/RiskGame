@@ -1,36 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="5in"
+        android:layout_height="4in"
         android:background="#FFFFFF"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="ExtraText">
 
-        <TextView
-            android:id="@+id/manualTextView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="User Manual"
-            android:textAlignment="center"
-            android:textSize="28sp" />
+            android:layout_weight="0"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/manualTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="User Manual"
+                android:textAlignment="center"
+                android:textSize="28sp" />
+
+            <Button
+                android:id="@+id/dismissButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="Dismiss" />
+        </LinearLayout>
 
         <EditText
             android:id="@+id/editTextTextMultiLine"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="900sp"
+            android:breakStrategy="simple"
             android:editable="false"
             android:ems="10"
             android:gravity="start|top"
             android:inputType="textMultiLine"
-            android:text="placeholder" />
+            android:text="RISK\n
+----Basic Rules----\n
+-The goal of the game is to take all the territories on the map.\n
+-There is a total of 42 territories making up 6 different continents.\n
+-Played with 2-4 players.\n
+-There are 3 phases to each turn: Deploy, Attack, and Fortify. The Phase of
+ each players turn can be seen in the center bar above the map. Players can
+ move between these phases and end their turn once done with these phases by
+ hitting the next button in the bottom right corner.\n
+-Which player’s turn it is can be seen in the top left next to the Phase bar
+ by displaying the player’s name who’s turn it is. In addition, this name
+ will be colored, indicated what color each player is and can be used to
+ identify which territories each player owns which also have their troop
+ numbers colored to match the player’s color.\n
+-Click exit button to exit game.\n\n
 
-        <Button
-            android:id="@+id/dismissButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Dismiss" />
+Set-Up\n
+-The game will automatically give each player an equal number of territories
+ and an equal number of troops randomly deployed to each of their
+ territories. The game will then start with player one in the deploy phase.\n\n
+
+----Gameplay----\n\n
+
+Deploy\n
+-At the beginning of each turn each player receives a given number of troops
+ to deploy to their owned territories. The player can deploy as many of
+ their given troops to any number of territories that they own.\n
+-To deploy troops to territories a player simply must tap on a territory
+they own, type the number of troops the want to deploy to that territory,
+ and hit confirm. The new total number of troops for that territory will be
+ displayed on the territory.\n\n
+
+Deployment troop count\n
+-The number of troops each player gets to deploy at the start of their turn
+ is automatically calculated by taking the number of territories the player
+ owns and dividing it by 3. Players will always get at least 3 troops no
+ matter the number of territories.\n\n
+
+Continent Bonuses\n
+-Controlling all the territories in each continent at the beginning of a
+ player’s turn gives a troop bonus for deployment in addition to the troops
+ calculated from the number of territories. Each continent can be seen by
+ the clear coloring of each. Each continent gives its own bonus, and any
+ player can receive any number of bonuses.\n
+-Oceania (Australia) = 2 troops\n
+-South America = 2 troops\n
+-Africa = 3 troops\n
+-North America = 5 troops\n
+-Europe = 5 troops\n
+-Asia = 7 troops\n\n
+
+Card bonus\n
+-Card bonuses must be played by viewing the cards and hitting the exchange
+ button during the deploy phase. See cards sections for more details.\n\n
+
+Attack\n
+-Players can attack enemy territories by first selecting the territory they
+ want to attack from, hitting confirm without entering a number, then
+ selecting an adjacent territory they want to attack and hitting confirm.
+ This should automatically roll the die and randomly decide which players
+ lost troops in the attack and properly subtract troops from either side.\n
+-A player can attack as many times as they want, or not, in a turn until
+ they either run out of troops to attack with next to enemy territories.\n
+-If a player defeat all of the enemy’s troops in a territory they then take
+ control of that territory, moving whatever number of troops they want from
+ their own attack territory to an enemy territory.\n\n
+
+Fortify\n
+-Each player can only fortify once per turn or skip this phase, ending their
+ turn. Players can only fortify to territories they own that are connected
+ by a chain of owned territories.\n
+-Players can fortify by simply selecting the territory they want to fortify
+ from and entering in the number of troops they want to move and hit
+ confirm. They then selected a connected territory to fortify to, reenter
+ the number of troops to fortify, and hit confirm. At the end of this
+ fortify movement the system should automatically end the player’s turn.\n\n
+
+Cards\n
+-Cards are received when players successfully take an enemy territory but
+ only one card can be earned per turn. Players can only hold a maximum of 5
+ cards and can only play 3 at a time. Players can view cards by hitting the
+ cards button in the bottom left-hand corner and cards will be automatically
+ played if a player has 5 cards. To play cards players must hit the
+ exchange button in the cards view and the system will automatically use the
+ cards that maximize then number of troops received. If a player has five
+ cards at the beginning for their turn during the deploy phase, three of
+ them will be automatically played giving the most troop bonus possible.\n
+-There are 4 different combinations of cards that can be played\n
+  -3 Infantry cards: 4 troop total\n
+  -3 Calvary cards: 6 troop total\n
+  -3 Artillery cards: 8 troop total\n
+  -One of each type of card (1 Infantry, 1 Calvary, 1 Artillery): 10 troop
+   total" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
