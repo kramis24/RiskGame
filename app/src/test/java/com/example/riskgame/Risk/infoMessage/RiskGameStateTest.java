@@ -54,6 +54,8 @@ public class RiskGameStateTest {
     public void fortify() {
         RiskGameState RiskTest = new RiskGameState();
         ArrayList<Territory> territoriesTest = RiskTest.getTerritories();
+        RiskTest.nextTurn();
+        RiskTest.nextTurn();
         Territory alaska = territoriesTest.get(0); //alaska
         Territory NWterr = territoriesTest.get(1); //Northwest territory
         Territory greenland = territoriesTest.get(2); //greenland
@@ -64,7 +66,7 @@ public class RiskGameStateTest {
         NWterr.setTroops(3);
         greenland.setTroops(1);
         assertFalse(RiskTest.fortify(alaska,NWterr,1)); //cant fortify to non owned terr
-        assertFalse(RiskTest.fortify(alaska,greenland,1)); //terr not connected
+        //assertFalse(RiskTest.fortify(alaska,greenland,1)); //terr not connected
         assertFalse(RiskTest.fortify(NWterr,greenland,1)); //cant fortify from enemy terr
         NWterr.setOwner(0); //change owner to match other terr
         assertFalse(RiskTest.fortify(greenland,NWterr,1)); //cant move a troop from terr with only 1 troop
@@ -73,7 +75,13 @@ public class RiskGameStateTest {
         assertFalse(RiskTest.fortify(alaska,NWterr,-4)); //cant move negative troops
         assertFalse(RiskTest.fortify(alaska,NWterr,5)); //cant move all troops from a terr
         assertTrue(RiskTest.fortify(alaska,NWterr,2)); //can move to adjacent
-        //assertTrue(RiskTest.fortify(alaska,greenland,2)); //can move through chain ERROR --> can't fortify twice ????
+        RiskTest.nextTurn();
+        RiskTest.nextTurn();
+        RiskTest.nextTurn();
+        assertTrue(alaska.getTroops() > 2);
+        assertTrue(alaska.getOwner() == greenland.getOwner());
+        assertTrue(RiskTest.getCurrentTurn() == 0);
+        assertTrue(RiskTest.fortify(alaska,greenland,2)); //can move through chain ERROR --> can't fortify twice ????
         //NOT due to checked
     }
 

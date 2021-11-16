@@ -55,6 +55,11 @@ public class RiskGameState extends GameState {
         // initialize territories array list
         territories = new ArrayList<Territory>();
 
+
+    }
+
+    public void init(int numPlayers) {
+        this.playerCount = numPlayers;
         // initialize territories and add adjacents to each territory
         initTerritories();
 
@@ -88,6 +93,12 @@ public class RiskGameState extends GameState {
         for (Territory t : other.territories) {
             Territory newTerritory = new Territory(t);
             this.territories.add(newTerritory);
+        }
+        for(int i = 0; i < playerCount; i++) {
+            cards.add(new ArrayList<Card>());
+            for (Card c:other.cards.get(i)) {
+                cards.get(i).add(c);
+            }
         }
     }
 
@@ -282,6 +293,7 @@ public class RiskGameState extends GameState {
             //if owner matches
             if (troops >= 0 && troops <= totalTroops) {
                 addTroop(t, troops);
+                totalTroops= totalTroops - troops;
                 t.highlightMoved = true;
                 return true;
             }
@@ -315,12 +327,12 @@ public class RiskGameState extends GameState {
         if (currentTurn == t1.getOwner() && currentTurn == t2.getOwner()) { //checks if both territories are owned by player
             if(checkChain(t1,t2)) {
                 if (troops > 0) {
-                    if (t1.getTroops() - troops > 1) { //makes sure that you cannot send more troops than you have
+                    if (t1.getTroops() - troops > 0) { //makes sure that you cannot send more troops than you have
                         t1.setTroops(t1.getTroops() - troops);
                         t2.setTroops(t2.getTroops() + troops);
                         nextTurn();
                         t1.highlightMoved = true;
-                        t2.highlightMoved = false;
+                        t2.highlightMoved = true;
                         return true;
                     }
                 }
