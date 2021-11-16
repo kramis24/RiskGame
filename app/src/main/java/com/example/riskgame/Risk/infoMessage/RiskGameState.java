@@ -383,18 +383,6 @@ public class RiskGameState extends GameState {
         return ans; //return if territories are connected by a chain
     }
 
-    //
-    /* No GUI yet so these methods cannot be implemented
-    public void viewStats() {
-    }
-
-    public void viewHelp() {
-    }
-
-    public void viewCards() {
-    }
-    */
-
     /**
      * nextTurn
      * Advances turn/phase.
