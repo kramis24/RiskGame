@@ -266,8 +266,8 @@ public class RiskGameState extends GameState {
                 if (def.getTroops() <= 0) {
                     def.setOwner(atk.getOwner());
                     addCard();
-                    def.setTroops(1);
-                    atk.setTroops(atk.getTroops() - 1);
+                    def.setTroops(atk.getTroops() - 1);
+                    atk.setTroops(1);
                     def.highlightMoved = true;
                 }
                 atk.highlightMoved = true;
