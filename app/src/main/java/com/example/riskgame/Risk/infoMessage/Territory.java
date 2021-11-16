@@ -32,6 +32,7 @@ public class Territory {
     private String name;
     private int owner;
     public boolean checked;
+    public boolean highlightMoved;
 
     // location variables
     private int centerX = 0;
@@ -54,6 +55,7 @@ public class Territory {
         troops = 10;
         owner = -1;
         checked = false;
+        highlightMoved = false;
     }
 
     /**
