@@ -4,7 +4,7 @@ package com.example.riskgame.Risk.infoMessage;
  * Game state variables and methods for Risk game.
  *
  * @author Phi Nguyen, Dylan Kramis, Charlie Benning
- * @version 10/7/2021
+ * @version 11/14/2021
  */
 
 import com.example.riskgame.GameFramework.infoMessage.GameState;
@@ -63,7 +63,6 @@ public class RiskGameState extends GameState {
         for(int i = 0; i < playerCount; i++) {
             cards.add(new ArrayList<Card>());
         }
-
     }
 
     public Phase getCurrentPhase() {
@@ -119,7 +118,7 @@ public class RiskGameState extends GameState {
             }
         }
 
-        int troopCount = ((territoryCount - 3)/3) + 3; //calculation for troops
+        int troopCount = ((territoryCount)/3); //calculation for troops
 
         //check for continent bonuses (if a player has all territories in a continent)
         if (territoryCounts[Territory.Continent.ASIA.ordinal()] == 12) {
@@ -141,6 +140,9 @@ public class RiskGameState extends GameState {
             troopCount = troopCount + 2;
         }
 
+        if (troopCount < 3) {
+            troopCount = 3;
+        }
         return troopCount; //return number of troops given at the start of the round
     }
 
@@ -260,9 +262,16 @@ public class RiskGameState extends GameState {
                 if (def.getTroops() <= 0) {
                     def.setOwner(atk.getOwner());
                     addCard();
+
+                    def.setTroops(1);
+                    atk.setTroops(atk.getTroops() - 1);
+                    def.highlightMoved = true;
+
                     def.setTroops(atk.getTroops() - 1);
                     atk.setTroops(atk.getTroops() - (atk.getTroops() - 1));
+
                 }
+                atk.highlightMoved = true;
                 return true;
             }
             return false;
@@ -285,6 +294,7 @@ public class RiskGameState extends GameState {
             //if owner matches
             if (troops >= 0 && troops <= totalTroops) {
                 addTroop(t, troops);
+                t.highlightMoved = true;
                 totalTroops -= troops;
                 return true;
             }
@@ -292,11 +302,13 @@ public class RiskGameState extends GameState {
         return false;
     }
 
-    public boolean occupy(Territory t, int troops) {
+    public boolean occupy(Territory t, Territory t2, int troops) {
         if (currentTurn == t.getOwner()) { //checks that the current territory is owned by the player
-            t.setTroops(troops);
-            t.setTroops(t.getTroops() - troops);
-            return true;
+            if (troops > 0 && troops < t.getTroops()) {
+                t2.setTroops(troops);
+                t.setTroops(t.getTroops() - troops);
+                return true;
+            }
         }
         return false;
     }
@@ -313,14 +325,17 @@ public class RiskGameState extends GameState {
      * @return true if move was done successfully
      **/
     public boolean fortify(Territory t1, Territory t2, int troops) {
-        //TODO: Figure out what is wrong with fortify
         if (currentTurn == t1.getOwner() && currentTurn == t2.getOwner()) { //checks if both territories are owned by player
             if(checkChain(t1,t2)) {
-                if (t1.getTroops() - troops > 1) { //makes sure that you cannot send more troops than you have
-                    t1.setTroops(t1.getTroops() - troops);
-                    t2.setTroops(t2.getTroops() + troops);
-                    nextTurn();
-                    return true;//
+                if (troops > 0) {
+                    if (t1.getTroops() - troops > 1) { //makes sure that you cannot send more troops than you have
+                        t1.setTroops(t1.getTroops() - troops);
+                        t2.setTroops(t2.getTroops() + troops);
+                        nextTurn();
+                        t1.highlightMoved = true;
+                        t2.highlightMoved = false;
+                        return true;
+                    }
                 }
             }
         }
@@ -405,10 +420,6 @@ public class RiskGameState extends GameState {
             }
             totalTroops = calcTroops(currentTurn); //gives the player a determined amount of troops.
         }
-
-
-
-
         return true;
     }
 
@@ -530,7 +541,6 @@ public class RiskGameState extends GameState {
 
         Territory easternUnitedStates = new Territory(Territory.Continent.NORTH_AMERICA,
                 "Eastern United States", 700, 750);
-        territories.add(easternUnitedStates);
         territories.add(easternUnitedStates);
 
         Territory centralAmerica = new Territory(Territory.Continent.NORTH_AMERICA,
