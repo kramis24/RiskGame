@@ -58,6 +58,13 @@ public class RiskGameStateTest {
         testTerritories.get(1).setTroops(1);
         testTerritories.get(2).setOwner(0);
         testTerritories.get(2).setTroops(1);
+        testTerritories.get(3).setOwner(1);
+        testTerritories.get(3).setTroops(1);
+
+        // tests trying to deploy to an enemy territory
+        testState.deploy(testTerritories.get(3), 1);
+        assertEquals(1, testTerritories.get(3).getTroops());
+        assertEquals(6, testState.getTotalTroops());
 
         // tests sequentially draining totalTroops
         testState.deploy(testTerritories.get(0), 1);
