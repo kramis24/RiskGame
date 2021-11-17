@@ -4,7 +4,7 @@ package com.example.riskgame.Risk.infoMessage;
  * Game state variables and methods for Risk game.
  *
  * @author Phi Nguyen, Dylan Kramis, Charlie Benning
- * @version 11/14/2021
+ * @version 11/16/2021 Beta
  */
 
 import com.example.riskgame.GameFramework.infoMessage.GameState;
@@ -39,9 +39,9 @@ public class RiskGameState extends GameState {
     }
 
     // instance variables
+    private boolean hasGottenCard = false;
     private int playerCount = 2;
     private int currentTurn = 0;
-    private String playerNames[];
     private Phase currentPhase = Phase.DEPLOY;
     private int totalTroops = 100;
     private ArrayList<Territory> territories;
@@ -52,18 +52,17 @@ public class RiskGameState extends GameState {
      */
     public RiskGameState() {
 
+        playerCount = 2;
         // initialize territories array list
         territories = new ArrayList<Territory>();
-        //init(this.playerCount); //dont leave in?
+        // initialize territories and add adjacents to each territory
         initTerritories();
-
         setTerritoryPlayers();
         setStartTroops();
         totalTroops = calcTroops(0);
         for(int i = 0; i < playerCount; i++) {
             cards.add(new ArrayList<Card>());
         }
-
     }
 
     /**
@@ -71,20 +70,20 @@ public class RiskGameState extends GameState {
      * using the number of players to do so
      * param numPlayers (number of players playing the game)
 
-    public void init(int numPlayers) {
-        this.playerCount = numPlayers;
-        // initialize territories and add adjacents to each territory
-        initTerritories();
+     public void init(int numPlayers) {
+     this.playerCount = numPlayers;
+     // initialize territories and add adjacents to each territory
+     initTerritories();
 
-        setTerritoryPlayers();
-        setStartTroops();
-        totalTroops = calcTroops(0);
-        for(int i = 0; i < playerCount; i++) {
-            cards.add(new ArrayList<Card>());
-        }
+     setTerritoryPlayers();
+     setStartTroops();
+     totalTroops = calcTroops(0);
+     for(int i = 0; i < playerCount; i++) {
+     cards.add(new ArrayList<Card>());
+     }
 
-    }
-    */
+     }
+     */
 
     public Phase getCurrentPhase() {
         return this.currentPhase;
@@ -109,12 +108,20 @@ public class RiskGameState extends GameState {
             Territory newTerritory = new Territory(t);
             this.territories.add(newTerritory);
         }
-        for(int i = 0; i < playerCount; i++) {
+        for(int i = 0; i < this.playerCount; i++) {
             cards.add(new ArrayList<Card>());
-            for (Card c:other.cards.get(i)) {
-                cards.get(i).add(c);
+        }
+        for(int i = 0; i < other.getCards().size(); i++) {
+            for(int j = 0; j < other.getCards().get(i).size(); j++) {
+                cards.get(i).add(other.getCards().get(i).get(j));
             }
         }
+        //for(int i = 0; i < playerCount; i++) {
+          //  cards.add(new ArrayList<Card>());
+           // for (Card c:other.cards.get(i)) {
+             //   cards.get(i).add(c);
+            //}
+        //}
     }
 
     public void setPlayerCount(int playerCount) {
@@ -310,8 +317,8 @@ public class RiskGameState extends GameState {
             //if owner matches
             if (troops >= 0 && troops <= totalTroops) {
                 addTroop(t, troops);
-                totalTroops= totalTroops - troops;
                 t.highlightMoved = true;
+                totalTroops -= troops;
                 return true;
             }
         }
@@ -344,7 +351,7 @@ public class RiskGameState extends GameState {
         if (currentTurn == t1.getOwner() && currentTurn == t2.getOwner()) { //checks if both territories are owned by player
             if(checkChain(t1,t2)) {
                 if (troops > 0) {
-                    if (t1.getTroops() - troops > 0) { //makes sure that you cannot send more troops than you have
+                    if (t1.getTroops() - troops > 1) { //makes sure that you cannot send more troops than you have
                         t1.setTroops(t1.getTroops() - troops);
                         t2.setTroops(t2.getTroops() + troops);
                         nextTurn();
@@ -399,18 +406,6 @@ public class RiskGameState extends GameState {
         return ans; //return if territories are connected by a chain
     }
 
-    //
-    /* No GUI yet so these methods cannot be implemented
-    public void viewStats() {
-    }
-
-    public void viewHelp() {
-    }
-
-    public void viewCards() {
-    }
-    */
-
     /**
      * nextTurn
      * Advances turn/phase.
@@ -424,6 +419,7 @@ public class RiskGameState extends GameState {
             currentPhase = Phase.ATTACK;
         }
         else if (currentPhase == Phase.ATTACK) {
+            hasGottenCard = false;
             currentPhase = Phase.FORTIFY;
         }
         else {
@@ -457,10 +453,9 @@ public class RiskGameState extends GameState {
         // loops to roll each die
         for (int i = 0; i < numRolls; i++) {
             Random die = new Random();
-            int number = die.nextInt(6);
+            int number = die.nextInt(6) + 1;
             rolls.add(number);
         }
-
         return rolls;
     }
 
@@ -899,14 +894,20 @@ public class RiskGameState extends GameState {
      * adds a card to the current players hand
      * this method is called in attack method
      */
-    private void addCard() {
+    public void addCard() {
         if(cards.get(currentTurn).size() >= 5) {
             return;
         }
-        List<Card> ListOfCards =(Arrays.asList(Card.values()));//stores the enums into an array
-        int size = ListOfCards.size(); //size of the enums array
+        List<Card> listOfCards =(Arrays.asList(Card.values()));//stores the enums into an array
+        int size = listOfCards.size(); //size of the enums array
+        if (size == 0) {
+            return;
+        }
         Random rnd = new Random();
-        cards.get(currentTurn).add(ListOfCards.get(rnd.nextInt(size)));//adds card for the current player
+        if(!hasGottenCard) {
+            cards.get(currentTurn).add(listOfCards.get(rnd.nextInt(size)));//adds card for the current player
+            hasGottenCard = true;
+        }
     }
 
     /**
@@ -962,9 +963,6 @@ public class RiskGameState extends GameState {
         } else {
             return false;
         }
-        countArtillery = 0;
-        countCavalry = 0;
-        countInfantry = 0;
         return true;
     }
 

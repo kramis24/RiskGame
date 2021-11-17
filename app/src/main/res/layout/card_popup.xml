@@ -6,22 +6,32 @@
 
     <LinearLayout
         android:layout_width="409dp"
-        android:layout_height="729dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp">
+        tools:layout_editor_absoluteY="1dp"
+        tools:ignore="MissingConstraints">
 
         <TextView
             android:id="@+id/card_popup_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Your Cards"
-            android:textAlignment="center" />
+            android:background="@color/white"
+            android:textAlignment="center"
+            android:textSize="20sp" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardDisplay"
+        <TextView
+            android:id="@+id/gainCardText"
             android:layout_width="match_parent"
-            android:layout_height="200sp" />
+            android:layout_height="wrap_content"
+            android:background="@color/white"/>
+
+        <TextView
+            android:id="@+id/currentCards"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
 
         <Button
             android:id="@+id/exchange_cards"
