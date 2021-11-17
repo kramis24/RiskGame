@@ -4,7 +4,7 @@ package com.example.riskgame.Risk.infoMessage;
  * Game state variables and methods for Risk game.
  *
  * @author Phi Nguyen, Dylan Kramis, Charlie Benning
- * @version 11/14/2021 Beta
+ * @version 11/16/2021 Beta
  */
 
 import com.example.riskgame.GameFramework.infoMessage.GameState;
@@ -65,6 +65,26 @@ public class RiskGameState extends GameState {
         }
     }
 
+    /**
+     * Initializes variables and methods to set up the game,
+     * using the number of players to do so
+     * param numPlayers (number of players playing the game)
+
+     public void init(int numPlayers) {
+     this.playerCount = numPlayers;
+     // initialize territories and add adjacents to each territory
+     initTerritories();
+
+     setTerritoryPlayers();
+     setStartTroops();
+     totalTroops = calcTroops(0);
+     for(int i = 0; i < playerCount; i++) {
+     cards.add(new ArrayList<Card>());
+     }
+
+     }
+     */
+
     public Phase getCurrentPhase() {
         return this.currentPhase;
     }
@@ -96,6 +116,12 @@ public class RiskGameState extends GameState {
                 cards.get(i).add(other.getCards().get(i).get(j));
             }
         }
+        //for(int i = 0; i < playerCount; i++) {
+          //  cards.add(new ArrayList<Card>());
+           // for (Card c:other.cards.get(i)) {
+             //   cards.get(i).add(c);
+            //}
+        //}
     }
 
     public void setPlayerCount(int playerCount) {
@@ -154,7 +180,9 @@ public class RiskGameState extends GameState {
      * @param add troops being added
      */
     public void addTroop(Territory t, int add) {
-        t.setTroops(t.getTroops() + add); //add a given number of troops to a territories
+        if (add > 0) {
+            t.setTroops(t.getTroops() + add); //add a given number of troops to a territories
+        }
     }
 
     /**
@@ -262,11 +290,9 @@ public class RiskGameState extends GameState {
                 if (def.getTroops() <= 0) {
                     def.setOwner(atk.getOwner());
                     addCard();
-                    def.highlightMoved = true;
-
                     def.setTroops(atk.getTroops() - 1);
-                    atk.setTroops(atk.getTroops() - (atk.getTroops() - 1));
-
+                    atk.setTroops(1);
+                    def.highlightMoved = true;
                 }
                 atk.highlightMoved = true;
                 return true;
@@ -330,7 +356,7 @@ public class RiskGameState extends GameState {
                         t2.setTroops(t2.getTroops() + troops);
                         nextTurn();
                         t1.highlightMoved = true;
-                        t2.highlightMoved = false;
+                        t2.highlightMoved = true;
                         return true;
                     }
                 }

@@ -29,6 +29,7 @@ import com.example.riskgame.GameFramework.actionMessage.EndTurnAction;
 import com.example.riskgame.GameFramework.infoMessage.GameInfo;
 import com.example.riskgame.GameFramework.players.GameHumanPlayer;
 import com.example.riskgame.R;
+import com.example.riskgame.Risk.RiskLocalGame;
 import com.example.riskgame.Risk.infoMessage.RiskGameState;
 import com.example.riskgame.Risk.infoMessage.Territory;
 import com.example.riskgame.Risk.riskActionMessage.AttackAction;
@@ -157,6 +158,13 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         nextButton.setOnClickListener(this);
         mapView.setOnTouchListener(this);
 
+    }
+
+
+    /**@Override
+    protected void initAfterReady() {
+        super.initAfterReady();
+        ((RiskLocalGame) game).init();
     }
 
     /**
