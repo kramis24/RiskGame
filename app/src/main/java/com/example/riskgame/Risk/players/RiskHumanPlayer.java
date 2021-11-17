@@ -151,7 +151,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
     }
 
 
-    @Override
+    /**@Override
     protected void initAfterReady() {
         super.initAfterReady();
         ((RiskLocalGame) game).init();

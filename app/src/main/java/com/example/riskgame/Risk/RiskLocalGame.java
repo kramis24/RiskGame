@@ -47,11 +47,12 @@ public class RiskLocalGame extends LocalGame {
     /**
      * Called by human in init after ready to set up game with appropriate number of players
      * 
-     */
+
     public void init() {
         riskGS.init(getPlayers().length);
         //maybe call sendUpdatedStateTo
     }
+    **/
 
     /**
      * sendUpdatedStateTo

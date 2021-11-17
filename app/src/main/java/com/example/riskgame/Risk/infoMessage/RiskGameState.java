@@ -54,10 +54,22 @@ public class RiskGameState extends GameState {
 
         // initialize territories array list
         territories = new ArrayList<Territory>();
-        init(2); //dont leave in?
+        //init(this.playerCount); //dont leave in?
+        initTerritories();
 
+        setTerritoryPlayers();
+        setStartTroops();
+        totalTroops = calcTroops(0);
+        for(int i = 0; i < playerCount; i++) {
+            cards.add(new ArrayList<Card>());
+        }
 
     }
+
+    /**
+     * Initializes variables and methods to set up the game,
+     * using the number of players to do so
+     * param numPlayers (number of players playing the game)
 
     public void init(int numPlayers) {
         this.playerCount = numPlayers;
@@ -70,7 +82,9 @@ public class RiskGameState extends GameState {
         for(int i = 0; i < playerCount; i++) {
             cards.add(new ArrayList<Card>());
         }
+
     }
+    */
 
     public Phase getCurrentPhase() {
         return this.currentPhase;
