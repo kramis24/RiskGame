@@ -687,6 +687,7 @@ public class RiskGameState extends GameState {
 
         easternAustralia.addAdjacent(westernAustralia);
         easternAustralia.addAdjacent(newGuinea);
+        easternAustralia.addAdjacent(indonesia);
 
         newGuinea.addAdjacent(easternAustralia);
         newGuinea.addAdjacent(westernAustralia);
@@ -694,6 +695,7 @@ public class RiskGameState extends GameState {
 
         indonesia.addAdjacent(newGuinea);
         indonesia.addAdjacent(westernAustralia);
+        indonesia.addAdjacent(easternAustralia);
         indonesia.addAdjacent(siam);
 
         siam.addAdjacent(indonesia);
