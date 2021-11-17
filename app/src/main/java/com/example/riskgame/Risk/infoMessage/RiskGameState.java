@@ -54,6 +54,7 @@ public class RiskGameState extends GameState {
 
         // initialize territories array list
         territories = new ArrayList<Territory>();
+        init(2); //dont leave in?
 
 
     }
@@ -158,7 +159,9 @@ public class RiskGameState extends GameState {
      * @param add troops being added
      */
     public void addTroop(Territory t, int add) {
-        t.setTroops(t.getTroops() + add); //add a given number of troops to a territories
+        if (add > 0) {
+            t.setTroops(t.getTroops() + add); //add a given number of troops to a territories
+        }
     }
 
     /**

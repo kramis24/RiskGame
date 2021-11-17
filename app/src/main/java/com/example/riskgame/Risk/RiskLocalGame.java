@@ -154,12 +154,12 @@ public class RiskLocalGame extends LocalGame {
             */
             //checks whether the two territories have the same owner
             if(((FortifyAction) action).getDeployTo().getOwner() != ((FortifyAction) action).getDeployFrom().getOwner()) {
-                Logger.log("Make Move", "You dont own both terr");
+                Logger.log("Make Move", "You don't own both terr");
                 return false;
             }
             //checks that the territory has enough troops to fortify
             if(((FortifyAction) action).getDeployFrom().getTroops() <= 1) {
-                Logger.log("Make Move", " You don't have enough troops to move");
+                Logger.log("Make Move", "You don't have enough troops to move");
                 return false;
             }
             //checks that a valid number of troops are being sent
@@ -168,7 +168,7 @@ public class RiskLocalGame extends LocalGame {
             int deploy = ((FortifyAction) action).getNumDeployed();
             if(((FortifyAction) action).getDeployFrom().getTroops() < ((FortifyAction) action).getNumDeployed() ||
                     ((FortifyAction) action).getNumDeployed() <= 0) {
-                Logger.log("Make Move", " Your moving too many troops" + from + "Should be > " + deploy);
+                Logger.log("Make Move", "Your moving too many troops" + from + " Should be < " + deploy);
                 return false;
             }
 
