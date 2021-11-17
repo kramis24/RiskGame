@@ -75,6 +75,7 @@ public class Territory {
         troops = 10;
         owner = -1;
         checked = false;
+        highlightMoved = false;
         centerX = x;
         centerY = y;
     }

@@ -214,7 +214,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                     currentCards.append("Cavalry: " + countCavalry + "\n");
                     currentCards.append("Infantry: " + countInfantry + "\n");
                     currentCards.append("\n Exchange Bonuses: \n");
-                    currentCards.append("3 Infantry = 4 troops\n 3 Cavalry = 6 troops\n 3 Artillery = 8 troops\n 1 of each = 10 troops\n");
+                    currentCards.append(" 3 Infantry = 4 troops\n 3 Cavalry = 6 troops\n 3 Artillery = 8 troops\n 1 of each = 10 troops\n");
                     currentCards.append("pressing exchange cards automatically gives you the highest number of troops");
                     currentCards.invalidate();
                 }
@@ -235,7 +235,6 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                                 countArtillery--;
                                 countCavalry--;
                                 countInfantry--;
-
                             } else if(countArtillery >= 3) {
                                 cardTextView.setText("Gained 8 troops");
                                 countArtillery=-3;

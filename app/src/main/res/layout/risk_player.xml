@@ -38,6 +38,7 @@
                 android:layout_margin="5dp"
                 android:layout_weight="0"
                 android:background="#000000"
+                android:textSize="20sp"
                 android:text="Player 1"
                 android:textColor="#FF3F3F" />
 
@@ -47,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
+                android:textSize="20sp"
                 android:background="#000000"
                 android:text="Attack"
                 android:textColor="#00FFFF" />
@@ -59,6 +61,7 @@
                 android:layout_weight="0"
                 android:background="#000000"
                 android:text="Troops: 3"
+                android:textSize="20sp"
                 android:textColor="#00FFFF" />
 
             <Button

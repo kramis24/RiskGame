@@ -4,8 +4,7 @@ package com.example.riskgame.Risk.infoMessage;
  * Game state variables and methods for Risk game.
  *
  * @author Phi Nguyen, Dylan Kramis, Charlie Benning
- * @version 11/15/2021 (NOTE: dates from alpha build suggesting it was from October are wrong,
- * should have been in November.)
+ * @version 11/14/2021
  */
 
 import com.example.riskgame.GameFramework.infoMessage.GameState;
@@ -56,10 +55,8 @@ public class RiskGameState extends GameState {
         playerCount = 2;
         // initialize territories array list
         territories = new ArrayList<Territory>();
-
         // initialize territories and add adjacents to each territory
         initTerritories();
-
         setTerritoryPlayers();
         setStartTroops();
         totalTroops = calcTroops(0);
@@ -265,9 +262,14 @@ public class RiskGameState extends GameState {
                 if (def.getTroops() <= 0) {
                     def.setOwner(atk.getOwner());
                     addCard();
+
                     def.setTroops(1);
                     atk.setTroops(atk.getTroops() - 1);
                     def.highlightMoved = true;
+
+                    def.setTroops(atk.getTroops() - 1);
+                    atk.setTroops(atk.getTroops() - (atk.getTroops() - 1));
+
                 }
                 atk.highlightMoved = true;
                 return true;
@@ -292,8 +294,8 @@ public class RiskGameState extends GameState {
             //if owner matches
             if (troops >= 0 && troops <= totalTroops) {
                 addTroop(t, troops);
-                totalTroops -= troops;
                 t.highlightMoved = true;
+                totalTroops -= troops;
                 return true;
             }
         }
@@ -381,18 +383,6 @@ public class RiskGameState extends GameState {
         return ans; //return if territories are connected by a chain
     }
 
-    //
-    /* No GUI yet so these methods cannot be implemented
-    public void viewStats() {
-    }
-
-    public void viewHelp() {
-    }
-
-    public void viewCards() {
-    }
-    */
-
     /**
      * nextTurn
      * Advances turn/phase.
@@ -440,7 +430,7 @@ public class RiskGameState extends GameState {
         // loops to roll each die
         for (int i = 0; i < numRolls; i++) {
             Random die = new Random();
-            int number = die.nextInt(5) + 1;
+            int number = die.nextInt(6) + 1;
             rolls.add(number);
         }
         return rolls;
@@ -891,10 +881,10 @@ public class RiskGameState extends GameState {
             return;
         }
         Random rnd = new Random();
-        //if(!hasGottenCard) {
+        if(!hasGottenCard) {
             cards.get(currentTurn).add(listOfCards.get(rnd.nextInt(size)));//adds card for the current player
             hasGottenCard = true;
-        //}
+        }
     }
 
     /**

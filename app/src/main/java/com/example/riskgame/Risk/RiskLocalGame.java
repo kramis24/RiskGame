@@ -85,7 +85,6 @@ public class RiskLocalGame extends LocalGame {
     @Override
     protected boolean makeMove(GameAction action) {
         if(action instanceof DeployAction){
-
             //checks that the user entered a valid number of troops
             if(((DeployAction) action).getDeployTo() == null) {
                 return false;
@@ -106,9 +105,10 @@ public class RiskLocalGame extends LocalGame {
                     riskGS.getTerritories().set(index, ((DeployAction) action).getDeployTo());
                 }
             }
-            if(riskGS.getTotalTroops() <= 0) {
-                riskGS.nextTurn();
-            }
+//            riskGS.setTotalTroops(riskGS.getTotalTroops() - ((DeployAction) action).getNumDeploy());
+//            if(riskGS.getTotalTroops() <= 0) {
+//                riskGS.nextTurn();
+//            }
 
             return true;
         }
