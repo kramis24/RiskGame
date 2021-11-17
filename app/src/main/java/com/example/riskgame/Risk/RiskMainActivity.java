@@ -56,7 +56,7 @@ public class RiskMainActivity extends GameMainActivity {
             }
         });
 
-        GameConfig defaultConfig = new GameConfig(playerTypes, 2, 5,
+        GameConfig defaultConfig = new GameConfig(playerTypes, 2, 6,
                 "Risk", PORT_NUMBER);
 
         // default players
