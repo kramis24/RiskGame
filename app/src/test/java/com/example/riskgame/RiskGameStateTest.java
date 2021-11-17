@@ -112,7 +112,6 @@ public class RiskGameStateTest {
      */
     @Test
     public void rollDie() throws Exception {
-
         // setup
         RiskGameState testState = new RiskGameState();
         ArrayList<Integer> rolls;
