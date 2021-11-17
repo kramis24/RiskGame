@@ -117,6 +117,7 @@ public class RiskBasicComputerPlayer extends GameComputerPlayer {
                 while (!Risk.fortify(ownedTerr.get(ownTerr), ownedTerr.get(terr2), 1)) { //this moves all troops from one territory to antoher
                     if (loopCntr > 100) {
                         //fortify = true; //change boolean fortify to true to indicate player is done with the fortify phase
+                        game.sendAction(new NextTurnAction(this)); //End player's turn
                         return;
                     }
                     ownTerr = rnd.nextInt(ownedTerr.size());

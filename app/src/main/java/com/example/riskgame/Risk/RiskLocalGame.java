@@ -173,7 +173,14 @@ public class RiskLocalGame extends LocalGame {
                 if(((FortifyAction) action).getDeployTo().equals(t)) {
                     int index = riskGS.getTerritories().indexOf(t);
                     riskGS.getTerritories().set(index, ((FortifyAction) action).getDeployTo());
+
                 }
+            }
+            for(Territory t:riskGS.getTerritories()) {
+                int index = riskGS.getTerritories().indexOf(t);
+                t.checked = false;
+                riskGS.getTerritories().set(index,t);
+
             }
             return true;
         }
@@ -207,6 +214,6 @@ public class RiskLocalGame extends LocalGame {
                 return null;
             }
         }
-        return playerNames[winner] + " has won";
+        return playerNames[winner] + " has won ";
     }
 }
