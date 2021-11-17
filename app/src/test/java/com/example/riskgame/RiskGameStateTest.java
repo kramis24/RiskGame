@@ -254,7 +254,7 @@ public class RiskGameStateTest {
     /**
      * Test for fortify method making sure it fits withing th parameters/rules of the game
      *
-     * @author: Charlie Benning
+     * @author Charlie Benning
      **/
     @Test
     public void fortify() {
@@ -286,7 +286,7 @@ public class RiskGameStateTest {
     /**
      * Test for checkchain method making sure it fits withing th parameters/rules of the game
      *
-     * @author: Charlie Benning
+     * @author Charlie Benning
      **/
     @Test
     public void checkChain() {
@@ -304,7 +304,7 @@ public class RiskGameStateTest {
     /**
      * Test for nextTurn method making sure it fits withing th parameters/rules of the game
      *
-     * @author: Charlie Benning
+     * @author Charlie Benning
      **/
     @Test
     public void nextTurn() {
