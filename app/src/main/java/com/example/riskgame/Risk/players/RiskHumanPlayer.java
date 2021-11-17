@@ -3,8 +3,8 @@ package com.example.riskgame.Risk.players;
  * RiskHumanPlayer
  * Display, info, and input handling for human players.
  *
- * @author Dylan Kramis, Phi Nguyen (Exit Button)
- * @version 11/7/2021 Alpha
+ * @author Dylan Kramis, Phi Nguyen
+ * @version 11/16/2021 Beta
  */
 
 import static android.text.InputType.TYPE_CLASS_NUMBER;
