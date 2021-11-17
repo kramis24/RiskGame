@@ -4,7 +4,7 @@ package com.example.riskgame.Risk.infoMessage;
  * Game state variables and methods for Risk game.
  *
  * @author Phi Nguyen, Dylan Kramis, Charlie Benning
- * @version 11/16/2021 Beta
+ * @version 11/17/2021 Beta (Indonesia-Eastern Australia Fix)
  */
 
 import com.example.riskgame.GameFramework.infoMessage.GameState;

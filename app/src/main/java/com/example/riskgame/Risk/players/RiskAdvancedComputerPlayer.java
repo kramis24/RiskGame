@@ -4,6 +4,7 @@ import com.example.riskgame.GameFramework.infoMessage.GameInfo;
 import com.example.riskgame.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.riskgame.GameFramework.players.GameComputerPlayer;
 import com.example.riskgame.Risk.infoMessage.RiskGameState;
+import com.example.riskgame.Risk.infoMessage.Territory;
 
 /**
  * RiskAdvancedComputerPlayer
@@ -12,13 +13,21 @@ import com.example.riskgame.Risk.infoMessage.RiskGameState;
  * ---CURRENTLY UNUSED---
  *
  * @author Dylan Kramis
- * @version 11/15/2021 created
+ * @version 11/17/2021 created
  */
 
 public class RiskAdvancedComputerPlayer extends GameComputerPlayer {
 
+    // attack limit so computer player doesn't get stuck attacking
+    public static final int ATTACK_LIMIT = 20;
+
     // instance variables
-    RiskGameState gameState;
+    private RiskGameState gameState;
+
+    // variables for attacking
+    private int attackCount = 0;
+    private Territory attackTarget; // focus maintainer
+    private int territoriesCaptured = 0;
 
     /**
      * constructor
