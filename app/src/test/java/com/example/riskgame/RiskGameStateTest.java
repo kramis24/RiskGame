@@ -260,11 +260,15 @@ public class RiskGameStateTest {
     public void fortify() {
         RiskGameState riskTest = new RiskGameState();
         ArrayList<Territory> territoriesTest = riskTest.getTerritories();
+        riskTest.nextTurn();
+        riskTest.nextTurn();
         Territory alaska = territoriesTest.get(0); //alaska
         Territory NWterr = territoriesTest.get(1); //Northwest territory
         Territory greenland = territoriesTest.get(2); //greenland
+        for (int i = 0; i < territoriesTest.size(); i++) {
+            territoriesTest.get(i).setOwner(1);
+        }
         alaska.setOwner(0);
-        NWterr.setOwner(1);
         greenland.setOwner(0);
         alaska.setTroops(5);
         NWterr.setTroops(3);
@@ -279,8 +283,13 @@ public class RiskGameStateTest {
         assertFalse(riskTest.fortify(alaska,NWterr,-4)); //cant move negative troops
         assertFalse(riskTest.fortify(alaska,NWterr,5)); //cant move all troops from a terr
         assertTrue(riskTest.fortify(alaska,NWterr,2)); //can move to adjacent
-        //assertTrue(riskTest.fortify(alaska,greenland,2)); //can move through chain ERROR --> can't fortify twice ????
-        //NOT due to checked
+        riskTest.nextTurn();
+        riskTest.nextTurn();
+        riskTest.nextTurn();
+        assertTrue(alaska.getTroops() > 2);
+        assertTrue(alaska.getOwner() == greenland.getOwner());
+        assertTrue(riskTest.getCurrentTurn() == 0);
+        assertTrue(riskTest.fortify(alaska,greenland,2)); //can move through chain ERROR --> can't fortify twice ????
     }
 
     /**
@@ -319,5 +328,163 @@ public class RiskGameStateTest {
         riskTest.nextTurn();
         assertTrue(riskTest.getCurrentPhase() == RiskGameState.Phase.DEPLOY); //switch to net player and deploy phase (after fortify)
         assertEquals(1,riskTest.getCurrentTurn()); //check that players switched
+    }
+
+    /**
+     * Test for setTotalTroops method making sure it fits withing th parameters/rules of the game
+     *
+     * @author: Charlie Benning
+     **/
+    @Test
+    public void setTotalTroops() {
+        RiskGameState riskTest = new RiskGameState();
+        riskTest.setTotalTroops(5);
+        assertEquals(5, riskTest.getTotalTroops());
+        riskTest.setTotalTroops(0);
+        assertEquals(0, riskTest.getTotalTroops());
+    }
+
+    /**
+     * Test for getCurrentTurn method making sure it fits withing th parameters/rules of the game
+     *
+     * @author: Charlie Benning
+     **/
+    @Test
+    public void getCurrentTurn() {
+        RiskGameState riskTest = new RiskGameState();
+        assertEquals(0, riskTest.getCurrentTurn());
+        riskTest.nextTurn();
+        riskTest.nextTurn();
+        riskTest.nextTurn();
+        assertEquals(1, riskTest.getCurrentTurn());
+    }
+
+    /**
+     * Test for getTotalTroops method making sure it fits withing th parameters/rules of the game
+     *
+     * @author: Charlie Benning
+     **/
+    @Test
+    public void getTotalTroops() {
+        RiskGameState riskTest = new RiskGameState();
+        riskTest.setTotalTroops(10);
+        assertEquals(10,riskTest.getTotalTroops());
+        riskTest.setTotalTroops(77);
+        assertEquals(77,riskTest.getTotalTroops());
+        riskTest.setTotalTroops(-3);
+        assertEquals(-3,riskTest.getTotalTroops());
+    }
+
+    /**
+     * Test for getCurrentPhase method making sure it fits withing th parameters/rules of the game
+     *
+     * @author: Charlie Benning
+     **/
+    @Test
+    public void getCurrentPhase() {
+        RiskGameState riskTest = new RiskGameState();
+        assertTrue(riskTest.getCurrentPhase() == RiskGameState.Phase.DEPLOY);
+        riskTest.nextTurn();
+        assertTrue(riskTest.getCurrentPhase() == RiskGameState.Phase.ATTACK);
+        riskTest.nextTurn();
+        assertTrue(riskTest.getCurrentPhase() == RiskGameState.Phase.FORTIFY);
+        riskTest.nextTurn();
+        assertTrue(riskTest.getCurrentPhase() == RiskGameState.Phase.DEPLOY);
+    }
+
+    /**
+     * Test for setPlayerCount method making sure it fits withing th parameters/rules of the game
+     *
+     * @author: Charlie Benning
+     **/
+    @Test
+    public void setPlayerCount() {
+        RiskGameState riskTest = new RiskGameState();
+        riskTest.setPlayerCount(0);
+        //assertEquals(0,riskTest.);
+        riskTest.setPlayerCount(0);
+        //assertEquals(6,riskTest.);
+    }
+
+    /**
+     * Test for addTroop method making sure it fits withing th parameters/rules of the game
+     *
+     * @author: Charlie Benning
+     **/
+    @Test
+    public void addTroop() {
+        RiskGameState riskTest = new RiskGameState();
+        ArrayList<Territory> territoriesTest = riskTest.getTerritories();
+        int tempTroop = 10;
+        territoriesTest.get(0).setTroops(0);
+        riskTest.addTroop(territoriesTest.get(0),10);
+        assertEquals(10,territoriesTest.get(0).getTroops());
+        riskTest.addTroop(territoriesTest.get(0),5);
+        assertEquals(15,territoriesTest.get(0).getTroops());
+        riskTest.addTroop(territoriesTest.get(0),-3);
+        assertEquals(15,territoriesTest.get(0).getTroops());
+    }
+
+    /**
+     * Test for setTerritoryPlayers method making sure it fits withing th parameters/rules of the game
+     *
+     * @author: Charlie Benning
+     **/
+    @Test
+    public void setTerritoryPlayers() {
+        RiskGameState riskTest = new RiskGameState();
+        riskTest.setTerritoryPlayers();
+        int terrCntPlyr0 = 0;
+        int terrCntPlyr1 = 0;
+        for (int i = 0; i < riskTest.getTerritories().size(); i++) {
+            if (riskTest.getTerritories().get(i).getOwner() == 0) {
+                terrCntPlyr0++;
+            }
+            else {
+                terrCntPlyr1++;
+            }
+        }
+        assertEquals(21,terrCntPlyr0);
+        assertEquals(21,terrCntPlyr1);
+        RiskGameState riskTest2 = new RiskGameState();
+        terrCntPlyr0 = 0;
+        terrCntPlyr1 = 0;
+        int terrCntPlyr2 = 0;
+        riskTest2.setPlayerCount(3);
+        riskTest2.setTerritoryPlayers();
+        for (int i = 0; i < riskTest2.getTerritories().size(); i++) {
+            if (riskTest2.getTerritories().get(i).getOwner() == 0) {
+                terrCntPlyr0++;
+            }
+            else if (riskTest2.getTerritories().get(i).getOwner() == 1) {
+                terrCntPlyr1++;
+            }
+            else {
+                terrCntPlyr2++; //doubles than expaects????
+            }
+        }
+        assertEquals(14,terrCntPlyr0);
+        assertEquals(14,terrCntPlyr1);
+        assertEquals(14,terrCntPlyr2);
+    }
+
+    /**
+     * Test for setStartTroops method making sure it fits withing th parameters/rules of the game
+     *
+     * @author: Charlie Benning
+     **/
+    @Test
+    public void setStartTroops() {
+        RiskGameState riskTest = new RiskGameState();
+        ArrayList<Territory> territoriesTest = riskTest.getTerritories();
+        int troopCnt = 0;
+        riskTest.setTerritoryPlayers();
+        riskTest.setStartTroops();
+        for (int i = 0; i < territoriesTest.size(); i++) {
+            if (territoriesTest.get(i).getOwner() == 0) {
+                troopCnt += territoriesTest.get(i).getTroops();
+            }
+        }
+        assertEquals(40,troopCnt);
     }
 }
