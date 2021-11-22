@@ -246,12 +246,21 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                             } else if(countArtillery >= 3) {
                                 cardTextView.setText("Gained 8 troops");
                                 countArtillery=-3;
+                                if(countArtillery < 0) {
+                                    countArtillery = 0;
+                                }
                             } else if(countCavalry >= 3) {
                                 cardTextView.setText("Gained 6 troops");
                                 countCavalry =-3;
+                                if(countCavalry < 0) {
+                                    countCavalry = 0;
+                                }
                             } else if(countInfantry >= 3) {
                                 cardTextView.setText("Gained 4 troops");
                                 countInfantry =-3;
+                                if(countInfantry < 0) {
+                                    countInfantry = 0;
+                                }
                             }
                             currentCards.setText("Artillery: " + countArtillery + "\n");
                             currentCards.append("Cavalry: " + countCavalry + "\n");
@@ -359,7 +368,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
             selectedT2 = null;
         } else if (gameState.getCurrentPhase() == RiskGameState.Phase.ATTACK) {
             if (selectedT2 != null) {
-                game.sendAction(new AttackAction(this, selectedT1, selectedT2));
+                game.sendAction(new AttackAction(this, selectedT1, selectedT2,false));
                 selectedT1 = null;
                 selectedT2 = null;
             }

@@ -23,6 +23,7 @@ public class AttackAction extends GameAction {
     //member variables
     private Territory atk;
     private Territory def;
+    private Boolean nuclearOption;
 
     /**
      * Constructor for AttackAction.
@@ -31,10 +32,11 @@ public class AttackAction extends GameAction {
      * @param atk attacking territory
      * @param def defending territory
      */
-    public AttackAction(GamePlayer player,Territory atk,Territory def) {
+    public AttackAction(GamePlayer player,Territory atk,Territory def, Boolean nuclearOption ) {
         super(player);
         this.atk = atk;
         this.def = def;
+        this.nuclearOption = nuclearOption;
     }
 
     /**
@@ -53,5 +55,13 @@ public class AttackAction extends GameAction {
      */
     public Territory getDef(){
         return this.def;
+    }
+
+    /**
+     * Gets whether this attack is nuclear option
+     * @return nuclear option
+     */
+    public Boolean getNuclearOption() {
+        return this.nuclearOption;
     }
 }

@@ -29,6 +29,7 @@ public class RiskGameStateTest {
 
         // setup
         RiskGameState testState = new RiskGameState();
+        testState.init(2);
         int result;
 
         // test #1 -- no owned territories
@@ -72,6 +73,7 @@ public class RiskGameStateTest {
 
         // setup
         RiskGameState testState = new RiskGameState();
+        testState.init(2);
         ArrayList<Territory> testTerritories = testState.getTerritories();
         testState.setTotalTroops(6);
         testTerritories.get(0).setOwner(0);
@@ -114,6 +116,7 @@ public class RiskGameStateTest {
     public void rollDie() throws Exception {
         // setup
         RiskGameState testState = new RiskGameState();
+        testState.init(2);
         ArrayList<Integer> rolls;
 
         // test #1 -- 1 die
@@ -143,6 +146,7 @@ public class RiskGameStateTest {
      */
     public void attack() {
         RiskGameState gameState = new RiskGameState();
+        gameState.init(2);
         //checks that the attack method returns false when both territories have the same owner
         gameState.getTerritories().get(0).setOwner(0);
         gameState.getTerritories().get(1).setOwner(0);
@@ -165,6 +169,7 @@ public class RiskGameStateTest {
      */
     public void exchangeCards() {
         RiskGameState gameState = new RiskGameState();
+        gameState.init(2);
         gameState.getCards().get(0).add(RiskGameState.Card.INFANTRY);
         gameState.getCards().get(0).add(RiskGameState.Card.CAVALRY);
         gameState.getCards().get(0).add(RiskGameState.Card.ARTILLERY);
@@ -199,6 +204,7 @@ public class RiskGameStateTest {
      */
     public void copyConstructor(){
         RiskGameState gameState = new RiskGameState();
+        gameState.init(2);
         gameState.nextTurn();
         gameState.setTotalTroops(100);
         gameState.addCard();
@@ -235,6 +241,7 @@ public class RiskGameStateTest {
     public void win() throws Exception {
         boolean win = false;
         RiskGameState gameState = new RiskGameState();
+        gameState.init(2);
         for(int i = 0; i < 41; i++) {
             gameState.getTerritories().get(i).setOwner(0);
         }
@@ -259,6 +266,7 @@ public class RiskGameStateTest {
     @Test
     public void fortify() {
         RiskGameState riskTest = new RiskGameState();
+        riskTest.init(2);
         ArrayList<Territory> territoriesTest = riskTest.getTerritories();
         Territory alaska = territoriesTest.get(0); //alaska
         Territory NWterr = territoriesTest.get(1); //Northwest territory
@@ -291,6 +299,7 @@ public class RiskGameStateTest {
     @Test
     public void checkChain() {
         RiskGameState riskTest = new RiskGameState();
+        riskTest.init(2);
         ArrayList<Territory> territoriesTest = riskTest.getTerritories();
         for (int i = 0; i < territoriesTest.size(); i++) {
             territoriesTest.get(i).setOwner(0); //set all territories to the same player
@@ -309,6 +318,7 @@ public class RiskGameStateTest {
     @Test
     public void nextTurn() {
         RiskGameState riskTest = new RiskGameState();
+        riskTest.init(2);
         ArrayList<Territory> territoriesTest = riskTest.getTerritories();
         assertTrue(riskTest.getCurrentPhase() == RiskGameState.Phase.DEPLOY); //make sure first phase is Deploy
         assertEquals(0,riskTest.getCurrentTurn()); //make sure it starts with player 0
