@@ -45,30 +45,25 @@ public class RiskGameState extends GameState {
     private Phase currentPhase = Phase.DEPLOY;
     private int totalTroops = 100;
     private ArrayList<Territory> territories;
-    private List<ArrayList<Card>> cards = new ArrayList<ArrayList<Card>>();
+    private List<ArrayList<Card>> cards;
 
     /**
      * Default constructor for RiskGameState.
      */
     public RiskGameState() {
 
-        playerCount = 2;
         // initialize territories array list
         territories = new ArrayList<Territory>();
         // initialize territories and add adjacents to each territory
-        initTerritories();
-        setTerritoryPlayers();
-        setStartTroops();
-        totalTroops = calcTroops(0);
-        for(int i = 0; i < playerCount; i++) {
-            cards.add(new ArrayList<Card>());
-        }
+        cards = new ArrayList<ArrayList<Card>>();
+
     }
 
     /**
      * Initializes variables and methods to set up the game,
      * using the number of players to do so
      * param numPlayers (number of players playing the game)
+*/
 
      public void init(int numPlayers) {
      this.playerCount = numPlayers;
@@ -83,7 +78,7 @@ public class RiskGameState extends GameState {
      }
 
      }
-     */
+
 
     public Phase getCurrentPhase() {
         return this.currentPhase;
@@ -108,6 +103,7 @@ public class RiskGameState extends GameState {
             Territory newTerritory = new Territory(t);
             this.territories.add(newTerritory);
         }
+        cards = new ArrayList<ArrayList<Card>>();
         for(int i = 0; i < this.playerCount; i++) {
             cards.add(new ArrayList<Card>());
         }

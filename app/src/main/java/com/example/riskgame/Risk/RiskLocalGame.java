@@ -54,6 +54,11 @@ public class RiskLocalGame extends LocalGame {
         //maybe call sendUpdatedStateTo
     }
     **/
+    @Override
+    public void start(GamePlayer[] players) {
+        super.start(players);
+        riskGS.init(players.length);
+    }
 
     /**
      * sendUpdatedStateTo
@@ -243,6 +248,6 @@ public class RiskLocalGame extends LocalGame {
                 return null;
             }
         }
-        return playerNames[winner] + " has won ";
+        return playerNames[winner] + " has won! ";
     }
 }
