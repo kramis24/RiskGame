@@ -673,11 +673,11 @@ public class RiskGameState extends GameState {
         territories.add(newGuinea);
 
         Territory easternAustralia = new Territory(Territory.Continent.OCEANIA,
-                "Eastern Australia", 2600, 1750);
+                "Eastern Australia", 2800, 1700);
         territories.add(easternAustralia);
 
         Territory westernAustralia = new Territory(Territory.Continent.OCEANIA,
-                "Western Australia", 2800, 1700);
+                "Western Australia", 2600, 1750);
         territories.add(westernAustralia);
 
         // adding adjacents for each territory
@@ -687,7 +687,6 @@ public class RiskGameState extends GameState {
 
         easternAustralia.addAdjacent(westernAustralia);
         easternAustralia.addAdjacent(newGuinea);
-        easternAustralia.addAdjacent(indonesia);
 
         newGuinea.addAdjacent(easternAustralia);
         newGuinea.addAdjacent(westernAustralia);
@@ -695,7 +694,6 @@ public class RiskGameState extends GameState {
 
         indonesia.addAdjacent(newGuinea);
         indonesia.addAdjacent(westernAustralia);
-        indonesia.addAdjacent(easternAustralia);
         indonesia.addAdjacent(siam);
 
         siam.addAdjacent(indonesia);
