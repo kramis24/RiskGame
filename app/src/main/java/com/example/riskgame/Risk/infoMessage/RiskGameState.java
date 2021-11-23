@@ -233,6 +233,10 @@ public class RiskGameState extends GameState {
     public boolean attack(Territory atk, Territory def) {
         if (currentTurn == atk.getOwner() && currentTurn != def.getOwner()) {
             //checks that the player is not trying to attack themselves
+            if(atk.getTroops() <= 1 ) {
+                return false;
+            }
+
             boolean adjacent = false;
             for(Territory t: atk.getAdjacents()) {
                 if(def.equals(t)) {
