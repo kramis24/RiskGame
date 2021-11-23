@@ -424,6 +424,7 @@ public class RiskGameStateTest {
     @Test
     public void addTroop() {
         RiskGameState riskTest = new RiskGameState();
+        riskTest.init(2);
         ArrayList<Territory> territoriesTest = riskTest.getTerritories();
         int tempTroop = 10;
         territoriesTest.get(0).setTroops(0);
@@ -443,6 +444,7 @@ public class RiskGameStateTest {
     @Test
     public void setTerritoryPlayers() {
         RiskGameState riskTest = new RiskGameState();
+        riskTest.init(2);
         riskTest.setTerritoryPlayers();
         int terrCntPlyr0 = 0;
         int terrCntPlyr1 = 0;
@@ -486,6 +488,7 @@ public class RiskGameStateTest {
     @Test
     public void setStartTroops() {
         RiskGameState riskTest = new RiskGameState();
+        riskTest.init(2);
         ArrayList<Territory> territoriesTest = riskTest.getTerritories();
         int troopCnt = 0;
         riskTest.setTerritoryPlayers();

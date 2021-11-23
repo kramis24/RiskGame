@@ -44,6 +44,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         View.OnTouchListener {
 
     // instance variables
+    private boolean nuclearOption;
     private final int TOUCH_WINDOW = 35;
     private Button helpButton;
     private Button exitButton;
@@ -330,7 +331,11 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                             && selectedT1 != null)) {
                             askTroops();
                         } else {
-                            confirm();
+                            if(gameState.getCurrentPhase() == RiskGameState.Phase.ATTACK && selectedT1 != null) {
+                                attack_popup();
+                            } else {
+                                confirm();
+                            }
                         }
 
                         if (selectedT1 != null
@@ -368,7 +373,8 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
             selectedT2 = null;
         } else if (gameState.getCurrentPhase() == RiskGameState.Phase.ATTACK) {
             if (selectedT2 != null) {
-                game.sendAction(new AttackAction(this, selectedT1, selectedT2,false));
+                game.sendAction(new AttackAction(this, selectedT1, selectedT2, nuclearOption));
+                nuclearOption = false;
                 selectedT1 = null;
                 selectedT2 = null;
             }
@@ -452,6 +458,44 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         });
 
     }
+
+    private void attack_popup() {
+        //initialize popup
+        LayoutInflater inflater = (LayoutInflater)
+                myActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popup = inflater.inflate(R.layout.attack_popup, null);
+        Button confirmButton = (Button) popup.findViewById(R.id.confirmButton);
+        Button nuclearOptionButton = (Button) popup.findViewById(R.id.nuclearOption);
+
+        // create popup
+        PopupWindow popupWindow = new PopupWindow(popup, LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, true);
+
+        // displays popup window
+        popupWindow.showAtLocation(mapView, Gravity.NO_GRAVITY, (int) touchX,
+                (int) touchY);
+
+        // listener for confirmButton
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nuclearOption = false;
+                generateNumber(0);
+                popupWindow.dismiss();
+            }
+        });
+        nuclearOptionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nuclearOption = true;
+                generateNumber(0);
+                popupWindow.dismiss();
+            }
+        });
+
+
+    }
+
 
     /**
      * generateNumber
