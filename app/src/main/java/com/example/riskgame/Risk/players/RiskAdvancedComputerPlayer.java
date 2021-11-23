@@ -9,7 +9,7 @@ import com.example.riskgame.Risk.infoMessage.Territory;
 /**
  * RiskAdvancedComputerPlayer
  * Less dumb (i.e. not random) computer player for Risk. Designed to make one move each time info
- * is received.
+ * is received.b
  * ---CURRENTLY UNUSED---
  *
  * @author Dylan Kramis
