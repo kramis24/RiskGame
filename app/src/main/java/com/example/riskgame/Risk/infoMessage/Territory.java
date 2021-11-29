@@ -229,4 +229,57 @@ public class Territory {
     public boolean equals(Territory other) {
         return this.name.equals(other.name);
     }
+
+    // the following methods are for the advanced computer player to use
+    /**
+     * hasEnemyAdjacent
+     * Checks if there adjacent territories held by enemy players.
+     *
+     * @return true if enemies are nearby
+     */
+    public boolean hasEnemyAdjacent() {
+        for (Territory a : adjacents) {
+            if (a.owner != this.owner) return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * getDisadvantage
+     * Gets a territories worst ratio of troops to enemy troops.
+     *
+     * @return lowest troop to enemy troop ratio
+     */
+    public double getDisadvantage() {
+        double ratio = -1;
+
+        for (Territory a : adjacents) {
+            if (((this.troops / a.troops < ratio) || ratio == -1) && a.owner != this.owner) {
+                ratio = (double) this.owner / (double) a.owner;
+            }
+        }
+
+        return ratio;
+    }
+
+    /**
+     * getGreatestThreat
+     * Finds the most threatening enemy territory.
+     *
+     * @return adjacent enemy territory with most troops
+     */
+    public Territory getGreatestThreat() {
+        Territory greatestThreat = null;
+        int maxTroops = 0;
+
+        for (Territory a : adjacents) {
+            if (a.troops > maxTroops && a.owner != this.owner) {
+                greatestThreat = a;
+                maxTroops = a.troops;
+            }
+        }
+
+        return greatestThreat;
+    }
 }
