@@ -102,6 +102,13 @@ public class RiskMapView extends FlashSurfaceView {
         for (Territory t : gameState.getTerritories()) {
             drawTextBox(t.getX() + left, t.getY() + top, t.getTroops(), t.getOwner(),
                     t.getName(), canvas);
+            if(t.highlightMoved) {
+                Paint highlight = new Paint();
+                highlight.setColor(PLAYER_COLORS[t.getOwner()]);
+                highlight.setStyle(Paint.Style.STROKE);
+                highlight.setStrokeWidth(3);
+                canvas.drawRect(t.getX() + left -25, t.getY() + top -25, t.getX() +left + 25, t.getY() + top + 25,highlight);
+            }
         }
 
     }

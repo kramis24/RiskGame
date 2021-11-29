@@ -304,7 +304,6 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
             return true;
 
         } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_MOVE) {
-
             // sets screenDragged to true, updates position, and refreshes touch location
             if ((Math.abs(motionEvent.getX() - touchX) > 5.00)
                 || (Math.abs(motionEvent.getY() - touchY) > 5.00)) {
@@ -315,7 +314,6 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                 touchY = motionEvent.getY();
                 return true;
             }
-
         } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
 
             // processes touch to create action
