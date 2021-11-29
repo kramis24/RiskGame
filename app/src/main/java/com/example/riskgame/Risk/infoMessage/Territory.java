@@ -7,10 +7,11 @@ package com.example.riskgame.Risk.infoMessage;
  * @version 11/4/2021
  */
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Territory {
-
+public class Territory implements Serializable {
+    private static final long serialVersionUID = 3652321012489624416L;
     /**
      * Continent
      * Indicates which continent a territory belongs to.

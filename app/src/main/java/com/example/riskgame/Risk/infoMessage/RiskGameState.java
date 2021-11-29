@@ -9,14 +9,16 @@ package com.example.riskgame.Risk.infoMessage;
 
 import com.example.riskgame.GameFramework.infoMessage.GameState;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class RiskGameState extends GameState {
-
+public class RiskGameState extends GameState implements Serializable {
+    private static final String TAG = "RISKState";
+    private static final long serialVersionUID = 4552321012489624416L;
     /**
      * Phase
      * Indicates turn phase.

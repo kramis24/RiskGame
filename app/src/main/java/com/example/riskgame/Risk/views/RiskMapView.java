@@ -39,7 +39,8 @@ public class RiskMapView extends FlashSurfaceView {
                                                 0xFF0000FF, // blue
                                                 0xFFFFBF00, // yellow-orange
                                                 0xFF00DF00, // green
-                                                0xFF9F00FF};// purple
+                                                0xFF9F00FF, // purple
+                                                0xFF9C4300}; //brownish-orange
 
     // display variables
     private int left = getLeft();
