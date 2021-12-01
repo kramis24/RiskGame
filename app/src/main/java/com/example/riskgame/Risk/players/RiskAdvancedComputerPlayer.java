@@ -33,6 +33,7 @@ public class RiskAdvancedComputerPlayer extends GameComputerPlayer {
     private int attackCount = 0;
     private int attackFailCount = 0;
     private Territory attackTarget = null; // focus maintainer
+    private Territory attackFrom = null;
     private int territoryCount = 0;
     private int territoriesCaptured = 0;
     private int[] continentCounts = {0, 0, 0, 0, 0, 0};
@@ -84,7 +85,7 @@ public class RiskAdvancedComputerPlayer extends GameComputerPlayer {
                 generateFortify();
             }
 
-            // 1 second pause
+            // 1 second pause, ideally
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -212,23 +213,21 @@ public class RiskAdvancedComputerPlayer extends GameComputerPlayer {
                 setAttackTarget(OCEANIA);
             }
 
-            // default if no continents can be prioritized
+            // default if no continents can be prioritized, code is that from
+            // setAttackTarget without the continent check
             else {
-                boolean canAttack;
                 for (Territory t : gameState.getTerritories()) {
-                    if (t.getOwner() != playerNum) {
-                        canAttack = false;
+                    if (t.getOwner() == playerNum && t.getTroops() >= 2) {
                         for (Territory a : t.getAdjacents()) {
-                            if (a.getOwner() == playerNum && a.getTroops() > 1) {
-                                canAttack = true;
-                                break;
-                            }
-                        }
-                        if (canAttack) {
-                            if (attackTarget == null) {
-                                attackTarget = t;
-                            } else if (t.getTroops() < attackTarget.getTroops()) {
-                                attackTarget = t;
+                            if (a.getOwner() != playerNum) {
+                                if (attackTarget == null) {
+                                    attackTarget = a;
+                                    attackFrom   = t;
+                                } else if ((a.getTroops() / t.getTroops())
+                                        < (attackTarget.getTroops() / attackFrom.getTroops())) {
+                                    attackTarget = a;
+                                    attackFrom   = t;
+                                }
                             }
                         }
                     }
@@ -236,19 +235,18 @@ public class RiskAdvancedComputerPlayer extends GameComputerPlayer {
             }
         }
 
-        // determines the territory to attack from
-        Territory attackFrom = null;
-        if (attackTarget != null) {
-            for (Territory a : attackTarget.getAdjacents()) {
-                if (a.getOwner() == playerNum && a.getTroops() > 1) {
-                    if (attackFrom == null) {
-                        attackFrom = a;
-                    } else if (a.getTroops() > attackFrom.getTroops()) {
-                        attackFrom = a;
-                    }
-                }
-            }
-        }
+//        // determines the territory to attack from
+//        if (attackTarget != null) {
+//            for (Territory a : attackTarget.getAdjacents()) {
+//                if (a.getOwner() == playerNum && a.getTroops() > 1) {
+//                    if (attackFrom == null) {
+//                        attackFrom = a;
+//                    } else if (a.getTroops() > attackFrom.getTroops()) {
+//                        attackFrom = a;
+//                    }
+//                }
+//            }
+//        }
 
         // sends attack action if all requirements have been met
         if (attackTarget == null || attackFrom == null) {
@@ -270,25 +268,20 @@ public class RiskAdvancedComputerPlayer extends GameComputerPlayer {
      */
     protected void setAttackTarget(Territory.Continent c) {
 
-        // method variable
-        boolean canAttack;
-
-        // searches for territories in the right continent that are not owned
-        // by the player and can be attacked by the player
+        // searches for territories that can attack territories still needed in
+        // the desired continent
         for (Territory t : gameState.getTerritories()) {
-            if (t.getContinent() == c && t.getOwner() != playerNum) {
-                canAttack = false;
+            if (t.getOwner() == playerNum && t.getTroops() >= 2) {
                 for (Territory a : t.getAdjacents()) {
-                    if (a.getOwner() == playerNum && a.getTroops() > 1) {
-                        canAttack = true;
-                        break;
-                    }
-                }
-                if (canAttack) {
-                    if (attackTarget == null) {
-                        attackTarget = t;
-                    } else if (t.getTroops() < attackTarget.getTroops()) {
-                        attackTarget = t;
+                    if (a.getOwner() != playerNum && a.getContinent() == c) {
+                        if (attackTarget == null) {
+                            attackTarget = a;
+                            attackFrom   = t;
+                        } else if ((a.getTroops() / t.getTroops())
+                                < (attackTarget.getTroops() / attackFrom.getTroops())) {
+                            attackTarget = a;
+                            attackFrom   = t;
+                        }
                     }
                 }
             }
