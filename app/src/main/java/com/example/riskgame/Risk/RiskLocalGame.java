@@ -138,8 +138,16 @@ public class RiskLocalGame extends LocalGame {
                 return false;
             }
 
+            //Nuclear Option Code not yet implemented
+            if(((AttackAction) action).getNuclearOption() == false) {
+                riskGS.attack(((AttackAction) action).getAtk(), ((AttackAction) action).getDef());
+            } else {
+                Boolean canAttack = riskGS.attack(((AttackAction) action).getAtk(), ((AttackAction) action).getDef());
+                while(canAttack) {
+                    canAttack = riskGS.attack(((AttackAction) action).getAtk(), ((AttackAction) action).getDef());
+                }
+            }
 
-            riskGS.attack(((AttackAction) action).getAtk(), ((AttackAction) action).getDef());
             //updates the gamestate
             for(Territory t:riskGS.getTerritories()) {
                 if(((AttackAction) action).getAtk().equals(t)) {

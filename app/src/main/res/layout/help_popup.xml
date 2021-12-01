@@ -9,7 +9,7 @@
         android:layout_height="4in"
         android:background="#FFFFFF"
         android:orientation="vertical"
-        tools:ignore="ExtraText">
+        tools:ignore="ExtraText,MissingConstraints">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,7 +47,7 @@
 ----Basic Rules----\n
 -The goal of the game is to take all the territories on the map.\n
 -There is a total of 42 territories making up 6 different continents.\n
--Played with 2-4 players.\n
+-Played with 2-6 players.\n
 -The color of your name in te top left corner coresponds to the territoris you own.\n
 -There are 3 phases to each turn: Deploy, Attack, and Fortify. The Phase of
  each players turn can be seen in the center bar above the map. Players can

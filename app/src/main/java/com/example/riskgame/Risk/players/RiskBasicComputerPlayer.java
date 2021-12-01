@@ -104,7 +104,7 @@ public class RiskBasicComputerPlayer extends GameComputerPlayer {
                         loopCntr++; //count number of attempts to try and attack
                     }
                     sleep(1);
-                    game.sendAction(new AttackAction(this,ownedTerr.get(ownTerr),ownedTerr.get(ownTerr).getAdjacents().get(terr)));
+                    game.sendAction(new AttackAction(this,ownedTerr.get(ownTerr),ownedTerr.get(ownTerr).getAdjacents().get(terr),false));
                     return;
                 }
                 sleep(1);

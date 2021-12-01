@@ -44,6 +44,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         View.OnTouchListener {
 
     // instance variables
+    private boolean nuclearOption;
     private final int TOUCH_WINDOW = 35;
     private Button helpButton;
     private Button exitButton;
@@ -107,9 +108,11 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
 
         // updates textViews
          int[] PLAYER_COLORS = {0xFFFF0000, // red
-                0xFF0000FF, // blue
-                0xFFFFBF00, // yellow-orange
-                0xFF00DF00};// green
+                 0xFF0000FF, // blue
+                 0xFFFFBF00, // yellow-orange
+                 0xFF00DF00, // green
+                 0xFF9F00FF, // purple
+                 0xFF9C4300}; //brownish-orange
         playerTextView.setTextColor(PLAYER_COLORS[gameState.getCurrentTurn()]);
         playerTextView.setText(allPlayerNames[gameState.getCurrentTurn()]);
 
@@ -199,6 +202,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                 countArtillery = 0;
                 countCavalry = 0;
                 countInfantry = 0;
+                //counts number of cards player has
                 if(gameState != null && currentCards != null) {
                     for(int i = 0; i < gameState.getCards().get(gameState.getCurrentTurn()).size(); i++) {
                         if(gameState.getCards().size() <= 0 ) {
@@ -207,15 +211,16 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                         if(gameState.getCards().get(this.playerNum).get(i) == RiskGameState.Card.ARTILLERY) {
                             countArtillery++;
                         }
-                        if(gameState.getCards().get(playerNum).get(i) == RiskGameState.Card.CAVALRY) {
+                        if(gameState.getCards().get(this.playerNum).get(i) == RiskGameState.Card.CAVALRY) {
                             countCavalry++;
                         }
-                        if(gameState.getCards().get(playerNum).get(i) == RiskGameState.Card.INFANTRY) {
+                        if(gameState.getCards().get(this.playerNum).get(i) == RiskGameState.Card.INFANTRY) {
                             countInfantry++;
                         }
                     }
 
 
+                    //displays cards
                     currentCards.setBackgroundColor(Color.WHITE);
                     currentCards.setTextColor(Color.BLACK);
                     currentCards.setText("Artillery: " + countArtillery + "\n");
@@ -223,7 +228,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                     currentCards.append("Infantry: " + countInfantry + "\n");
                     currentCards.append("\n Exchange Bonuses: \n");
                     currentCards.append(" 3 Infantry = 4 troops\n 3 Cavalry = 6 troops\n 3 Artillery = 8 troops\n 1 of each = 10 troops\n");
-                    currentCards.append("pressing exchange cards automatically gives you the highest number of troops");
+                    currentCards.append("pressing exchange cards automatically gives you the highest number of troops\n cards can only be exchanged on your turn during the deploy phase");
                     currentCards.invalidate();
                 }
                 // creates popup
@@ -238,6 +243,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                         if(gameState.getCurrentPhase() == RiskGameState.Phase.DEPLOY) {
                             game.sendAction(exchange);
                             troopCountTextView.invalidate();
+                            //calculates number of troops to give
                             if(countArtillery >= 1 && countCavalry >= 1 && countInfantry >= 1) {
                                 cardTextView.setText("Gained 10 troops");
                                 countArtillery--;
@@ -246,19 +252,29 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                             } else if(countArtillery >= 3) {
                                 cardTextView.setText("Gained 8 troops");
                                 countArtillery=-3;
+                                if(countArtillery < 0) {
+                                    countArtillery = 0;
+                                }
                             } else if(countCavalry >= 3) {
                                 cardTextView.setText("Gained 6 troops");
                                 countCavalry =-3;
+                                if(countCavalry < 0) {
+                                    countCavalry = 0;
+                                }
                             } else if(countInfantry >= 3) {
                                 cardTextView.setText("Gained 4 troops");
                                 countInfantry =-3;
+                                if(countInfantry < 0) {
+                                    countInfantry = 0;
+                                }
                             }
+                            //updates text view
                             currentCards.setText("Artillery: " + countArtillery + "\n");
                             currentCards.append("Cavalry: " + countCavalry + "\n");
                             currentCards.append("Infantry: " + countInfantry + "\n");
                             currentCards.append("\n Exchange Bonuses: \n");
                             currentCards.append(" 3 Infantry = 4 troops\n 3 Cavalry = 6 troops\n 3 Artillery = 8 troops\n 1 of each = 10 troops\n");
-                            currentCards.append("pressing exchange cards automatically gives you the highest number of troops");
+                            currentCards.append("pressing exchange cards automatically gives you the highest number of troops\n cards can only be exchanged on your turn during the deploy phase");
                         }
                     }
                 });
@@ -294,7 +310,6 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
             return true;
 
         } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_MOVE) {
-
             // sets screenDragged to true, updates position, and refreshes touch location
             if ((Math.abs(motionEvent.getX() - touchX) > 5.00)
                 || (Math.abs(motionEvent.getY() - touchY) > 5.00)) {
@@ -305,7 +320,6 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                 touchY = motionEvent.getY();
                 return true;
             }
-
         } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
 
             // processes touch to create action
@@ -321,7 +335,11 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                             && selectedT1 != null)) {
                             askTroops();
                         } else {
-                            confirm();
+                            if(gameState.getCurrentPhase() == RiskGameState.Phase.ATTACK && selectedT1 != null) {
+                                attack_popup();
+                            } else {
+                                confirm();
+                            }
                         }
 
                         if (selectedT1 != null
@@ -359,7 +377,8 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
             selectedT2 = null;
         } else if (gameState.getCurrentPhase() == RiskGameState.Phase.ATTACK) {
             if (selectedT2 != null) {
-                game.sendAction(new AttackAction(this, selectedT1, selectedT2));
+                game.sendAction(new AttackAction(this, selectedT1, selectedT2, nuclearOption));
+                nuclearOption = false;
                 selectedT1 = null;
                 selectedT2 = null;
             }
@@ -443,6 +462,44 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         });
 
     }
+
+    private void attack_popup() {
+        //initialize popup
+        LayoutInflater inflater = (LayoutInflater)
+                myActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popup = inflater.inflate(R.layout.attack_popup, null);
+        Button confirmButton = (Button) popup.findViewById(R.id.confirmButton);
+        Button nuclearOptionButton = (Button) popup.findViewById(R.id.nuclearOption);
+
+        // create popup
+        PopupWindow popupWindow = new PopupWindow(popup, LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, true);
+
+        // displays popup window
+        popupWindow.showAtLocation(mapView, Gravity.NO_GRAVITY, (int) touchX,
+                (int) touchY);
+
+        // listener for confirmButton
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nuclearOption = false;
+                generateNumber(0);
+                popupWindow.dismiss();
+            }
+        });
+        nuclearOptionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nuclearOption = true;
+                generateNumber(0);
+                popupWindow.dismiss();
+            }
+        });
+
+
+    }
+
 
     /**
      * generateNumber
