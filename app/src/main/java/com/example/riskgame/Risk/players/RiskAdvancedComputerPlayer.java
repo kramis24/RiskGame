@@ -235,24 +235,11 @@ public class RiskAdvancedComputerPlayer extends GameComputerPlayer {
             }
         }
 
-//        // determines the territory to attack from
-//        if (attackTarget != null) {
-//            for (Territory a : attackTarget.getAdjacents()) {
-//                if (a.getOwner() == playerNum && a.getTroops() > 1) {
-//                    if (attackFrom == null) {
-//                        attackFrom = a;
-//                    } else if (a.getTroops() > attackFrom.getTroops()) {
-//                        attackFrom = a;
-//                    }
-//                }
-//            }
-//        }
-
         // sends attack action if all requirements have been met
         if (attackTarget == null || attackFrom == null) {
             game.sendAction(new NextTurnAction(this));
         } else {
-            game.sendAction(new AttackAction(this, attackFrom, attackTarget));
+            game.sendAction(new AttackAction(this, attackFrom, attackTarget, false));
         }
 
         // advances attack counter
