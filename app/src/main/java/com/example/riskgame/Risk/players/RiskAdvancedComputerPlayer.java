@@ -17,6 +17,7 @@ import com.example.riskgame.Risk.infoMessage.Territory;
 import com.example.riskgame.Risk.riskActionMessage.AttackAction;
 import com.example.riskgame.Risk.riskActionMessage.DeployAction;
 import com.example.riskgame.Risk.riskActionMessage.ExchangeCardAction;
+import com.example.riskgame.Risk.riskActionMessage.FortifyAction;
 import com.example.riskgame.Risk.riskActionMessage.NextTurnAction;
 
 public class RiskAdvancedComputerPlayer extends GameComputerPlayer {
@@ -294,8 +295,59 @@ public class RiskAdvancedComputerPlayer extends GameComputerPlayer {
         }
     }
 
+    /**
+     * generateFortify
+     * Analyzes game state and determines where to fortify.
+     */
     protected void generateFortify() {
-        // TODO implement fortify logic
-        game.sendAction(new NextTurnAction(this));// temporary call
+
+        // move on if fortify limit reached
+        if (fortifyCount >= FORTIFY_LIMIT) {
+            game.sendAction(new NextTurnAction(this));
+        }
+
+        // method variables
+        Territory moveFrom = null;
+        Territory moveTo = null;
+        boolean wellProtected;
+
+        // looks for an owned territory entirely surrounded by other owned territories
+        for (Territory t : gameState.getTerritories()) {
+            if (t.getOwner() == playerNum) {
+                wellProtected = true;
+                for (Territory a : t.getAdjacents()) {
+                    if (a.getOwner() != playerNum) {
+                        wellProtected = false;
+                    }
+                }
+                if (wellProtected) {
+                    moveFrom = t;
+                    break;
+                }
+            }
+        }
+
+        // abort if no well protected territory found
+        if (moveFrom == null) {
+            game.sendAction(new NextTurnAction(this));
+            return;
+        }
+
+        // determines where to move troops to
+        for (Territory a : moveFrom.getAdjacents()) {
+            if (moveTo == null) {
+                moveTo = a;
+            } else if (moveTo.getTroops() < a.getTroops()) {
+                moveTo = a;
+            }
+        }
+
+        // sends action, deploys all but one troop
+        game.sendAction(new FortifyAction(this, moveFrom, moveTo,
+                moveFrom.getTroops() - 1));
+
+        // increments attempt counter
+        fortifyCount++;
+
     }
 }
