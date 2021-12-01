@@ -8,6 +8,7 @@ package com.example.riskgame.Risk.views;
  */
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -159,27 +160,52 @@ public class RiskMapView extends FlashSurfaceView {
             bottom = top + getHeight();
 
         // checks if out of bounds, logic is rather counterintuitive
-        if (left > 0) {
-            left = 0;
-            right = getWidth();
-            shiftX = 0;
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            if (left > 0) {
+                left = 0;
+                right = getWidth();
+                shiftX = 0;
+            }
+            if (top > 0) {
+                top = 0;
+                bottom = getHeight();
+                shiftY = 0;
+            }
+            if (right < 1050) { // getters didn't work here, so trial and error was used to determine
+                right = 1050;   // boundaries. use an actual tablet when testing
+                left = right - getWidth();
+                shiftX = left;
+            }
+            if (bottom < -150) {
+                bottom = -150;
+                top = bottom - getHeight();
+                shiftY = top;
+            }
+            invalidate();
+
+        } else if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            if (left > 0) {
+                left = 0;
+                right = getWidth();
+                shiftX = 0;
+            }
+            if (top > 0) {
+                top = 0;
+                bottom = getHeight();
+                shiftY = 0;
+            }
+            if (right < -600) { // getters didn't work here, so trial and error was used to determine
+                right = -600;   // boundaries. use an actual tablet when testing
+                left = right - getWidth();
+                shiftX = left;
+            }
+            if (bottom < 1400) {
+                bottom = 1400;
+                top = bottom - getHeight();
+                shiftY = top;
+            }
+            invalidate();
         }
-        if (top > 0) {
-            top = 0;
-            bottom = getHeight();
-            shiftY = 0;
-        }
-        if (right < 1050) { // getters didn't work here, so trial and error was used to determine
-            right = 1050;   // boundaries. use an actual tablet when testing
-            left = right - getWidth();
-            shiftX = left;
-        }
-        if (bottom < -150) {
-            bottom = -150;
-            top = bottom - getHeight();
-            shiftY = top;
-        }
-        invalidate();
 
     }
 
