@@ -256,7 +256,7 @@ public class Territory {
 
         for (Territory a : adjacents) {
             if (((this.troops / a.troops < ratio) || ratio == -1) && a.owner != this.owner) {
-                ratio = (double) this.owner / (double) a.owner;
+                ratio = (double) this.troops / (double) a.troops;
             }
         }
 

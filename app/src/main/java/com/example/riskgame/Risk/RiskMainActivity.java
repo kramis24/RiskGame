@@ -17,6 +17,7 @@ import com.example.riskgame.GameFramework.utilities.Logger;
 import com.example.riskgame.GameFramework.utilities.Saving;
 import com.example.riskgame.R;
 import com.example.riskgame.Risk.infoMessage.RiskGameState;
+import com.example.riskgame.Risk.players.RiskAdvancedComputerPlayer;
 import com.example.riskgame.Risk.players.RiskBasicComputerPlayer;
 import com.example.riskgame.Risk.players.RiskHumanPlayer;
 
@@ -53,6 +54,14 @@ public class RiskMainActivity extends GameMainActivity {
             @Override
             public GamePlayer createPlayer(String name) {
                 return new RiskBasicComputerPlayer(name);
+            }
+        });
+
+        // dumb computer player
+        playerTypes.add(new GamePlayerType("Computer Player (dumb)") {
+            @Override
+            public GamePlayer createPlayer(String name) {
+                return new RiskAdvancedComputerPlayer(name);
             }
         });
 

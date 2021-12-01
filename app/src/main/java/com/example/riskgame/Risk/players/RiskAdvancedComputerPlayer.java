@@ -3,33 +3,41 @@ package com.example.riskgame.Risk.players;
  * RiskAdvancedComputerPlayer
  * Less dumb (i.e. not random) computer player for Risk. Designed to make one move each time info
  * is received.
- * ---CURRENTLY UNUSED---
  *
- * @author Dylan Kramis
- * @version 11/22/2021
+ * @author Dylan Kramis, designed based on suggestions from Charlie Benning
+ * @version 11/30/2021
  */
 
+import static com.example.riskgame.Risk.infoMessage.Territory.Continent.*;
 import com.example.riskgame.GameFramework.infoMessage.GameInfo;
 import com.example.riskgame.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.riskgame.GameFramework.players.GameComputerPlayer;
 import com.example.riskgame.Risk.infoMessage.RiskGameState;
 import com.example.riskgame.Risk.infoMessage.Territory;
+import com.example.riskgame.Risk.riskActionMessage.AttackAction;
 import com.example.riskgame.Risk.riskActionMessage.DeployAction;
+import com.example.riskgame.Risk.riskActionMessage.ExchangeCardAction;
 import com.example.riskgame.Risk.riskActionMessage.NextTurnAction;
 
 public class RiskAdvancedComputerPlayer extends GameComputerPlayer {
 
     // limits to keep the computer from getting stuck
     public static final int ATTACK_LIMIT = 20;
-    public static final int FORTIFY_ATTEMPT_LIMIT = 5;
+    public static final int FORTIFY_LIMIT = 5;
 
     // instance variables
     private RiskGameState gameState;
 
     // variables for attacking
     private int attackCount = 0;
-    private Territory attackTarget; // focus maintainer
+    private int attackFailCount = 0;
+    private Territory attackTarget = null; // focus maintainer
+    private int territoryCount = 0;
     private int territoriesCaptured = 0;
+    private int[] continentCounts = {0, 0, 0, 0, 0, 0};
+
+    // variables for fortifying
+    private int fortifyCount = 0;
 
     /**
      * constructor
@@ -63,9 +71,12 @@ public class RiskAdvancedComputerPlayer extends GameComputerPlayer {
                 return;
             }
 
-            // calls action generator for current phase
+            // calls action generator for current phase,
+            // resets attempt counters if necessary
             if (gameState.getCurrentPhase() == RiskGameState.Phase.DEPLOY) {
                 generateDeploy();
+                attackCount = 0;
+                fortifyCount = 0;
             } else if (gameState.getCurrentPhase() == RiskGameState.Phase.ATTACK) {
                 generateAttack();
             } else {
@@ -96,7 +107,15 @@ public class RiskAdvancedComputerPlayer extends GameComputerPlayer {
         // otherwise sends troops somewhere
         else {
 
-            // TODO exchange cards
+            // exchanges cards if right combination obtained or cards maxed out,
+            // returns to wait for updated information
+            if ((gameState.getCards().get(playerNum).size() == 5)
+                || (gameState.getCards().get(playerNum).contains(RiskGameState.Card.INFANTRY)
+                    && gameState.getCards().get(playerNum).contains(RiskGameState.Card.ARTILLERY)
+                    && gameState.getCards().get(playerNum).contains(RiskGameState.Card.CAVALRY))) {
+                game.sendAction(new ExchangeCardAction(this));
+                return;
+            }
 
             // initializes variables
             Territory deployTo = null;
@@ -142,13 +161,141 @@ public class RiskAdvancedComputerPlayer extends GameComputerPlayer {
         }
     }
 
-
-
+    /**
+     * generateAttack
+     * Analyzes game and determines where to attack
+     */
     protected void generateAttack() {
-        // TODO ask Charlie and Phi how logic should be implemented
+
+        // move on if attack limit reached
+        if (attackCount >= ATTACK_LIMIT) {
+            game.sendAction(new NextTurnAction(this));
+            return;
+        }
+
+        // reset fail count if start of phase
+        if (attackCount == 0) {
+            attackFailCount = 0;
+        }
+
+        // counts up territories similar to calcTroops in game state
+        int newTerritoryCount = 0;
+        for (Territory t : gameState.getTerritories()) {
+            if (t.getOwner() == playerNum) {
+                territoryCount++;
+                continentCounts[t.getContinent().ordinal()]++;
+            }
+        }
+
+        // updates relevant info
+        if (territoryCount != 0) {
+            territoriesCaptured = newTerritoryCount - territoryCount;
+        }
+        territoryCount = newTerritoryCount;
+
+        // sets target and attacking territory if start of attack phase or when territory captured
+        // will prioritize continents if ables to
+        if (attackTarget == null || attackTarget.getOwner() == playerNum || attackCount == 0) {
+            attackTarget = null;
+            if (continentCounts[ASIA.ordinal()] >= 6) {
+                setAttackTarget(ASIA);
+            } else if (continentCounts[AFRICA.ordinal()] >= 3) {
+                setAttackTarget(AFRICA);
+            } else if (continentCounts[SOUTH_AMERICA.ordinal()] >= 2) {
+                setAttackTarget(SOUTH_AMERICA);
+            } else if (continentCounts[NORTH_AMERICA.ordinal()] >= 5) {
+                setAttackTarget(NORTH_AMERICA);
+            } else if (continentCounts[EUROPE.ordinal()] >= 4) {
+                setAttackTarget(EUROPE);
+            } else if (continentCounts[OCEANIA.ordinal()] >= 2) {
+                setAttackTarget(OCEANIA);
+            }
+
+            // default if no continents can be prioritized
+            else {
+                boolean canAttack;
+                for (Territory t : gameState.getTerritories()) {
+                    if (t.getOwner() != playerNum) {
+                        canAttack = false;
+                        for (Territory a : t.getAdjacents()) {
+                            if (a.getOwner() == playerNum && a.getTroops() > 1) {
+                                canAttack = true;
+                                break;
+                            }
+                        }
+                        if (canAttack) {
+                            if (attackTarget == null) {
+                                attackTarget = t;
+                            } else if (t.getTroops() < attackTarget.getTroops()) {
+                                attackTarget = t;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // determines the territory to attack from
+        Territory attackFrom = null;
+        if (attackTarget != null) {
+            for (Territory a : attackTarget.getAdjacents()) {
+                if (a.getOwner() == playerNum && a.getTroops() > 1) {
+                    if (attackFrom == null) {
+                        attackFrom = a;
+                    } else if (a.getTroops() > attackFrom.getTroops()) {
+                        attackFrom = a;
+                    }
+                }
+            }
+        }
+
+        // sends attack action if all requirements have been met
+        if (attackTarget == null || attackFrom == null) {
+            game.sendAction(new NextTurnAction(this));
+        } else {
+            game.sendAction(new AttackAction(this, attackFrom, attackTarget));
+        }
+
+        // advances attack counter
+        attackCount++;
+
+    }
+
+    /**
+     * setAttackTarget
+     * Sets an attack target within a specified continent.
+     *
+     * @param c continent
+     */
+    protected void setAttackTarget(Territory.Continent c) {
+
+        // method variable
+        boolean canAttack;
+
+        // searches for territories in the right continent that are not owned
+        // by the player and can be attacked by the player
+        for (Territory t : gameState.getTerritories()) {
+            if (t.getContinent() == c && t.getOwner() != playerNum) {
+                canAttack = false;
+                for (Territory a : t.getAdjacents()) {
+                    if (a.getOwner() == playerNum && a.getTroops() > 1) {
+                        canAttack = true;
+                        break;
+                    }
+                }
+                if (canAttack) {
+                    if (attackTarget == null) {
+                        attackTarget = t;
+                    } else if (t.getTroops() < attackTarget.getTroops()) {
+                        attackTarget = t;
+                    }
+                }
+            }
+        }
     }
 
     protected void generateFortify() {
-        // TODO ask Charlie and Phi how logic should be implemented
+        // TODO implement fortify logic
+        game.sendAction(new NextTurnAction(this));// temporary call
     }
 }
