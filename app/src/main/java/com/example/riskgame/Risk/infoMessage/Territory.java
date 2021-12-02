@@ -36,6 +36,13 @@ public class Territory implements Serializable {
     private int owner;
     public boolean checked;
     public boolean highlightMoved;
+    public int turnNumChanged;
+    // if the numTurn is = to 15 %0 scan all the previous num for if their varible is equal to 14 or less --> if so jhighlight
+    //ask th gamestate --> how many players? What turn?
+    //cuurentTurn mod numplayers
+    //Current turn - (numplayer-1)
+    //Turns to highlight => currentTurn-(numplayers-1) or newer
+    //
 
     // location variables
     private int centerX = 0;
@@ -59,6 +66,7 @@ public class Territory implements Serializable {
         owner = -1;
         checked = false;
         highlightMoved = false;
+        turnNumChanged = -1;
     }
 
     /**
@@ -79,6 +87,7 @@ public class Territory implements Serializable {
         owner = -1;
         checked = false;
         highlightMoved = false;
+        turnNumChanged = -1;
         centerX = x;
         centerY = y;
     }
@@ -99,6 +108,7 @@ public class Territory implements Serializable {
         this.checked = t.checked;
         this.highlightMoved = t.highlightMoved;
         this.adjacents = new ArrayList<Territory>();
+        this.turnNumChanged = t.turnNumChanged;
 
         for(int i = 0; i < t.adjacents.size(); i++) {
             this.adjacents.add(t.adjacents.get(i));
@@ -246,5 +256,58 @@ public class Territory implements Serializable {
      */
     public boolean equals(Territory other) {
         return this.name.equals(other.name);
+    }
+
+    // the following methods are for the advanced computer player to use
+    /**
+     * hasEnemyAdjacent
+     * Checks if there adjacent territories held by enemy players.
+     *
+     * @return true if enemies are nearby
+     */
+    public boolean hasEnemyAdjacent() {
+        for (Territory a : adjacents) {
+            if (a.owner != this.owner) return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * getDisadvantage
+     * Gets a territories worst ratio of troops to enemy troops.
+     *
+     * @return lowest troop to enemy troop ratio
+     */
+    public double getDisadvantage() {
+        double ratio = -1;
+
+        for (Territory a : adjacents) {
+            if (((this.troops / a.troops < ratio) || ratio == -1) && a.owner != this.owner) {
+                ratio = (double) this.troops / (double) a.troops;
+            }
+        }
+
+        return ratio;
+    }
+
+    /**
+     * getGreatestThreat
+     * Finds the most threatening enemy territory.
+     *
+     * @return adjacent enemy territory with most troops
+     */
+    public Territory getGreatestThreat() {
+        Territory greatestThreat = null;
+        int maxTroops = 0;
+
+        for (Territory a : adjacents) {
+            if (a.troops > maxTroops && a.owner != this.owner) {
+                greatestThreat = a;
+                maxTroops = a.troops;
+            }
+        }
+
+        return greatestThreat;
     }
 }
