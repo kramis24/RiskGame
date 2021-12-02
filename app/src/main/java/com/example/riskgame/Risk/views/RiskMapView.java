@@ -104,13 +104,7 @@ public class RiskMapView extends FlashSurfaceView {
         for (Territory t : gameState.getTerritories()) {
             drawTextBox(t.getX() + left, t.getY() + top, t.getTroops(), t.getOwner(),
                     t.getName(), canvas);
-            if(t.highlightMoved) {
-                Paint highlight = new Paint();
-                highlight.setColor(PLAYER_COLORS[t.getOwner()]);
-                highlight.setStyle(Paint.Style.STROKE);
-                highlight.setStrokeWidth(3);
-                canvas.drawRect(t.getX() + left -25, t.getY() + top -25, t.getX() +left + 25, t.getY() + top + 25,highlight);
-            }
+
         }
 
     }
@@ -158,54 +152,43 @@ public class RiskMapView extends FlashSurfaceView {
             top += changeY;
             right = left + getWidth();
             bottom = top + getHeight();
+            int leftBound = 0;
+            int rightBound = 0;
+            int topBound = 0;
+            int bottomBound = 0;
 
-        // checks if out of bounds, logic is rather counterintuitive
+        //checks if landscape or portrait and changes the bounds accordingly
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            if (left > 0) {
-                left = 0;
-                right = getWidth();
-                shiftX = 0;
-            }
-            if (top > 0) {
-                top = 0;
-                bottom = getHeight();
-                shiftY = 0;
-            }
-            if (right < 1050) { // getters didn't work here, so trial and error was used to determine
-                right = 1050;   // boundaries. use an actual tablet when testing
-                left = right - getWidth();
-                shiftX = left;
-            }
-            if (bottom < -150) {
-                bottom = -150;
-                top = bottom - getHeight();
-                shiftY = top;
-            }
-            invalidate();
+            rightBound = 1050;
+            bottomBound = -150;
 
         } else if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            if (left > 0) {
-                left = 0;
-                right = getWidth();
-                shiftX = 0;
-            }
-            if (top > 0) {
-                top = 0;
-                bottom = getHeight();
-                shiftY = 0;
-            }
-            if (right < -600) { // getters didn't work here, so trial and error was used to determine
-                right = -600;   // boundaries. use an actual tablet when testing
-                left = right - getWidth();
-                shiftX = left;
-            }
-            if (bottom < 1400) {
-                bottom = 1400;
-                top = bottom - getHeight();
-                shiftY = top;
-            }
-            invalidate();
+            rightBound = -600;
+            bottomBound = 1400;
         }
+        // checks if out of bounds, logic is rather counterintuitive
+
+        if (left > leftBound) {
+            left = topBound;
+            right = getWidth();
+            shiftX = 0;
+        }
+        if (top > topBound) {
+            top = topBound;
+            bottom = getHeight();
+            shiftY = 0;
+        }
+        if (right < rightBound) { // getters didn't work here, so trial and error was used to determine
+            right = rightBound;   // boundaries. use an actual tablet when testing
+            left = right - getWidth();
+            shiftX = left;
+        }
+        if (bottom < bottomBound) {
+            bottom = bottomBound;
+            top = bottom - getHeight();
+            shiftY = top;
+        }
+        invalidate();
 
     }
 

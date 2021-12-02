@@ -94,15 +94,19 @@ public class RiskGameState extends GameState implements Serializable {
 
         // initialize territories array list
         territories = new ArrayList<Territory>();
+        initTerritories();
 
         // copying variables
         this.currentTurn = other.currentTurn;
         this.playerCount = other.playerCount;
         this.currentPhase = other.currentPhase;
         this.totalTroops = other.totalTroops;
-        for (Territory t : other.territories) {
-            Territory newTerritory = new Territory(t);
-            this.territories.add(newTerritory);
+
+        for (int i = 0; i < other.territories.size(); i++) {
+            //Territory newTerritory = new Territory(t);
+            //this.territories.add(newTerritory);
+            this.territories.get(i).setUp(other.territories.get(i));
+
         }
         cards = new ArrayList<ArrayList<Card>>();
         for(int i = 0; i < this.playerCount; i++) {
@@ -338,6 +342,13 @@ public class RiskGameState extends GameState implements Serializable {
     }
 
 
+    private void updateAdjacents() {
+        //go through each territories adjacent list
+        //search for the matching territory in the the territories array
+        //copy all of the information over
+
+    }
+
     /**
      * fortify
      * ADD: add the ability to move through connected territories Probably Hardest part of fortify method
@@ -373,10 +384,13 @@ public class RiskGameState extends GameState implements Serializable {
      * @return
      */
     public boolean checkChain(Territory t1, Territory t2) {
+
         if (t1.getOwner() == t2.getOwner()) { //check if the territories are owned by the same player, if not return false
             for (int i = 0; i < territories.size(); i++) { //set all territories to unchecked (haven't been looked at yet)
                 territories.get(i).checked = false;
+
             }
+
             return checkHelper(t1, t2); //call helper method to search through adjacent arrays
         }
         return false;
@@ -386,11 +400,13 @@ public class RiskGameState extends GameState implements Serializable {
      * checkHelper
      * Helper method to check if two territories create a chain of adjacent territories that connect
      * @return
+     * the information in the adjacents list does not match the information in territories
+     * possible solution? scan adjacents and search for matching territory in territory list, then copy information over?
      */
     private boolean checkHelper(Territory t1, Territory t2) {
         boolean ans = false; ///assume both territories aren't connected
         for (int i = 0; i < t1.getAdjacents().size(); i++) {
-            if (t1.getAdjacents().get(i).getOwner() == t1.getOwner()) {
+            if (t1.getAdjacents().get(i).getOwner() == t1.getOwner()) {;
                 //if adjacent is owned by the same player as initial territory
                 if (!t1.getAdjacents().get(i).checked) { //check to see if this territory has been scanned (for being in the chain) yet
                     t1.getAdjacents().get(i).checked = true; //this territory will now be scanned for being in the chain

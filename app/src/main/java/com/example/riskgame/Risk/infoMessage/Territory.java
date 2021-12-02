@@ -7,6 +7,8 @@ package com.example.riskgame.Risk.infoMessage;
  * @version 11/4/2021
  */
 
+import com.example.riskgame.GameFramework.utilities.Logger;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -87,19 +89,34 @@ public class Territory implements Serializable {
      * @param t territory being copied
      */
     public Territory(Territory t) {
-
         // copies variables
-        this.continent = t.continent;
+        /*this.continent = t.continent;
         this.name = t.name;
         this.owner = t.owner;
         this.troops = t.troops;
         this.centerX = t.centerX;
         this.centerY = t.centerY;
+        this.checked = t.checked;
+        this.highlightMoved = t.highlightMoved;
         this.adjacents = new ArrayList<Territory>();
 
         for(int i = 0; i < t.adjacents.size(); i++) {
             this.adjacents.add(t.adjacents.get(i));
-        }
+        }*/
+        Logger.log("Territory Copy Constructor","Unsupported due to adjacency matrix");
+    }
+
+    /**
+     * Copies information from one territory to another
+     *
+     * @param t the territory to be copied
+     */
+    public void setUp(Territory t) {
+
+        this.owner = t.owner;
+        this.troops = t.troops;
+        this.checked = t.checked;
+        this.highlightMoved = t.highlightMoved;
     }
 
     /**
