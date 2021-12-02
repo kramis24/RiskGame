@@ -9,14 +9,16 @@ package com.example.riskgame.Risk.infoMessage;
 
 import com.example.riskgame.GameFramework.infoMessage.GameState;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class RiskGameState extends GameState {
-
+public class RiskGameState extends GameState implements Serializable {
+    private static final String TAG = "RISKState";
+    private static final long serialVersionUID = 4552321012489624416L;
     /**
      * Phase
      * Indicates turn phase.
@@ -77,7 +79,6 @@ public class RiskGameState extends GameState {
      for(int i = 0; i < playerCount; i++) {
      cards.add(new ArrayList<Card>());
      }
-
      }
 
 
@@ -356,7 +357,7 @@ public class RiskGameState extends GameState {
         if (currentTurn == t1.getOwner() && currentTurn == t2.getOwner()) { //checks if both territories are owned by player
             if(checkChain(t1,t2)) {
                 if (troops > 0) {
-                    if (t1.getTroops() - troops > 1) { //makes sure that you cannot send more troops than you have
+                    if (t1.getTroops() - troops >= 1) { //makes sure that you cannot send more troops than you have
                         t1.setTroops(t1.getTroops() - troops);
                         t2.setTroops(t2.getTroops() + troops);
                         nextTurn();
@@ -418,9 +419,10 @@ public class RiskGameState extends GameState {
      * @return true if turn was advanced
     **/
     public boolean nextTurn() {
-
         // iteration through phases
+
         if (currentPhase == Phase.DEPLOY) {
+
             currentPhase = Phase.ATTACK;
         }
         else if (currentPhase == Phase.ATTACK) {
