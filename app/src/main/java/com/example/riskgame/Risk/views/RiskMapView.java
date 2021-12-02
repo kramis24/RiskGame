@@ -14,6 +14,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import com.example.riskgame.GameFramework.utilities.FlashSurfaceView;
 import com.example.riskgame.R;
@@ -27,6 +28,7 @@ public class RiskMapView extends FlashSurfaceView {
     private Paint boxPaint;
     private Paint textPaint;
     private Paint namePaint;
+    private Paint highlightPaint;
 
     // game map, don't want to be loading this constantly
     final private Bitmap mapImage = BitmapFactory.decodeResource(getResources(), R.drawable.risk_board);
@@ -78,6 +80,9 @@ public class RiskMapView extends FlashSurfaceView {
         namePaint.setTextSize(30);
         namePaint.setTextAlign(Paint.Align.CENTER);
 
+        highlightPaint = new Paint();
+        highlightPaint.setColor(Color.RED);
+
     }
 
     /**
@@ -98,8 +103,14 @@ public class RiskMapView extends FlashSurfaceView {
             return;
         }
 
+
+        Log.i("draw:",""+gameState.getTurnCount());
         // draws text boxes indicating troop counts and ownership
         for (Territory t : gameState.getTerritories()) {
+            if (t.turnNumChanged >= gameState.getTurnCount()-(gameState.getPlayerCount()-1) && t.turnNumChanged != -1) {
+                canvas.drawRect(t.getX() + left - 32, t.getY() + top - 32,t.getX() + left + 32, t.getY() + top + 32, mapPaint);
+                canvas.drawRect(t.getX() + left - 30, t.getY() + top - 30,t.getX() + left + 30, t.getY() + top + 30, highlightPaint);
+            }
             drawTextBox(t.getX() + left, t.getY() + top, t.getTroops(), t.getOwner(),
                     t.getName(), canvas);
         }

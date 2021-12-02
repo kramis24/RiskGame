@@ -42,6 +42,7 @@ public class RiskGameState extends GameState {
     private boolean hasGottenCard = false;
     private int playerCount = 2;
     private int currentTurn = 0;
+    private int turnCount = 0;
     private Phase currentPhase = Phase.DEPLOY;
     private int totalTroops = 100;
     private ArrayList<Territory> territories;
@@ -84,6 +85,8 @@ public class RiskGameState extends GameState {
         return this.currentPhase;
     }
 
+    public int getPlayerCount() {return this.playerCount;}
+
     /**
      * Copy constructor for RiskGameState
      *
@@ -96,6 +99,7 @@ public class RiskGameState extends GameState {
 
         // copying variables
         this.currentTurn = other.currentTurn;
+        this.turnCount = other.turnCount;
         this.playerCount = other.playerCount;
         this.currentPhase = other.currentPhase;
         this.totalTroops = other.totalTroops;
@@ -281,8 +285,11 @@ public class RiskGameState extends GameState {
                 for (int i = 0; i < numRollsDef; i++) {
                     if (rollsAtk.get(i) > rollsDef.get(i)) {
                         def.setTroops(def.getTroops() - 1);
+                        def.turnNumChanged = turnCount;
+
                     } else if (rollsDef.get(i) >= rollsAtk.get(i)) {
                         atk.setTroops(atk.getTroops() - 1);
+                        atk.turnNumChanged = turnCount;
                     }
                 }
 
@@ -292,9 +299,7 @@ public class RiskGameState extends GameState {
                     addCard();
                     def.setTroops(atk.getTroops() - 1);
                     atk.setTroops(1);
-                    def.highlightMoved = true;
                 }
-                atk.highlightMoved = true;
                 return true;
             }
             return false;
@@ -317,7 +322,7 @@ public class RiskGameState extends GameState {
             //if owner matches
             if (troops >= 0 && troops <= totalTroops) {
                 addTroop(t, troops);
-                t.highlightMoved = true;
+                t.turnNumChanged = turnCount;
                 totalTroops -= troops;
                 return true;
             }
@@ -355,8 +360,8 @@ public class RiskGameState extends GameState {
                         t1.setTroops(t1.getTroops() - troops);
                         t2.setTroops(t2.getTroops() + troops);
                         nextTurn();
-                        t1.highlightMoved = true;
-                        t2.highlightMoved = true;
+                        t1.turnNumChanged = turnCount;
+                        t2.turnNumChanged = turnCount;
                         return true;
                     }
                 }
@@ -425,6 +430,7 @@ public class RiskGameState extends GameState {
         else {
             currentPhase = Phase.DEPLOY;
             currentTurn++;// end of turn
+            turnCount++;
             // iteration through players
             if(currentTurn % playerCount == 0) {
                 currentTurn = 0;
@@ -432,6 +438,10 @@ public class RiskGameState extends GameState {
             totalTroops = calcTroops(currentTurn); //gives the player a determined amount of troops.
         }
         return true;
+    }
+
+    public int getTurnCount() {
+        return  turnCount;
     }
 
     public void setTotalTroops(int set) {

@@ -33,6 +33,13 @@ public class Territory {
     private int owner;
     public boolean checked;
     public boolean highlightMoved;
+    public int turnNumChanged;
+    // if the numTurn is = to 15 %0 scan all the previous num for if their varible is equal to 14 or less --> if so jhighlight
+    //ask th gamestate --> how many players? What turn?
+    //cuurentTurn mod numplayers
+    //Current turn - (numplayer-1)
+    //Turns to highlight => currentTurn-(numplayers-1) or newer
+    //
 
     // location variables
     private int centerX = 0;
@@ -56,6 +63,7 @@ public class Territory {
         owner = -1;
         checked = false;
         highlightMoved = false;
+        turnNumChanged = -1;
     }
 
     /**
@@ -76,6 +84,7 @@ public class Territory {
         owner = -1;
         checked = false;
         highlightMoved = false;
+        turnNumChanged = -1;
         centerX = x;
         centerY = y;
     }
@@ -95,6 +104,7 @@ public class Territory {
         this.centerX = t.centerX;
         this.centerY = t.centerY;
         this.adjacents = new ArrayList<Territory>();
+        this.turnNumChanged = t.turnNumChanged;
 
         for(int i = 0; i < t.adjacents.size(); i++) {
             this.adjacents.add(t.adjacents.get(i));
