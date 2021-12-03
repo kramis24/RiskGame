@@ -4,7 +4,7 @@ package com.example.riskgame.Risk.infoMessage;
  * Game state variables and methods for Risk game.
  *
  * @author Phi Nguyen, Dylan Kramis, Charlie Benning
- * @version 11/17/2021 Beta (Indonesia-Eastern Australia Fix)
+ * @version 12/2/2021 Final
  */
 
 import com.example.riskgame.GameFramework.infoMessage.GameState;
@@ -82,10 +82,20 @@ public class RiskGameState extends GameState implements Serializable {
      }
 
 
+    /**
+     *  Getter for currentPhase
+     *
+     * @return the current phase
+     */
     public Phase getCurrentPhase() {
         return this.currentPhase;
     }
 
+    /**
+     * Getter for the playercount
+     *
+     * @return playerCount
+     */
     public int getPlayerCount() {return this.playerCount;}
 
     /**
@@ -129,6 +139,11 @@ public class RiskGameState extends GameState implements Serializable {
         //}
     }
 
+    /**
+     * playerCount setter
+     *
+     * @param playerCount
+     */
     public void setPlayerCount(int playerCount) {
         this.playerCount = playerCount;
     }
@@ -193,6 +208,8 @@ public class RiskGameState extends GameState implements Serializable {
     /**
      * setTerritoryPlayers
      * Sets up the map for risk gameplay by randomly assigning territories to each player
+     *
+     * Help received for Ben Tribelhorn
      */
     public void setTerritoryPlayers () {
             ArrayList<Integer> tempTerr = new ArrayList<>(); //create temp list for territory's indexes
@@ -233,7 +250,6 @@ public class RiskGameState extends GameState implements Serializable {
     /**
      * attack
      * Attacks another territory from one owned by the player.
-     * LOGIC NEEDS CLARIFICATION!
      *
      * @param atk attacking territory
      * @param def defending territory
@@ -356,7 +372,6 @@ public class RiskGameState extends GameState implements Serializable {
 
     /**
      * fortify
-     * ADD: add the ability to move through connected territories Probably Hardest part of fortify method
      * Moves troops from one territory to another.
      *
      * @param t1 origin territory
@@ -386,16 +401,14 @@ public class RiskGameState extends GameState implements Serializable {
      * checkChain
      * Checks if two territories are connected by a chain of territories that the player has
      * Parameters: Territory (starting chain), Territory (ending part of chain)
-     * @return
+     * @return true of false if two territories are connected by a chain of adjacents
+     * Help received for Ben Tribelhorn
      */
     public boolean checkChain(Territory t1, Territory t2) {
-
         if (t1.getOwner() == t2.getOwner()) { //check if the territories are owned by the same player, if not return false
             for (int i = 0; i < territories.size(); i++) { //set all territories to unchecked (haven't been looked at yet)
                 territories.get(i).checked = false;
-
             }
-
             return checkHelper(t1, t2); //call helper method to search through adjacent arrays
         }
         return false;
@@ -405,8 +418,7 @@ public class RiskGameState extends GameState implements Serializable {
      * checkHelper
      * Helper method to check if two territories create a chain of adjacent territories that connect
      * @return
-     * the information in the adjacents list does not match the information in territories
-     * possible solution? scan adjacents and search for matching territory in territory list, then copy information over?
+     * Help received for Ben Tribelhorn
      */
     private boolean checkHelper(Territory t1, Territory t2) {
         boolean ans = false; ///assume both territories aren't connected
@@ -458,10 +470,18 @@ public class RiskGameState extends GameState implements Serializable {
         return true;
     }
 
+    /**
+     * getter for TurnCount
+     * @return TurnCount
+     */
     public int getTurnCount() {
         return  turnCount;
     }
 
+    /**
+     * Setter for totalTroops
+     * @param set
+     */
     public void setTotalTroops(int set) {
         this.totalTroops = set;
     }
@@ -529,13 +549,6 @@ public class RiskGameState extends GameState implements Serializable {
     public int getCurrentTurn() { return currentTurn; }
 
     /**
-     * getCurrentPhase
-     * Gets the current phase.
-     *
-     * @return current phase
-     */
-
-    /**
      * getTotalTroops
      * Gets the total troops.
      *
@@ -545,7 +558,8 @@ public class RiskGameState extends GameState implements Serializable {
 
     /**
      * initTerritories
-     * LONG helper method for constructor, initializes each territory.
+     * LONG helper method for constructor, initializes each territory,
+     * it's location on the map and all of the adjacent territories.
      */
     private void initTerritories() {
 

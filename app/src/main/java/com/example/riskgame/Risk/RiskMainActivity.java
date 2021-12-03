@@ -4,7 +4,7 @@ package com.example.riskgame.Risk;
  * Main activity for Risk Game. Pretty much a copy of the Tic Tac Toe example.
  *
  * @author Dylan Kramis
- * @version 11/7/2021
+ * @version 12/2/2021
  */
 
 import com.example.riskgame.GameFramework.GameMainActivity;

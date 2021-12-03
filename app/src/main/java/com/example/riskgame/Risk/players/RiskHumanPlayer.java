@@ -4,7 +4,7 @@ package com.example.riskgame.Risk.players;
  * Display, info, and input handling for human players.
  *
  * @author Dylan Kramis, Phi Nguyen
- * @version 11/16/2021 Beta
+ * @version 12/2/2021 Final
  */
 
 import static android.text.InputType.TYPE_CLASS_NUMBER;
@@ -97,14 +97,12 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
             return;
         }
 
-
         // typecasts game state
         gameState = (RiskGameState) info;
 
         // updates mapView with new game state
         mapView.setGameState(gameState);
         mapView.invalidate();
-
 
         // updates textViews
          int[] PLAYER_COLORS = {0xFFFF0000, // red
@@ -160,9 +158,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
         cardButton.setOnClickListener(this);
         nextButton.setOnClickListener(this);
         mapView.setOnTouchListener(this);
-
     }
-
 
     /**@Override
     protected void initAfterReady() {
@@ -510,6 +506,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
     private void generateNumber(int numTroops) {
         generateAction(selectedT1, numTroops);
     }
+
 
     @Override
     protected void initAfterReady() {

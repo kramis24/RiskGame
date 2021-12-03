@@ -4,7 +4,7 @@ package com.example.riskgame.Risk;
  * Local game for Risk.
  *
  * @author Phi Nguyen, Dylan Kramis
- * @version 11/7/2021 Alpha
+ * @version 12/2/2021 Final
  */
 
 import com.example.riskgame.GameFramework.LocalGame;
