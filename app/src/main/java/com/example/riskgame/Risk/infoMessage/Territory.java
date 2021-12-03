@@ -257,6 +257,7 @@ public class Territory implements Serializable {
      * @return true if enemies are nearby
      */
     public boolean hasEnemyAdjacent() {
+        // scans adjacents for enemy territories, returns true if found
         for (Territory a : adjacents) {
             if (a.owner != this.owner) return true;
         }
@@ -271,10 +272,12 @@ public class Territory implements Serializable {
      * @return lowest troop to enemy troop ratio
      */
     public double getDisadvantage() {
+        // starting "ratio"
         double ratio = -1;
 
+        // finds the worst owned troop to enemy troop ratio
         for (Territory a : adjacents) {
-            if (((this.troops / a.troops < ratio) || ratio == -1) && a.owner != this.owner) {
+            if (((this.troops / a.troops < ratio) || ((ratio < -1 + 0.001) && (ratio > -1 - 0.001))) && a.owner != this.owner) {
                 ratio = (double) this.troops / (double) a.troops;
             }
         }
@@ -289,9 +292,12 @@ public class Territory implements Serializable {
      * @return adjacent enemy territory with most troops
      */
     public Territory getGreatestThreat() {
+
+        // starting values
         Territory greatestThreat = null;
         int maxTroops = 0;
 
+        //
         for (Territory a : adjacents) {
             if (a.troops > maxTroops && a.owner != this.owner) {
                 greatestThreat = a;

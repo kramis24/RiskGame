@@ -214,7 +214,8 @@ public class RiskAdvancedComputerPlayer extends GameComputerPlayer {
             }
 
             // default if no continents can be prioritized, code is that from
-            // setAttackTarget without the continent check
+            // setAttackTarget without the continent check by first finding an owned
+            // territory capable of attacking, then finding what to attack
             else {
                 for (Territory t : gameState.getTerritories()) {
                     if (t.getOwner() == playerNum && t.getTroops() >= 2) {
