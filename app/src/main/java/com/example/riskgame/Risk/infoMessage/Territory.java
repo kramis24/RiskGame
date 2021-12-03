@@ -4,7 +4,7 @@ package com.example.riskgame.Risk.infoMessage;
  * Variables and methods for individual territories.
  *
  * @author Phi Nguyen, Dylan Kramis, Charlie Benning
- * @version 11/4/2021
+ * @version 12/2/2021
  */
 
 import com.example.riskgame.GameFramework.utilities.Logger;
@@ -35,14 +35,7 @@ public class Territory implements Serializable {
     private String name;
     private int owner;
     public boolean checked;
-    public boolean highlightMoved;
     public int turnNumChanged;
-    // if the numTurn is = to 15 %0 scan all the previous num for if their varible is equal to 14 or less --> if so jhighlight
-    //ask th gamestate --> how many players? What turn?
-    //cuurentTurn mod numplayers
-    //Current turn - (numplayer-1)
-    //Turns to highlight => currentTurn-(numplayers-1) or newer
-    //
 
     // location variables
     private int centerX = 0;
@@ -65,7 +58,6 @@ public class Territory implements Serializable {
         troops = 10;
         owner = -1;
         checked = false;
-        highlightMoved = false;
         turnNumChanged = -1;
     }
 
@@ -86,7 +78,6 @@ public class Territory implements Serializable {
         troops = 10;
         owner = -1;
         checked = false;
-        highlightMoved = false;
         turnNumChanged = -1;
         centerX = x;
         centerY = y;
@@ -126,7 +117,7 @@ public class Territory implements Serializable {
         this.owner = t.owner;
         this.troops = t.troops;
         this.checked = t.checked;
-        this.highlightMoved = t.highlightMoved;
+        this.turnNumChanged = t.turnNumChanged;
     }
 
     /**

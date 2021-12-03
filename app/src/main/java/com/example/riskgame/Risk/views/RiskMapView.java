@@ -4,7 +4,7 @@ package com.example.riskgame.Risk.views;
  * Draws the Risk map.
  *
  * @author Dylan Kramis
- * @version 11/4/2021 WIP
+ * @version 12/2/2021 WIP
  */
 
 import android.content.Context;
@@ -72,7 +72,6 @@ public class RiskMapView extends FlashSurfaceView {
 
         boxPaint = new Paint(mapPaint);
 
-
         textPaint = new Paint();
         textPaint.setTextSize(40);
         textPaint.setTextAlign(Paint.Align.CENTER);
@@ -84,7 +83,6 @@ public class RiskMapView extends FlashSurfaceView {
 
         highlightPaint = new Paint();
         highlightPaint.setColor(Color.RED);
-
     }
 
     /**
@@ -115,9 +113,7 @@ public class RiskMapView extends FlashSurfaceView {
             }
             drawTextBox(t.getX() + left, t.getY() + top, t.getTroops(), t.getOwner(),
                     t.getName(), canvas);
-
         }
-
     }
 
     /**
