@@ -85,12 +85,13 @@ public class RiskAdvancedComputerPlayer extends GameComputerPlayer {
                 generateFortify();
             }
 
-            // 1 second pause, ideally
+            // 0.5 second pause, ideally
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
         }
 
     }
@@ -214,7 +215,8 @@ public class RiskAdvancedComputerPlayer extends GameComputerPlayer {
             }
 
             // default if no continents can be prioritized, code is that from
-            // setAttackTarget without the continent check
+            // setAttackTarget without the continent check by first finding an owned
+            // territory capable of attacking, then finding what to attack
             else {
                 for (Territory t : gameState.getTerritories()) {
                     if (t.getOwner() == playerNum && t.getTroops() >= 2) {
