@@ -16,6 +16,11 @@ import java.util.List;
 
 public class CardView extends SurfaceView {
 
+
+    /**
+     This class is not used, it was to display the cards, however we determined that just
+     showing the cards as text would be easier to understand so we didn't need a surface view to display the cards
+     */
     private RiskGameState riskGameState;
     private Paint testPaint;
 

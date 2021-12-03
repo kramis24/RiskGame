@@ -165,6 +165,8 @@ public class RiskMapView extends FlashSurfaceView {
             int bottomBound = 0;
 
         //checks if landscape or portrait and changes the bounds accordingly
+        //Referenced Stack Overflow
+        //https://stackoverflow.com/questions/3674933/find-out-if-android-device-is-portrait-or-landscape-for-normal-usage
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             rightBound = 1050;
             bottomBound = -150;

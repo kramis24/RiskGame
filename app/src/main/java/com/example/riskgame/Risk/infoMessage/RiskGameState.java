@@ -254,6 +254,7 @@ public class RiskGameState extends GameState implements Serializable {
      * @param atk attacking territory
      * @param def defending territory
      * @return true if legal move
+     * Help received from Ben Tribelhorn
      */
     public boolean attack(Territory atk, Territory def) {
         if (currentTurn == atk.getOwner() && currentTurn != def.getOwner()) {
@@ -937,6 +938,8 @@ public class RiskGameState extends GameState implements Serializable {
      * addCard
      * adds a card to the current players hand
      * this method is called in attack method
+     * Stack Overflow referenced
+     * https://stackoverflow.com/questions/1972392/pick-a-random-value-from-an-enum
      */
     public void addCard() {
         if(cards.get(currentTurn).size() >= 5) {

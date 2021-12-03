@@ -111,6 +111,7 @@ public class Territory implements Serializable {
      * Copies information from one territory to another
      *
      * @param t the territory to be copied
+     * Got help from tribelhorn for this method
      */
     public void setUp(Territory t) {
         this.owner = t.owner;
