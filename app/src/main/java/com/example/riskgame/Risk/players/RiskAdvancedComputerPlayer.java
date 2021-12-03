@@ -85,12 +85,13 @@ public class RiskAdvancedComputerPlayer extends GameComputerPlayer {
                 generateFortify();
             }
 
-            // 1 second pause, ideally
+            // 0.5 second pause, ideally
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
         }
 
     }
