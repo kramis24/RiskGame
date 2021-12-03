@@ -58,6 +58,7 @@
  will be colored, indicated what color each player is and can be used to
  identify which territories each player owns which also have their troop
  numbers colored to match the player’s color.\n
+-Territories that have been recently interacted with will have a red border around them
 -Click exit button to exit game.\n\n
 
 Set-Up\n
@@ -122,6 +123,7 @@ Fortify\n
  fortify movement the system should automatically end the player’s turn.\n\n
 
 Cards\n
+-Cards cannot be viewed if it is not your turn
 -Cards are received when players successfully take an enemy territory but
  only one card can be earned per turn. Players can only hold a maximum of 5
  cards and can only play 3 at a time. Players can view cards by hitting the

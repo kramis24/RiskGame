@@ -113,7 +113,6 @@ public class Territory implements Serializable {
      * @param t the territory to be copied
      */
     public void setUp(Territory t) {
-
         this.owner = t.owner;
         this.troops = t.troops;
         this.checked = t.checked;

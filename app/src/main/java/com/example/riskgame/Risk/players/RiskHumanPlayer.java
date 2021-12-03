@@ -187,7 +187,6 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                 System.exit(0);
 
             case R.id.cardButton:
-                // TODO show players what cards they have
                 ExchangeCardAction exchange = new ExchangeCardAction(this);
                 LayoutInflater inflater = (LayoutInflater)
                         myActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -200,7 +199,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                 countInfantry = 0;
                 //counts number of cards player has
                 if(gameState != null && currentCards != null) {
-                    for(int i = 0; i < gameState.getCards().get(gameState.getCurrentTurn()).size(); i++) {
+                    for(int i = 0; i < gameState.getCards().get(this.playerNum).size(); i++) {
                         if(gameState.getCards().size() <= 0 ) {
                             return;
                         }
@@ -228,10 +227,12 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                     currentCards.invalidate();
                 }
                 // creates popup
-                PopupWindow popupWindow = new PopupWindow(popup, LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT, true);
-                // displays popup window
-                popupWindow.showAtLocation(mapView, Gravity.CENTER, 0, 0);
+                if(gameState.getCurrentTurn() == this.playerNum) {
+                    PopupWindow popupWindow = new PopupWindow(popup, LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT, true);
+                    // displays popup window
+                    popupWindow.showAtLocation(mapView, Gravity.CENTER, 0, 0);
+                }
                 exchangeButton.setOnClickListener(new View.OnClickListener() {
 
                     @Override
@@ -239,7 +240,7 @@ public class RiskHumanPlayer extends GameHumanPlayer implements View.OnClickList
                         if(gameState.getCurrentPhase() == RiskGameState.Phase.DEPLOY) {
                             game.sendAction(exchange);
                             troopCountTextView.invalidate();
-                            //calculates number of troops to give
+                            //calculates number of troops to give and removes cards from hand
                             if(countArtillery >= 1 && countCavalry >= 1 && countInfantry >= 1) {
                                 cardTextView.setText("Gained 10 troops");
                                 countArtillery--;

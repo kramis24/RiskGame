@@ -351,7 +351,7 @@ public class RiskGameState extends GameState implements Serializable {
         return false;
     }
 
-    public boolean occupy(Territory t, Territory t2, int troops) {
+    /*public boolean occupy(Territory t, Territory t2, int troops) {
         if (currentTurn == t.getOwner()) { //checks that the current territory is owned by the player
             if (troops > 0 && troops < t.getTroops()) {
                 t2.setTroops(troops);
@@ -361,6 +361,8 @@ public class RiskGameState extends GameState implements Serializable {
         }
         return false;
     }
+    Method scrapped for final release
+    */
 
 
     private void updateAdjacents() {
