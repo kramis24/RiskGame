@@ -126,7 +126,7 @@ public class Territory implements Serializable {
         this.owner = t.owner;
         this.troops = t.troops;
         this.checked = t.checked;
-        this.highlightMoved = t.highlightMoved;
+
     }
 
     /**
