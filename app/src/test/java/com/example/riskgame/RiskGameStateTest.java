@@ -462,7 +462,7 @@ public class RiskGameStateTest {
         terrCntPlyr0 = 0;
         terrCntPlyr1 = 0;
         int terrCntPlyr2 = 0;
-        riskTest2.setPlayerCount(3);
+        riskTest2.init(3);
         riskTest2.setTerritoryPlayers();
         for (int i = 0; i < riskTest2.getTerritories().size(); i++) {
             if (riskTest2.getTerritories().get(i).getOwner() == 0) {
