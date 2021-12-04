@@ -76,6 +76,11 @@ public class RiskAdvancedComputerPlayer extends GameComputerPlayer {
             // calls action generator for current phase,
             // resets attempt counters if necessary
             if (gameState.getCurrentPhase() == RiskGameState.Phase.DEPLOY) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 generateDeploy();
                 attackCount = 0;
                 fortifyCount = 0;
